@@ -1,7 +1,7 @@
 # mdDatePicker
 A Material Design date picker built with Angular Material and Moment.js
 
-A live demo is available on [CodePen](http://codepen.io/alenaksu/pen/eNzbrZ)
+A live demo is available on [CodePen](http://codepen.io/alenaksu/full/eNzbrZ)
 
 ## Requirements
 
