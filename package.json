@@ -23,7 +23,7 @@
     "url": "https://github.com/alenaksu/mdDatePicker/issues"
   },
   "homepage": "https://github.com/alenaksu/mdDatePicker",
-  "dependencies": {
+  "devDependencies": {
     "gulp": "^3.8.11",
     "gulp-concat": "^2.5.2",
     "gulp-less": "^3.0.3",

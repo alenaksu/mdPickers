@@ -66,7 +66,40 @@
             return $mdDialog.show({
                 controller: 'DatePickerCtrl',
                 controllerAs: 'datepicker',
-                templateUrl: "/modal.datepicker.html",
+                template: '<md-dialog aria-label="" class="md-datepicker" ng-class="{ \'portrait\': !$mdMedia(\'gt-md\') }">' +
+                              '<md-dialog-content layout="row" layout-wrap>' +
+                                '<div layout="column" layout-align="start center">' +
+                                  '<md-toolbar layout-align="center center" class="md-datepicker-dow md-primary"><span>{{ datepicker.currentMoment.format("dddd") }}</span></md-toolbar>' +
+                                  '<md-toolbar layout-align="center center" class="md-datepicker-date md-hue-1 md-primary" layout="column">' +
+                                    '<div class="md-datepicker-month">{{ datepicker.currentMoment.format("MMM") }}</div>' +
+                                    '<div class="md-datepicker-day">{{ datepicker.currentMoment.format("DD") }}</div>' +
+                                    '<md-select class="md-datepicker-year" placeholder="{{ datepicker.currentMoment.format(\'YYYY\') }}" ng-model="year" ng-change="datepicker.setYear()">' +
+                                      '<md-option ng-value="year" ng-repeat="year in yearsOptions">{{ year }}</md-option>' +
+                                    '</md-select>' +
+                                  '</md-toolbar>' +
+                                '</div>' +
+                                '<div layout="column" layout-align="start center" class="md-datepicker-calendar">' +
+                                  '<div layout="row" layout-align="space-between center" class="md-datepicker-monthyear">' +
+                                    '<md-button aria-label="mese precedente" class="md-icon-button" ng-click="datepicker.prevMonth()"><md-icon md-svg-src="http://upload.wikimedia.org/wikipedia/commons/a/a4/Ic_chevron_left_36px.svg"></md-icon></md-button>' +
+                                    '{{ datepicker.currentMoment.format("MMMM YYYY") }}' +
+                                    '<md-button aria-label="mese successivo" class="md-icon-button" ng-click="datepicker.nextMonth()"><md-icon md-svg-src="http://upload.wikimedia.org/wikipedia/commons/8/8d/Ic_chevron_right_36px.svg"></md-icon></md-button>' +
+                                  '</div>' +
+                                  '<div layout="row" layout-align="space-around center" class="md-datepicker-week-days">' +
+                                    '<div layout layout-align="center center" ng-repeat="d in datepicker.weekDays track by $index">{{ d }}</div>' +
+                                  '</div>' +
+                                  '<div layout="row" layout-wrap class="md-datepicker-days">' +
+                                    '<div layout layout-align="center center" ng-repeat-start="n in datepicker.getDaysInMonth() track by $index">' +
+                                      '<md-button aria-label="seleziona giorno" ng-if="n !== false" ng-class="{\'md-accent\': datepicker.currentMoment.date() == n}" ng-click="datepicker.selectDate(n)">{{ n }}</md-button>' +
+                                    '</div>' +
+                                    '<div flex ng-if="($index + 1) % 7 == 0" ng-repeat-end></div>' +
+                                  '</div>' +
+                                '</div>' +
+                              '</md-dialog-content>' +
+                              '<div class="md-actions" layout="row">' +
+                                '<md-button ng-click="datepicker.cancel()" aria-label="annulla">Cancel</md-button>' +
+                                '<md-button ng-click="datepicker.confirm()" aria-label="ok">OK</md-button>' +
+                              '</div>' +
+                            '</md-dialog>',
                 targetEvent: targetEvent,
                 locals: {
                     currentDate: currentDate
