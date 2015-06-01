@@ -21,7 +21,7 @@ npm install
 npm update
 ```
 
-Then run de default gulp task:
+Then run the default gulp task:
 
 ```bash
 # builds all files in the `dist` directory
