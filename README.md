@@ -1,7 +1,11 @@
-# mdDatePicker
-A Material Design date picker built with Angular Material and Moment.js
+# mdPickers
+Material Design date/time pickers built with Angular Material and Moment.js
 
-A live demo is available on [CodePen](http://codepen.io/alenaksu/pen/eNzbrZ)
+
+## Pickers and live demos
+
+* __$mdDatePicker__ on [CodePen](http://codepen.io/alenaksu/pen/eNzbrZ)
+
 
 ## Requirements
 
@@ -9,7 +13,7 @@ A live demo is available on [CodePen](http://codepen.io/alenaksu/pen/eNzbrZ)
 * [AngularJS](https://angularjs.org/)
 * [Angular Material](https://material.angularjs.org/)
 
-## Building $mdDatePicker
+## Building mdPickers
 
 First install or update your local project's __npm__ tools:
 
