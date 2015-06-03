@@ -4,7 +4,7 @@ Material Design date/time pickers built with Angular Material and Moment.js
 
 ## Online demos
 
-* [CodePen](http://codepen.io/alenaksu/pen/eNzbrZ)
+* [CodePen](http://codepen.io/alenaksu/full/eNzbrZ)
 
 
 ## Requirements
