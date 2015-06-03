@@ -2,9 +2,9 @@
 Material Design date/time pickers built with Angular Material and Moment.js
 
 
-## Pickers and live demos
+## Online demos
 
-* __$mdDatePicker__ on [CodePen](http://codepen.io/alenaksu/pen/eNzbrZ)
+* [CodePen](http://codepen.io/alenaksu/pen/eNzbrZ)
 
 
 ## Requirements
