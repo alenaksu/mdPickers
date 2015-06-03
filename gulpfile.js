@@ -5,12 +5,17 @@ var gulp = require('gulp'),
     less = require('gulp-less'),
     rename = require('gulp-rename'),
     minify = require('gulp-minify-css'),
-    sourcemaps = require('gulp-sourcemaps');
+    sourcemaps = require('gulp-sourcemaps'),
+    wrap = require('gulp-wrap'),
+    concat = require('gulp-concat'),
+    path = require('path');
 
 var outputFolder = 'dist/';
+var moduleName = 'mdPickers';
 
 gulp.task('assets', function() {
-  return gulp.src('src/mdDatePicker.less')
+  return gulp.src('src/components/**/*.less')
+        .pipe(concat('mdPickers.less'))
         .pipe(less())
         .pipe(gulp.dest(outputFolder))
         .pipe(rename({suffix: '.min'}))
@@ -19,13 +24,15 @@ gulp.task('assets', function() {
 });
 
 gulp.task('build-app', function() {  
-  return gulp.src('src/mdDatePicker.js')
-    .pipe(sourcemaps.init())
-    .pipe(gulp.dest(outputFolder))
-    .pipe(rename({suffix: '.min'}))
-    .pipe(uglify())
-    .pipe(sourcemaps.write('.'))
-    .pipe(gulp.dest(outputFolder));
+    return gulp.src(['src/mdPickers.js', 'src/components/**/*.js'])
+        .pipe(concat('mdPickers.js'))
+        .pipe(wrap('(function() {\n"use strict";\n<%= contents %>\n})();'))
+        .pipe(sourcemaps.init())
+        .pipe(gulp.dest(outputFolder))
+        .pipe(rename({suffix: '.min'}))
+        .pipe(uglify())
+        .pipe(sourcemaps.write('.'))
+        .pipe(gulp.dest(outputFolder));
 });
 
 gulp.task('default', ['assets', 'build-app']);
