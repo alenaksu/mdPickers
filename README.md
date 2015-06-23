@@ -21,6 +21,12 @@ Install via Bower
 bower install mdPickers
 ```
 
+Use in Angular
+```javascript
+angular.module( 'YourApp', [ 'mdPickers' ] )
+  .controller("YourController", YourController );
+```
+
 ## Building mdPickers
 
 First install or update your local project's __npm__ tools:
