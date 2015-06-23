@@ -102,9 +102,9 @@ module.factory("$mdDatePicker", ["$mdDialog", function($mdDialog) {
     return datePicker;
 }]);
 
-module.directive("input", ["$mdDatePicker", "$timeout", function($mdDatePicker, $timeout) {
+module.directive("mdDatePicker", ["$mdDatePicker", "$timeout", function($mdDatePicker, $timeout) {
     return  {
-        restrict: 'E',
+        restrict: 'A',
         require: '?ngModel',
         link: function(scope, element, attrs, ngModel) {
             if ('undefined' !== typeof attrs.type && 'date' === attrs.type && ngModel) {
