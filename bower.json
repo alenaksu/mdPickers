@@ -1,0 +1,33 @@
+{
+  "name": "mdPickers",
+  "version": "0.3.0",
+  "homepage": "https://github.com/alenaksu/mdPickers",
+  "authors": [
+    "alenaksu"
+  ],
+  "description": "Material Design date/time pickers built with Angular Material and Moment.js",
+  "main": [
+    "dist/mdPickers.min.js",
+    "mdPickers.min.css"
+  ],
+  "keywords": [
+    "angular",
+    "material",
+    "pickers",
+    "date",
+    "time"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angularjs": "~1.4.1",
+    "angular-material": "~0.10.0",
+    "moment": "~2.10.3"
+  }
+}
