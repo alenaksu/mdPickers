@@ -8,7 +8,7 @@ module.controller('DatePickerCtrl', ['$scope', '$mdDialog', 'currentDate', '$mdM
 
     $scope.$mdMedia = $mdMedia;
     $scope.yearsOptions = [];
-    for(var i = 1970; i <= (this.currentMoment.year() + 12); i++) {
+    for(var i = 1900; i <= (this.currentMoment.year() + 12); i++) {
         $scope.yearsOptions.push(i);
     }
     $scope.year = this.currentMoment.year();
