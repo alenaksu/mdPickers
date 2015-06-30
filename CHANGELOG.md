@@ -1,3 +1,9 @@
+### 0.3.0
+
+#### Features
+
+* Bower support
+
 ### 0.2.0
 
 #### Breaking Changes
