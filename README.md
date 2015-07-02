@@ -12,6 +12,7 @@ Material Design date/time pickers built with Angular Material and Moment.js
 * [moment.js](http://momentjs.com/)
 * [AngularJS](https://angularjs.org/)
 * [Angular Material](https://material.angularjs.org/)
+* [Material Design Icons](http://google.github.io/material-design-icons/#icon-font-for-the-web)
 
 ## Using mdPickers
 
