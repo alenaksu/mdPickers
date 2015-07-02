@@ -79,9 +79,9 @@ module.factory("$mdDatePicker", ["$mdDialog", function($mdDialog) {
                             '</div>' +
                             '<div layout="column" layout-align="start center" class="md-datepicker-calendar">' +
                               '<div layout="row" layout-align="space-between center" class="md-datepicker-monthyear">' +
-                                '<md-button aria-label="mese precedente" class="md-icon-button" ng-click="datepicker.prevMonth()"><md-icon md-svg-src="http://upload.wikimedia.org/wikipedia/commons/a/a4/Ic_chevron_left_36px.svg"></md-icon></md-button>' +
+                                '<md-button aria-label="mese precedente" class="md-icon-button" ng-click="datepicker.prevMonth()"><md-icon md-font-set="material-icons"> chevron_left </md-icon></md-button>' +
                                 '{{ datepicker.currentMoment.format("MMMM YYYY") }}' +
-                                '<md-button aria-label="mese successivo" class="md-icon-button" ng-click="datepicker.nextMonth()"><md-icon md-svg-src="http://upload.wikimedia.org/wikipedia/commons/8/8d/Ic_chevron_right_36px.svg"></md-icon></md-button>' +
+                                '<md-button aria-label="mese successivo" class="md-icon-button" ng-click="datepicker.nextMonth()"><md-icon md-font-set="material-icons"> chevron_right </md-icon></md-button>' +
                               '</div>' +
                               '<div layout="row" layout-align="space-around center" class="md-datepicker-week-days">' +
                                 '<div layout layout-align="center center" ng-repeat="d in datepicker.weekDays track by $index">{{ d }}</div>' +
