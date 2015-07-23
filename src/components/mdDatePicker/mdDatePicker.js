@@ -3,8 +3,8 @@ module.controller('DatePickerCtrl', ['$scope', '$mdDialog', 'currentDate', 'minD
     var self = this;
 
     this.currentDate = currentDate;
-    this.minDate = moment(minDate).subtract(1, 'days');
-    this.maxDate = moment(maxDate).add(1, 'days');
+    this.minDate = (minDate) ? moment(minDate).subtract(1, 'days') : undefined;
+    this.maxDate = (maxDate) ? moment(maxDate).add(1, 'days'): undefined;
     this.currentMoment = moment(self.currentDate);
     this.weekDays = moment.weekdaysMin();
 
