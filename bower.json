@@ -26,7 +26,7 @@
     "tests"
   ],
   "dependencies": {
-    "angularjs": "~1.4.1",
+    "angular": "~1.4.1",
     "angular-material": "~0.10.0",
     "moment": "~2.10.3"
   }
