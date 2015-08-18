@@ -1,8 +1,10 @@
 
-module.controller('DatePickerCtrl', ['$scope', '$mdDialog', 'currentDate', '$mdMedia', function($scope, $mdDialog, currentDate, $mdMedia) {
+module.controller('DatePickerCtrl', ['$scope', '$mdDialog', 'currentDate', 'minDate', 'maxDate', '$mdMedia', function($scope, $mdDialog, currentDate, minDate, maxDate, $mdMedia) {
     var self = this;
 
     this.currentDate = currentDate;
+    this.minDate = (minDate) ? moment(minDate).subtract(1, 'days') : undefined;
+    this.maxDate = (maxDate) ? moment(maxDate).add(1, 'days'): undefined;
     this.currentMoment = moment(self.currentDate);
     this.weekDays = moment.weekdaysMin();
 
@@ -28,6 +30,18 @@ module.controller('DatePickerCtrl', ['$scope', '$mdDialog', 'currentDate', '$mdM
     this.confirm = function() {
         $mdDialog.hide(this.currentMoment.toDate());
     };
+    
+    this.isDisabled = function(day){
+        var testMoment = moment(this.currentMoment);
+        testMoment.date(day);
+        if (this.minDate && this.maxDate){
+            if (this.minDate.isBefore(testMoment, 'day') && this.maxDate.isAfter(testMoment, 'day')){
+                return false;
+            }
+            return true;
+        }
+        return false;
+    };
 
     this.getDaysInMonth = function() {
         var days = self.currentMoment.daysInMonth(),
@@ -52,7 +66,7 @@ module.controller('DatePickerCtrl', ['$scope', '$mdDialog', 'currentDate', '$mdM
 }]);
 
 module.factory("$mdDatePicker", ["$mdDialog", function($mdDialog) {
-    var datePicker = function(targetEvent, currentDate) {
+    var datePicker = function(targetEvent, currentDate, minDate, maxDate) {
         if(!angular.isDate(currentDate)) currentDate = Date.now();
 
         return $mdDialog.show({
@@ -81,7 +95,7 @@ module.factory("$mdDatePicker", ["$mdDialog", function($mdDialog) {
                               '</div>' +
                               '<div layout="row" layout-wrap class="md-datepicker-days">' +
                                 '<div layout layout-align="center center" ng-repeat-start="n in datepicker.getDaysInMonth() track by $index">' +
-                                  '<md-button aria-label="seleziona giorno" ng-if="n !== false" ng-class="{\'md-accent\': datepicker.currentMoment.date() == n}" ng-click="datepicker.selectDate(n)">{{ n }}</md-button>' +
+                                  '<md-button aria-label="seleziona giorno" ng-if="n !== false" ng-disabled="datepicker.isDisabled(n)" ng-class="{\'md-accent\': datepicker.currentMoment.date() == n}" ng-click="datepicker.selectDate(n)">{{ n }}</md-button>' +
                                 '</div>' +
                                 '<div flex ng-if="($index + 1) % 7 == 0" ng-repeat-end></div>' +
                               '</div>' +
@@ -94,7 +108,9 @@ module.factory("$mdDatePicker", ["$mdDialog", function($mdDialog) {
                         '</md-dialog>',
             targetEvent: targetEvent,
             locals: {
-                currentDate: currentDate
+                currentDate: currentDate,
+                minDate: minDate,
+                maxDate: maxDate,
             }
         });
     }
