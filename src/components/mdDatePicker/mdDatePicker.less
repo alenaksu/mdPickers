@@ -1,36 +1,39 @@
-.md-datepicker {
+.mdp-datepicker {
   max-height: initial;
     * {
         outline: 0;
     }
   
-  .md-select-label {
+  .md-select-value {
     min-width: 90px;
     border: 0 !important;
     padding-bottom: 0px !important;
   }
 }
-.md-datepicker-week-days,
-.md-datepicker-days {
+.mdp-datepicker-week-days,
+.mdp-datepicker-days {
     font-size: 0.75rem;
     .md-button,
     & > * {
         width: 32px;
         height: 32px;
+        line-height: 32px;
         margin: 0;
         padding: 0;
         min-width: 0px;
         min-height: 0px;
+        box-shadow: none !important;
+        background-color: transparent;
     }
 }
 
-.md-datepicker-monthyear,
-.md-datepicker-dow {
+.mdp-datepicker-monthyear,
+.mdp-datepicker-dow {
     font-size: 0.8125rem;
     min-height: 32px;
 }
 
-.md-datepicker-monthyear {
+.mdp-datepicker-monthyear {
     font-weight: bold;
     width: 100%;
 
@@ -41,16 +44,16 @@
     }
 }
 
-.md-datepicker-month {
+.mdp-datepicker-month {
     font-size: 1.5rem
 }
 
-.md-datepicker-day {
+.mdp-datepicker-day {
     font-size: 4.5rem;
     line-height: 6.0rem;
 }
 
-.md-datepicker-year {
+.mdp-datepicker-year {
     font-size: 1.5rem;
     padding: 0;
     margin: 0;
@@ -60,15 +63,22 @@
     }
 }
 
-.md-datepicker-date {
+.mdp-datepicker-date {
     padding: 35px 0;
 }
 
-.md-datepicker-calendar {
+.mdp-datepicker-calendar {
     margin-left: 10px;
 }
 
-.md-datepicker {
+.mdp-datepicker {
+    
+    &:not(.portrait) {
+        .mdp-datepicker-calendar {
+            margin-right: 5px;
+        }
+    }
+    
     md-dialog-content {
         overflow: hidden;
         padding: 0px;
@@ -76,35 +86,35 @@
             width: 224px;
         }
     }
-}
-
-.md-datepicker.portrait {
-    width: 244px;
-    .md-datepicker-calendar {
-        margin-left: 0;
-        text-align: center;
-        overflow: auto;
-    }
-
-    md-dialog-content {
-        & > * {
-            width: 100%;
+    
+    &.portrait {
+        width: 244px;
+        .mdp-datepicker-calendar {
+            margin-left: 0;
+            text-align: center;
+            overflow: auto;
+        }
+    
+        md-dialog-content {
+            & > * {
+                width: 100%;
+            }
+        }
+    
+        .mdp-datepicker-date {
+            padding: 10px 0;
+        }
+    
+        .mdp-datepicker-dow,
+        .mdp-datepicker-date,
+        .mdp-datepicker-calendar {
+            padding-left: 10px;
+            padding-right: 10px;
         }
     }
-
-    .md-datepicker-date {
-        padding: 10px 0;
-    }
-
-    .md-datepicker-dow,
-    .md-datepicker-date,
-    .md-datepicker-calendar {
-        padding-left: 10px;
-        padding-right: 10px;
-    }
 }
 
-.md-datepicker-days {
+.mdp-datepicker-days {
     font-size: 1rem;
     max-width: 100%;
     & > * {
@@ -117,7 +127,7 @@
     }
 }
 
-.md-datepicker-day-marker {
+.mdp-datepicker-day-marker {
     width: 32px;
     height: 32px;
     border-radius: 50%;
