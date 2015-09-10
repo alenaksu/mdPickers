@@ -1,3 +1,15 @@
+### 0.3.2
+
+#### Bugfixes
+
+* Renamed classes names to avoid collisions with official date picker
+* Changed angular repository in bower config
+
+#### Features
+
+* Added config provider for $mdDatePicker. Now is possible to set the labels of the dialog buttons with $mdDatePickerProvider.setOKButtonLabel(...) and $mdDatePickerProvider.setCancelButtonLabel(...)
+* Minor improvements
+
 ### 0.3.0
 
 #### Features

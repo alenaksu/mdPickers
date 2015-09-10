@@ -1,6 +1,6 @@
 {
   "name": "mdPickers",
-  "version": "0.2.0",
+  "version": "0.3.2",
   "description": "Material Design date/time pickers for Angular Material",
   "main": "gulpfile.js",
   "scripts": {

@@ -7,18 +7,10 @@ module.controller('DatePickerCtrl', ['$scope', '$mdDialog', 'currentDate', '$mdM
     this.weekDays = moment.weekdaysMin();
 
     $scope.$mdMedia = $mdMedia;
-    this.yearsOptions = {
-        _numLoaded: 0,
-        _toLoad: 0,
-        _maxYears: 40,
-        getItemAtIndex: function(index) {
-            return $scope.year - parseInt(this._maxYears / 2)
-        },
-        getLength: function() {
-            return this._maxYears;
-        }
-    };
-
+    $scope.yearsOptions = [];
+    for(var i = 1900; i <= (this.currentMoment.year() + 12); i++) {
+        $scope.yearsOptions.push(i);
+    }
     $scope.year = this.currentMoment.year();
 
 	this.setYear = function() {
@@ -87,9 +79,7 @@ module.provider("$mdDatePicker", function() {
                                         '<div class="mdp-datepicker-month">{{ datepicker.currentMoment.format("MMM") }}</div>' +
                                         '<div class="mdp-datepicker-day">{{ datepicker.currentMoment.format("DD") }}</div>' +
                                         '<md-select class="mdp-datepicker-year" placeholder="{{ datepicker.currentMoment.format(\'YYYY\') }}" ng-model="year" ng-change="datepicker.setYear()">' +
-                                            '<md-virtual-repeat-container>' + 
-                                                '<md-option ng-value="year" md-on-demand md-virtual-repeat="year in datepicker.yearsOptions">{{ year }}</md-option>' + 
-                                            '</md-virtual-repeat-container>' +
+                                            '<md-option ng-value="year" ng-repeat="year in yearsOptions">{{ year }}</md-option>' +
                                         '</md-select>' +
                                     '</md-toolbar>' +
                                 '</div>' +
@@ -114,7 +104,7 @@ module.provider("$mdDatePicker", function() {
                                 '<md-button ng-click="datepicker.cancel()" aria-label="' + LABEL_CANCEL + '">' + LABEL_CANCEL + '</md-button>' +
                                 '<md-button ng-click="datepicker.confirm()" aria-label="' + LABEL_OK + '">' + LABEL_OK + '</md-button>' +
                             '</div>' +
-                            '</md-dialog>',
+                        '</md-dialog>',
                 targetEvent: targetEvent,
                 locals: {
                     currentDate: currentDate
