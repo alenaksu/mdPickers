@@ -1,101 +1,107 @@
-.md-datepicker {
+.mdp-datepicker {
   max-height: initial;
 }
-.md-datepicker * {
+.mdp-datepicker * {
   outline: 0;
 }
-.md-datepicker .md-select-label {
+.mdp-datepicker .md-select-value {
   min-width: 90px;
   border: 0 !important;
   padding-bottom: 0px !important;
 }
-.md-datepicker-week-days,
-.md-datepicker-days {
+.mdp-datepicker-week-days,
+.mdp-datepicker-days {
   font-size: 0.75rem;
 }
-.md-datepicker-week-days .md-button,
-.md-datepicker-days .md-button,
-.md-datepicker-week-days > *,
-.md-datepicker-days > * {
+.mdp-datepicker-week-days .md-button,
+.mdp-datepicker-days .md-button,
+.mdp-datepicker-week-days > *,
+.mdp-datepicker-days > * {
   width: 32px;
   height: 32px;
+  line-height: 32px;
   margin: 0;
   padding: 0;
   min-width: 0px;
   min-height: 0px;
+  box-shadow: none !important;
+  background-color: transparent;
 }
-.md-datepicker-monthyear,
-.md-datepicker-dow {
+.mdp-datepicker-monthyear,
+.mdp-datepicker-dow {
   font-size: 0.8125rem;
   min-height: 32px;
 }
-.md-datepicker-monthyear {
+.mdp-datepicker-monthyear {
   font-weight: bold;
   width: 100%;
 }
-.md-datepicker-monthyear .md-button.md-icon-button {
+.mdp-datepicker-monthyear .md-button.md-icon-button {
   height: 36px;
   line-height: 36px;
   width: 36px;
 }
-.md-datepicker-month {
+.mdp-datepicker-month {
   font-size: 1.5rem;
 }
-.md-datepicker-day {
+.mdp-datepicker-day {
   font-size: 4.5rem;
   line-height: 6.0rem;
 }
-.md-datepicker-year {
+.mdp-datepicker-year {
   font-size: 1.5rem;
   padding: 0;
   margin: 0;
 }
-.md-datepicker-year .md-select-label {
+.mdp-datepicker-year .md-select-label {
   padding: 0;
   color: inherit !important;
 }
-.md-datepicker-date {
+.mdp-datepicker-date {
   padding: 35px 0;
 }
-.md-datepicker-calendar {
+.mdp-datepicker-calendar {
   margin-left: 10px;
 }
-.md-datepicker md-dialog-content {
+.mdp-datepicker:not(.portrait) .mdp-datepicker-calendar {
+  margin-right: 5px;
+}
+.mdp-datepicker md-dialog-content {
   overflow: hidden;
   padding: 0px;
 }
-.md-datepicker md-dialog-content > * {
+.mdp-datepicker md-dialog-content > * {
   width: 224px;
 }
-.md-datepicker.portrait {
+.mdp-datepicker.portrait {
   width: 244px;
 }
-.md-datepicker.portrait .md-datepicker-calendar {
+.mdp-datepicker.portrait .mdp-datepicker-calendar {
   margin-left: 0;
   text-align: center;
   overflow: auto;
 }
-.md-datepicker.portrait md-dialog-content > * {
+.mdp-datepicker.portrait md-dialog-content > * {
   width: 100%;
 }
-.md-datepicker.portrait .md-datepicker-date {
+.mdp-datepicker.portrait .mdp-datepicker-date {
   padding: 10px 0;
 }
-.md-datepicker.portrait .md-datepicker-dow,
-.md-datepicker.portrait .md-datepicker-date,
-.md-datepicker.portrait .md-datepicker-calendar {
+.mdp-datepicker.portrait .mdp-datepicker-dow,
+.mdp-datepicker.portrait .mdp-datepicker-date,
+.mdp-datepicker.portrait .mdp-datepicker-calendar {
   padding-left: 10px;
   padding-right: 10px;
 }
-.md-datepicker-days {
+.mdp-datepicker-days {
   font-size: 1rem;
   max-width: 100%;
 }
-.md-datepicker-days > * {
+.mdp-datepicker-days > * {
   cursor: pointer;
   border-radius: 50%;
 }
-.md-datepicker-day-marker {
+.mdp-datepicker-day-marker {
   width: 32px;
   height: 32px;
   border-radius: 50%;
