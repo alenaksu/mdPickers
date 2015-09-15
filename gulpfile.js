@@ -8,6 +8,7 @@ var gulp = require('gulp'),
     sourcemaps = require('gulp-sourcemaps'),
     wrap = require('gulp-wrap'),
     concat = require('gulp-concat'),
+    autoprefixer = require('gulp-autoprefixer'),
     path = require('path');
 
 var outputFolder = 'dist/';
@@ -17,6 +18,7 @@ gulp.task('assets', function() {
   return gulp.src('src/components/**/*.less')
         .pipe(concat('mdPickers.less'))
         .pipe(less())
+        .pipe(autoprefixer())
         .pipe(gulp.dest(outputFolder))
         .pipe(rename({suffix: '.min'}))
         .pipe(minify())
@@ -33,6 +35,10 @@ gulp.task('build-app', function() {
         .pipe(uglify())
         .pipe(sourcemaps.write('.'))
         .pipe(gulp.dest(outputFolder));
+});
+
+gulp.task('watch', function() {
+    gulp.watch('src/**/*', ['assets', 'build-app']);
 });
 
 gulp.task('default', ['assets', 'build-app']);

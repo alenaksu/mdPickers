@@ -1,5 +1,5 @@
 
-module.controller('DatePickerCtrl', ['$scope', '$mdDialog', 'currentDate', '$mdMedia', function($scope, $mdDialog, currentDate, $mdMedia) {
+function DatePickerCtrl($scope, $mdDialog, currentDate, $mdMedia) {
     var self = this;
 
     this.currentDate = currentDate;
@@ -49,7 +49,7 @@ module.controller('DatePickerCtrl', ['$scope', '$mdDialog', 'currentDate', '$mdM
         self.currentMoment.subtract(1, 'months');
       	$scope.year = self.currentMoment.year();
     };
-}]);
+}
 
 module.provider("$mdDatePicker", function() {
     var LABEL_OK = "ok",
@@ -68,21 +68,23 @@ module.provider("$mdDatePicker", function() {
             if(!angular.isDate(currentDate)) currentDate = Date.now();
     
             return $mdDialog.show({
-                controller: 'DatePickerCtrl',
+                controller:  ['$scope', '$mdDialog', 'currentDate', '$mdMedia', DatePickerCtrl],
                 controllerAs: 'datepicker',
                 clickOutsideToClose: true,
                 template: '<md-dialog aria-label="" class="mdp-datepicker" ng-class="{ \'portrait\': !$mdMedia(\'gt-md\') }">' +
                             '<md-dialog-content layout="row" layout-wrap>' +
                                 '<div layout="column" layout-align="start center">' +
-                                    '<md-toolbar layout-align="center center" class="mdp-datepicker-dow md-primary"><span>{{ datepicker.currentMoment.format("dddd") }}</span></md-toolbar>' +
-                                    '<md-toolbar layout-align="center center" class="mdp-datepicker-date md-hue-1 md-primary" layout="column">' +
-                                        '<div class="mdp-datepicker-month">{{ datepicker.currentMoment.format("MMM") }}</div>' +
-                                        '<div class="mdp-datepicker-day">{{ datepicker.currentMoment.format("DD") }}</div>' +
+                                    '<md-toolbar layout-align="start start" flex class="mdp-datepicker-date md-hue-1 md-primary" layout="column">' +
                                         '<md-select class="mdp-datepicker-year" placeholder="{{ datepicker.currentMoment.format(\'YYYY\') }}" ng-model="year" ng-change="datepicker.setYear()">' +
                                             '<md-option ng-value="year" ng-repeat="year in yearsOptions">{{ year }}</md-option>' +
                                         '</md-select>' +
+                                        '<div>' +
+                                            '<span class="mdp-datepicker-dow">{{ datepicker.currentMoment.format("ddd") }},</span> ' +
+                                            '<span class="mdp-datepicker-month">{{ datepicker.currentMoment.format("MMM") }}</span> ' +
+                                            '<span class="mdp-datepicker-day">{{ datepicker.currentMoment.format("DD") }}</span>' +
+                                        '</div>' +
                                     '</md-toolbar>' +
-                                '</div>' +
+                                '</div>' + 
                                 '<div layout="column" layout-align="start center" class="mdp-datepicker-calendar">' +
                                     '<div layout="row" layout-align="space-between center" class="mdp-datepicker-monthyear">' +
                                         '<md-button aria-label="previous month" class="md-icon-button" ng-click="datepicker.prevMonth()"><md-icon md-font-set="material-icons"> chevron_left </md-icon></md-button>' +
@@ -93,24 +95,25 @@ module.provider("$mdDatePicker", function() {
                                         '<div layout layout-align="center center" ng-repeat="d in datepicker.weekDays track by $index">{{ d }}</div>' +
                                     '</div>' +
                                     '<div layout="row" layout-wrap class="mdp-datepicker-days">' +
-                                        '<div layout layout-align="center center" ng-repeat-start="n in datepicker.getDaysInMonth() track by $index">' +
+                                        '<div layout layout-align="center center" ng-repeat-start="n in datepicker.getDaysInMonth() track by $index" ng-class="{ \'mdp-day-placeholder\': n === false }">' +
                                             '<md-button class="md-icon-button md-raised" aria-label="seleziona giorno" ng-if="n !== false" ng-class="{\'md-accent\': datepicker.currentMoment.date() == n}" ng-click="datepicker.selectDate(n)">{{ n }}</md-button>' +
                                         '</div>' +
-                                        '<div flex ng-if="($index + 1) % 7 == 0" ng-repeat-end></div>' +
+                                        '<div flex="100" ng-if="($index + 1) % 7 == 0" ng-repeat-end></div>' +
+                                    '</div>' +
+                                    
+                                    '<div class="md-actions" layout-align="end center" layout="row">' +
+                                        '<md-button ng-click="datepicker.cancel()" aria-label="' + LABEL_CANCEL + '">' + LABEL_CANCEL + '</md-button>' +
+                                        '<md-button ng-click="datepicker.confirm()" aria-label="' + LABEL_OK + '">' + LABEL_OK + '</md-button>' +
                                     '</div>' +
                                 '</div>' +
                             '</md-dialog-content>' +
-                            '<div class="md-actions" layout="row">' +
-                                '<md-button ng-click="datepicker.cancel()" aria-label="' + LABEL_CANCEL + '">' + LABEL_CANCEL + '</md-button>' +
-                                '<md-button ng-click="datepicker.confirm()" aria-label="' + LABEL_OK + '">' + LABEL_OK + '</md-button>' +
-                            '</div>' +
                         '</md-dialog>',
                 targetEvent: targetEvent,
                 locals: {
                     currentDate: currentDate
                 }
             });
-        }
+        };
     
         return datePicker;
     }];
@@ -133,5 +136,5 @@ module.directive("mdDatePicker", ["$mdDatePicker", "$timeout", function($mdDateP
                 });
             }
         }
-    }
+    };
 }]);
