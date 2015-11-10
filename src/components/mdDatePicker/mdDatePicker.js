@@ -94,7 +94,7 @@ module.provider("$mdDatePicker", function() {
                                     '</div>' +
                                     '<div layout="row" layout-wrap class="mdp-datepicker-days">' +
                                         '<div layout layout-align="center center" ng-repeat-start="n in datepicker.getDaysInMonth() track by $index">' +
-                                            '<md-button class="md-icon-button md-raised" aria-label="seleziona giorno" ng-if="n !== false" ng-class="{\'md-accent\': datepicker.currentMoment.date() == n}" ng-click="datepicker.selectDate(n)">{{ n }}</md-button>' +
+                                            '<md-button class="md-icon-button md-raised" aria-label="seleziona giorno" ng-if="n !== false" ng-class="{\'md-accent\': datepicker.currentMoment.date() == n}" ng-click="datepicker.selectDate(n)" ng-dblclick="datepicker.confirm()">{{ n }}</md-button>' +
                                         '</div>' +
                                         '<div flex ng-if="($index + 1) % 7 == 0" ng-repeat-end></div>' +
                                     '</div>' +
