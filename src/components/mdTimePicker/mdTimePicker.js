@@ -12,7 +12,7 @@ function TimePickerCtrl($scope, $mdDialog, currentDate, $mdMedia) {
 	};
 }
 
-module.provider("$mdTimePicker", function() {
+module.provider("$mdpTimePicker", function() {
     var LABEL_OK = "ok",
         LABEL_CANCEL = "cancel"; 
         
