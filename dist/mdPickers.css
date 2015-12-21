@@ -54,15 +54,28 @@
   font-weight: bold;
   width: 100%;
 }
-.mdp-datepicker-monthyear .md-button.md-icon-button {
-  height: 36px;
-  line-height: 36px;
-  width: 36px;
-}
+.mdp-datepicker-date,
 .mdp-datepicker-day,
 .mdp-datepicker-dow,
 .mdp-datepicker-month {
   font-size: 1.8rem;
+  opacity: 0.6;
+}
+.mdp-datepicker-date:not(.active),
+.mdp-datepicker-day:not(.active),
+.mdp-datepicker-dow:not(.active),
+.mdp-datepicker-month:not(.active) {
+  cursor: pointer;
+}
+.mdp-datepicker-date.active,
+.mdp-datepicker-day.active,
+.mdp-datepicker-dow.active,
+.mdp-datepicker-month.active,
+.mdp-datepicker-date:hover,
+.mdp-datepicker-day:hover,
+.mdp-datepicker-dow:hover,
+.mdp-datepicker-month:hover {
+  opacity: 1;
 }
 .mdp-datepicker-year {
   font-size: 0.9rem;
@@ -70,19 +83,36 @@
   padding: 0;
   margin: 0;
 }
+.mdp-datepicker-year:not(.active) {
+  cursor: pointer;
+}
+.mdp-datepicker-year.active,
 .mdp-datepicker-year:hover {
   opacity: 1;
 }
-.mdp-datepicker-year .md-select-label {
+.mdp-datepicker-select-year {
+  width: 294px;
+  height: 284px;
+}
+.mdp-datepicker-select-year .repeated-year {
+  text-align: center;
+}
+.mdp-datepicker-select-year .repeated-year .md-button {
+  width: 100%;
+  margin: 0;
+  border-radius: 0;
   padding: 0;
-  color: inherit !important;
+  font-size: 1.0rem;
+  line-height: 36px;
 }
-.mdp-datepicker-year .md-select-value {
-  border: 0 !important;
-  padding-bottom: 0px !important;
+.mdp-datepicker-select-year .repeated-year .md-button.current {
+  font-size: 1.8rem;
+  line-height: 42px;
 }
-.mdp-datepicker-year .md-select-icon {
-  display: none;
+.mdp-datepicker-select-year .md-virtual-repeat-container,
+.mdp-datepicker-select-year .md-virtual-repeat-offsetter,
+.mdp-datepicker-select-year .md-virtual-repeat-scroller {
+  height: 100%;
 }
 .mdp-datepicker-calendar {
   margin-left: 10px;
@@ -90,14 +120,14 @@
 .mdp-datepicker:not(.portrait) .mdp-datepicker-calendar {
   margin-right: 5px;
 }
-.mdp-datepicker:not(.portrait) .mdp-datepicker-date {
+.mdp-datepicker:not(.portrait) .mdp-datepicker-date-wrapper {
   width: 150px;
 }
 .mdp-datepicker:not(.portrait) .mdp-datepicker-dow {
   width: 100%;
   display: block;
 }
-.mdp-datepicker .mdp-datepicker-date {
+.mdp-datepicker .mdp-datepicker-date-wrapper {
   padding: 16px 35px 16px 16px;
 }
 .mdp-datepicker md-dialog-content {
