@@ -55,23 +55,30 @@
 .mdp-datepicker-monthyear {
     font-size: 0.8125rem;
     min-height: 32px;
-}
+} 
 
 .mdp-datepicker-monthyear {
     font-weight: bold;
     width: 100%;
-
-    .md-button.md-icon-button {
-        height: 36px;
-        line-height: 36px;
-        width: 36px;
-    }
 }
 
+
+
+.mdp-datepicker-date,
 .mdp-datepicker-day,
 .mdp-datepicker-dow,
 .mdp-datepicker-month {
     font-size: 1.8rem;
+    opacity: 0.6;
+    
+    &:not(.active) {
+        cursor: pointer;
+    }
+    
+    &.active,
+    &:hover {
+        opacity: 1;
+    }
 }
 
 .mdp-datepicker-year {
@@ -80,23 +87,42 @@
     padding: 0;
     margin: 0;
     
+    &:not(.active) {
+        cursor: pointer;
+    }
+    
+    &.active,
     &:hover {
         opacity: 1;
     }
-    
-    .md-select-label {
-        padding: 0;
-        color: inherit !important;
+}
+
+.mdp-datepicker-select-year {
+    width: 294px;
+    height: 284px;
+    .repeated-year {
+        text-align: center;
+        
+        .md-button {
+            width: 100%;
+            margin: 0;
+            border-radius: 0;
+            padding: 0;
+            font-size: 1.0rem;
+            line-height: 36px;
+            
+            &.current {
+                font-size: 1.8rem;
+                line-height: 42px;
+            }
+        }
     }
     
-    .md-select-value {
-        border: 0 !important;
-        padding-bottom: 0px !important;
-    }
-    
-    .md-select-icon {
-        display: none;
-    }
+    .md-virtual-repeat-container,
+    .md-virtual-repeat-offsetter,
+    .md-virtual-repeat-scroller {
+        height: 100%;
+    } 
 }
 
 .mdp-datepicker-calendar {
@@ -110,7 +136,7 @@
             margin-right: 5px;
         }
         
-        .mdp-datepicker-date {
+        .mdp-datepicker-date-wrapper {
             width: 150px;
         }
         
@@ -120,7 +146,7 @@
         }
     }
     
-    .mdp-datepicker-date {
+    .mdp-datepicker-date-wrapper {
         padding: 16px 35px 16px 16px;
     }
     

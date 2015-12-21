@@ -5,16 +5,39 @@ function DatePickerCtrl($scope, $mdDialog, currentDate, $mdMedia) {
     this.currentDate = currentDate;
     this.currentMoment = moment(self.currentDate);
     this.weekDays = moment.weekdaysMin();
+    this.selectingYear = false;
 
     $scope.$mdMedia = $mdMedia;
-    $scope.yearsOptions = [];
-    for(var i = 1900; i <= (this.currentMoment.year() + 12); i++) {
-        $scope.yearsOptions.push(i);
+    this.yearItems = {
+        currentIndex_: 0,
+        PAGE_SIZE: 7,
+        start_: 1900,
+        getItemAtIndex: function(index) {
+            if(this.currentIndex_ < index)
+                this.currentIndex_ = index;
+            return this.start_ + index;
+        },
+        getLength: function() {
+            return this.currentIndex_ + Math.floor(this.PAGE_SIZE / 2);
+        }
     }
+    
     $scope.year = this.currentMoment.year();
 
-	this.setYear = function() {
-        self.currentMoment.year($scope.year);
+	this.selectYear = function(year) {
+        self.currentMoment.year(year);
+        $scope.year = year;
+        self.selectingYear = false;
+    };
+    
+    this.showYear = function() { 
+        self.yearTopIndex = (self.currentMoment.year() - self.yearItems.start_) + Math.floor(self.yearItems.PAGE_SIZE / 2);
+        self.yearItems.currentIndex_ = (self.currentMoment.year() - self.yearItems.start_) + 1;
+        self.selectingYear = true;
+    };
+    
+    this.showCalendar = function() {
+        self.selectingYear = false;
     };
 
     this.selectDate = function(dom) {
@@ -51,7 +74,7 @@ function DatePickerCtrl($scope, $mdDialog, currentDate, $mdMedia) {
     };
 }
 
-module.provider("$mdDatePicker", function() {
+module.provider("$mdpDatePicker", function() {
     var LABEL_OK = "ok",
         LABEL_CANCEL = "cancel"; 
         
@@ -74,18 +97,19 @@ module.provider("$mdDatePicker", function() {
                 template: '<md-dialog aria-label="" class="mdp-datepicker" ng-class="{ \'portrait\': !$mdMedia(\'gt-md\') }">' +
                             '<md-dialog-content layout="row" layout-wrap>' +
                                 '<div layout="column" layout-align="start center">' +
-                                    '<md-toolbar layout-align="start start" flex class="mdp-datepicker-date md-hue-1 md-primary" layout="column">' +
-                                        '<md-select class="mdp-datepicker-year" placeholder="{{ datepicker.currentMoment.format(\'YYYY\') }}" ng-model="year" ng-change="datepicker.setYear()">' +
-                                            '<md-option ng-value="year" ng-repeat="year in yearsOptions">{{ year }}</md-option>' +
-                                        '</md-select>' +
-                                        '<div>' +
-                                            '<span class="mdp-datepicker-dow">{{ datepicker.currentMoment.format("ddd") }},</span> ' +
-                                            '<span class="mdp-datepicker-month">{{ datepicker.currentMoment.format("MMM") }}</span> ' +
-                                            '<span class="mdp-datepicker-day">{{ datepicker.currentMoment.format("DD") }}</span>' +
+                                    '<md-toolbar layout-align="start start" flex class="mdp-datepicker-date-wrapper md-hue-1 md-primary" layout="column">' +
+                                        '<span class="mdp-datepicker-year" ng-click="datepicker.showYear()" ng-class="{ \'active\': datepicker.selectingYear }">{{ datepicker.currentMoment.format(\'YYYY\') }}</span>' +
+                                        '<span class="mdp-datepicker-date" ng-click="datepicker.showCalendar()" ng-class="{ \'active\': !datepicker.selectingYear }">{{ datepicker.currentMoment.format("ddd, MMM DD") }}</span> ' +
+                                    '</md-toolbar>' + 
+                                '</div>' +  
+                                '<div class="mdp-datepicker-select-year" layout="column" ng-if="datepicker.selectingYear">' +
+                                    '<md-virtual-repeat-container md-auto-shrink md-top-index="datepicker.yearTopIndex">' +
+                                        '<div flex md-virtual-repeat="item in datepicker.yearItems" md-on-demand class="repeated-year">' +
+                                            '<span class="md-button" ng-click="datepicker.selectYear(item)" md-ink-ripple ng-class="{ \'current\': item == year }">{{ item }}</span>' +
                                         '</div>' +
-                                    '</md-toolbar>' +
-                                '</div>' + 
-                                '<div layout="column" layout-align="start center" class="mdp-datepicker-calendar">' +
+                                    '</md-virtual-repeat-container>' +
+                                '</div>' +
+                                '<div layout="column" layout-align="start center" class="mdp-datepicker-calendar" ng-if="!datepicker.selectingYear">' +
                                     '<div layout="row" layout-align="space-between center" class="mdp-datepicker-monthyear">' +
                                         '<md-button aria-label="previous month" class="md-icon-button" ng-click="datepicker.prevMonth()"><md-icon md-font-set="material-icons"> chevron_left </md-icon></md-button>' +
                                         '{{ datepicker.currentMoment.format("MMMM YYYY") }}' +
