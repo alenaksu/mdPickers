@@ -4,30 +4,59 @@
 	width: @clock-size;
     height: @clock-size;
     border-radius: 50%;
+    
+    padding: 24px;
+    background: #ededed;
 	
 	.md-button {
 		box-shadow: none !important;
     	background-color: transparent;
 		display: block;
 		position: absolute;
-		top: 50%; 
-		left: 50%;
 		
+        min-height: 32px;
 		width: 32px;
         height: 32px;
 		
 		font-size: 12px;
 		line-height: 32px;
+        margin: 0;
+        padding: 0;
+        
+        transform: translate(-50%, -50%);
 	}
+    
+    .mdp-timepicker-clock-container {
+        width: 100%;
+        height: 100%;
+        position: relative;
+    }
+}
+
+.mdp-timepicker-selected-time > span,
+.mdp-timepicker-selected-ampm > span {
+    opacity: 0.8;
+    
+    &.active {
+        opacity: 1;    
+    }
 }
 
 .generate-degree-classes(30);
 
 .generate-degree-classes(@step, @i: 0) when (@i <= 360) {
+    @degree: (270 + @i) - (floor((270 + @i) / 360) * 360);
+    .mdp-timepicker-clock-deg@{i} {
+        top: ((1 + sin(@degree * 1deg)) * 100%) / 2;
+        left: ((1 + cos(@degree * 1deg)) * 100%) / 2;
+	}
+     
+    /*
 	@degree: (270 + @i) - (floor((270 + @i) / 360) * 360);
 	@translate:  (@clock-size / 2) * pow(-1, mod(@i, 180));
 	.mdp-timepicker-clock-deg@{i} {
 		transform: rotate(@degree * (1deg)) translate(@translate) rotate(@degree * (-1deg)); 
 	}
+    */
 	.generate-degree-classes(@step, @i+@step);    // next iteration
 }
