@@ -1,3 +1,17 @@
+### 0.5.0
+
+#### Breaking Changes
+
+* Service `$mdDatePicker` is changed to `$mdpDatePicker` 
+* Directive `mdDatePicker` is changed to `mdpDatePicker` 
+
+#### Features
+
+* Time picker
+* Dynamic year selector on date picker
+* Animations
+* Minor improvements 
+
 ### 0.3.2
 
 #### Bugfixes
