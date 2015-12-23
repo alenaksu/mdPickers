@@ -85,6 +85,8 @@ module.provider("$mdpDatePicker", function () {
 
     this.$get = ["$mdDialog", function ($mdDialog) {
         var datePicker = function (targetEvent, currentDate, minDate, maxDate) {
+            console.log(minDate);
+            console.log(maxDate);
             if (!angular.isDate(currentDate)) currentDate = Date.now();
 
             return $mdDialog.show({
