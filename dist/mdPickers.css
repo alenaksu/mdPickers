@@ -1,182 +1,77 @@
-.mdp-timepicker-clock {
-  width: 180px;
-  height: 180px;
-  border-radius: 50%;
-  padding: 24px;
-  background: #ededed;
+.mdp-animate-next {
+  opacity: 0;
+  -webkit-transform: translate3d(50%, 0, 1px);
+          transform: translate3d(50%, 0, 1px);
 }
-.mdp-timepicker-clock .md-button {
-  box-shadow: none !important;
-  background-color: transparent;
-  display: block;
-  position: absolute;
-  min-height: 32px;
-  width: 32px;
-  height: 32px;
-  font-size: 12px;
-  line-height: 32px;
-  margin: 0;
-  padding: 0;
-  -webkit-transform: translate(-50%, -50%);
-      -ms-transform: translate(-50%, -50%);
-          transform: translate(-50%, -50%);
+.mdp-animate-next-remove {
+  -webkit-transition: all 0.5s cubic-bezier(0.35, 0, 0.25, 1);
+          transition: all 0.5s cubic-bezier(0.35, 0, 0.25, 1);
+  opacity: 0;
+  -webkit-transform: translate3d(50%, 0, 1px);
+          transform: translate3d(50%, 0, 1px);
 }
-.mdp-timepicker-clock .mdp-timepicker-clock-container {
-  width: 100%;
-  height: 100%;
-  position: relative;
-}
-.mdp-timepicker-selected-time > span,
-.mdp-timepicker-selected-ampm > span {
-  opacity: 0.8;
-}
-.mdp-timepicker-selected-time > span.active,
-.mdp-timepicker-selected-ampm > span.active {
+.mdp-animate-next-remove-active {
   opacity: 1;
+  -webkit-transform: translate3d(0, 0, 1px);
+          transform: translate3d(0, 0, 1px);
 }
-.mdp-timepicker-clock-deg0 {
-  top: 0%;
-  left: 50%;
+.mdp-animate-prev {
+  opacity: 0;
+  -webkit-transform: translate3d(-50%, 0, 1px);
+          transform: translate3d(-50%, 0, 1px);
 }
-/*
-	@degree: (270 + @i) - (floor((270 + @i) / 360) * 360);
-	@translate:  (@clock-size / 2) * pow(-1, mod(@i, 180));
-	.mdp-timepicker-clock-deg@{i} {
-		transform: rotate(@degree * (1deg)) translate(@translate) rotate(@degree * (-1deg)); 
-	}
-    */
-.mdp-timepicker-clock-deg30 {
-  top: 6.69872981%;
-  left: 75%;
+.mdp-animate-prev-remove {
+  -webkit-transition: all 0.3s cubic-bezier(0.35, 0, 0.25, 1);
+          transition: all 0.3s cubic-bezier(0.35, 0, 0.25, 1);
+  opacity: 0;
+  -webkit-transform: translate3d(-50%, 0, 1px);
+          transform: translate3d(-50%, 0, 1px);
 }
-/*
-	@degree: (270 + @i) - (floor((270 + @i) / 360) * 360);
-	@translate:  (@clock-size / 2) * pow(-1, mod(@i, 180));
-	.mdp-timepicker-clock-deg@{i} {
-		transform: rotate(@degree * (1deg)) translate(@translate) rotate(@degree * (-1deg)); 
-	}
-    */
-.mdp-timepicker-clock-deg60 {
-  top: 25%;
-  left: 93.30127019%;
+.mdp-animate-prev-remove-active {
+  opacity: 1;
+  -webkit-transform: translate3d(0, 0, 1px);
+          transform: translate3d(0, 0, 1px);
 }
-/*
-	@degree: (270 + @i) - (floor((270 + @i) / 360) * 360);
-	@translate:  (@clock-size / 2) * pow(-1, mod(@i, 180));
-	.mdp-timepicker-clock-deg@{i} {
-		transform: rotate(@degree * (1deg)) translate(@translate) rotate(@degree * (-1deg)); 
-	}
-    */
-.mdp-timepicker-clock-deg90 {
-  top: 50%;
-  left: 100%;
+@-webkit-keyframes mdp-animation-bounce {
+  from {
+    opacity: 0;
+    -webkit-transform: scale(0.9);
+            transform: scale(0.9);
+  }
+  70% {
+    opacity: 1;
+    -webkit-transform: scale(1.05);
+            transform: scale(1.05);
+  }
+  to {
+    -webkit-transform: scale(1);
+            transform: scale(1);
+  }
 }
-/*
-	@degree: (270 + @i) - (floor((270 + @i) / 360) * 360);
-	@translate:  (@clock-size / 2) * pow(-1, mod(@i, 180));
-	.mdp-timepicker-clock-deg@{i} {
-		transform: rotate(@degree * (1deg)) translate(@translate) rotate(@degree * (-1deg)); 
-	}
-    */
-.mdp-timepicker-clock-deg120 {
-  top: 75%;
-  left: 93.30127019%;
+@keyframes mdp-animation-bounce {
+  from {
+    opacity: 0;
+    -webkit-transform: scale(0.9);
+            transform: scale(0.9);
+  }
+  70% {
+    opacity: 1;
+    -webkit-transform: scale(1.05);
+            transform: scale(1.05);
+  }
+  to {
+    -webkit-transform: scale(1);
+            transform: scale(1);
+  }
 }
-/*
-	@degree: (270 + @i) - (floor((270 + @i) / 360) * 360);
-	@translate:  (@clock-size / 2) * pow(-1, mod(@i, 180));
-	.mdp-timepicker-clock-deg@{i} {
-		transform: rotate(@degree * (1deg)) translate(@translate) rotate(@degree * (-1deg)); 
-	}
-    */
-.mdp-timepicker-clock-deg150 {
-  top: 93.30127019%;
-  left: 75%;
+.mdp-animation-zoom.ng-enter {
+  -webkit-transition: all 0.3s cubic-bezier(0.35, 0, 0.25, 1);
+          transition: all 0.3s cubic-bezier(0.35, 0, 0.25, 1);
+  -webkit-animation-duration: 0.3s;
+          animation-duration: 0.3s;
+  -webkit-animation-name: mdp-animation-bounce;
+          animation-name: mdp-animation-bounce;
 }
-/*
-	@degree: (270 + @i) - (floor((270 + @i) / 360) * 360);
-	@translate:  (@clock-size / 2) * pow(-1, mod(@i, 180));
-	.mdp-timepicker-clock-deg@{i} {
-		transform: rotate(@degree * (1deg)) translate(@translate) rotate(@degree * (-1deg)); 
-	}
-    */
-.mdp-timepicker-clock-deg180 {
-  top: 100%;
-  left: 50%;
-}
-/*
-	@degree: (270 + @i) - (floor((270 + @i) / 360) * 360);
-	@translate:  (@clock-size / 2) * pow(-1, mod(@i, 180));
-	.mdp-timepicker-clock-deg@{i} {
-		transform: rotate(@degree * (1deg)) translate(@translate) rotate(@degree * (-1deg)); 
-	}
-    */
-.mdp-timepicker-clock-deg210 {
-  top: 93.30127019%;
-  left: 25%;
-}
-/*
-	@degree: (270 + @i) - (floor((270 + @i) / 360) * 360);
-	@translate:  (@clock-size / 2) * pow(-1, mod(@i, 180));
-	.mdp-timepicker-clock-deg@{i} {
-		transform: rotate(@degree * (1deg)) translate(@translate) rotate(@degree * (-1deg)); 
-	}
-    */
-.mdp-timepicker-clock-deg240 {
-  top: 75%;
-  left: 6.69872981%;
-}
-/*
-	@degree: (270 + @i) - (floor((270 + @i) / 360) * 360);
-	@translate:  (@clock-size / 2) * pow(-1, mod(@i, 180));
-	.mdp-timepicker-clock-deg@{i} {
-		transform: rotate(@degree * (1deg)) translate(@translate) rotate(@degree * (-1deg)); 
-	}
-    */
-.mdp-timepicker-clock-deg270 {
-  top: 50%;
-  left: 0%;
-}
-/*
-	@degree: (270 + @i) - (floor((270 + @i) / 360) * 360);
-	@translate:  (@clock-size / 2) * pow(-1, mod(@i, 180));
-	.mdp-timepicker-clock-deg@{i} {
-		transform: rotate(@degree * (1deg)) translate(@translate) rotate(@degree * (-1deg)); 
-	}
-    */
-.mdp-timepicker-clock-deg300 {
-  top: 25%;
-  left: 6.69872981%;
-}
-/*
-	@degree: (270 + @i) - (floor((270 + @i) / 360) * 360);
-	@translate:  (@clock-size / 2) * pow(-1, mod(@i, 180));
-	.mdp-timepicker-clock-deg@{i} {
-		transform: rotate(@degree * (1deg)) translate(@translate) rotate(@degree * (-1deg)); 
-	}
-    */
-.mdp-timepicker-clock-deg330 {
-  top: 6.69872981%;
-  left: 25%;
-}
-/*
-	@degree: (270 + @i) - (floor((270 + @i) / 360) * 360);
-	@translate:  (@clock-size / 2) * pow(-1, mod(@i, 180));
-	.mdp-timepicker-clock-deg@{i} {
-		transform: rotate(@degree * (1deg)) translate(@translate) rotate(@degree * (-1deg)); 
-	}
-    */
-.mdp-timepicker-clock-deg360 {
-  top: 0%;
-  left: 50%;
-}
-/*
-	@degree: (270 + @i) - (floor((270 + @i) / 360) * 360);
-	@translate:  (@clock-size / 2) * pow(-1, mod(@i, 180));
-	.mdp-timepicker-clock-deg@{i} {
-		transform: rotate(@degree * (1deg)) translate(@translate) rotate(@degree * (-1deg)); 
-	}
-    */
 .mdp-datepicker {
   max-height: initial;
 }
@@ -358,77 +253,149 @@ mdp-calendar {
 .mdp-calendar-days .mdp-day-placeholder {
   margin: 0;
 }
-.mdp-animate-next {
-  opacity: 0;
-  -webkit-transform: translate3d(50%, 0, 1px);
-          transform: translate3d(50%, 0, 1px);
+.mdp-clock {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  padding: 24px;
+  background: #ededed;
 }
-.mdp-animate-next-remove {
-  -webkit-transition: all 0.5s cubic-bezier(0.35, 0, 0.25, 1);
-          transition: all 0.5s cubic-bezier(0.35, 0, 0.25, 1);
-  opacity: 0;
-  -webkit-transform: translate3d(50%, 0, 1px);
-          transform: translate3d(50%, 0, 1px);
+.mdp-clock .md-button {
+  box-shadow: none !important;
+  background-color: transparent;
+  display: block;
+  position: absolute;
+  min-height: 32px;
+  width: 32px;
+  height: 32px;
+  font-size: 12px;
+  line-height: 32px;
+  margin: 0;
+  padding: 0;
+  -webkit-transform: translate(-50%, -50%);
+      -ms-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
 }
-.mdp-animate-next-remove-active {
+.mdp-clock .mdp-clock-container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: block;
+}
+.mdp-clock .mdp-pointer {
+  min-height: 0px;
+  width: 1px;
+  height: 50%;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: 0 auto;
+  -webkit-transform-origin: top center;
+      -ms-transform-origin: top center;
+          transform-origin: top center;
+  z-index: 0;
+  pointer-events: none;
+}
+.mdp-clock .mdp-clock-center {
+  min-height: 0px;
+  height: 6px;
+  width: 6px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  border-radius: 50%;
+}
+.mdp-clock .md-button.mdp-clock-selected {
+  position: absolute;
+  border-radius: 50%;
+  width: 8px;
+  height: 8px;
+  bottom: -8px;
+  left: 0px;
+  min-width: 0;
+  min-height: 0;
+  pointer-events: none;
+}
+.mdp-timepicker .mdp-clock-switch-container {
+  padding: 20px;
+  width: 309px;
+}
+.mdp-timepicker .mdp-timepicker-time {
+  padding: 15px;
+}
+.mdp-timepicker .mdp-timepicker-selected-time {
+  font-size: 3rem;
+}
+.mdp-timepicker.portrait .mdp-timepicker-selected-time {
+  font-size: 4rem;
+  margin-right: 1.5rem;
+}
+.mdp-timepicker-selected-time > span,
+.mdp-timepicker-selected-ampm > span {
+  outline: 0;
+  opacity: 0.6;
+}
+.mdp-timepicker-selected-time > span:not(.active),
+.mdp-timepicker-selected-ampm > span:not(.active) {
+  cursor: pointer;
+}
+.mdp-timepicker-selected-time > span.active,
+.mdp-timepicker-selected-ampm > span.active {
   opacity: 1;
-  -webkit-transform: translate3d(0, 0, 1px);
-          transform: translate3d(0, 0, 1px);
 }
-.mdp-animate-prev {
-  opacity: 0;
-  -webkit-transform: translate3d(-50%, 0, 1px);
-          transform: translate3d(-50%, 0, 1px);
+.mdp-clock-deg0 {
+  top: 0%;
+  left: 50%;
 }
-.mdp-animate-prev-remove {
-  -webkit-transition: all 0.3s cubic-bezier(0.35, 0, 0.25, 1);
-          transition: all 0.3s cubic-bezier(0.35, 0, 0.25, 1);
-  opacity: 0;
-  -webkit-transform: translate3d(-50%, 0, 1px);
-          transform: translate3d(-50%, 0, 1px);
+.mdp-clock-deg30 {
+  top: 6.69872981%;
+  left: 75%;
 }
-.mdp-animate-prev-remove-active {
-  opacity: 1;
-  -webkit-transform: translate3d(0, 0, 1px);
-          transform: translate3d(0, 0, 1px);
+.mdp-clock-deg60 {
+  top: 25%;
+  left: 93.30127019%;
 }
-@-webkit-keyframes mdp-animation-bounce {
-  from {
-    opacity: 0;
-    -webkit-transform: scale(0.9);
-            transform: scale(0.9);
-  }
-  70% {
-    opacity: 1;
-    -webkit-transform: scale(1.05);
-            transform: scale(1.05);
-  }
-  to {
-    -webkit-transform: scale(1);
-            transform: scale(1);
-  }
+.mdp-clock-deg90 {
+  top: 50%;
+  left: 100%;
 }
-@keyframes mdp-animation-bounce {
-  from {
-    opacity: 0;
-    -webkit-transform: scale(0.9);
-            transform: scale(0.9);
-  }
-  70% {
-    opacity: 1;
-    -webkit-transform: scale(1.05);
-            transform: scale(1.05);
-  }
-  to {
-    -webkit-transform: scale(1);
-            transform: scale(1);
-  }
+.mdp-clock-deg120 {
+  top: 75%;
+  left: 93.30127019%;
 }
-.mdp-animation-zoom.ng-enter {
-  -webkit-transition: all 0.3s cubic-bezier(0.35, 0, 0.25, 1);
-          transition: all 0.3s cubic-bezier(0.35, 0, 0.25, 1);
-  -webkit-animation-duration: 0.3s;
-          animation-duration: 0.3s;
-  -webkit-animation-name: mdp-animation-bounce;
-          animation-name: mdp-animation-bounce;
+.mdp-clock-deg150 {
+  top: 93.30127019%;
+  left: 75%;
+}
+.mdp-clock-deg180 {
+  top: 100%;
+  left: 50%;
+}
+.mdp-clock-deg210 {
+  top: 93.30127019%;
+  left: 25%;
+}
+.mdp-clock-deg240 {
+  top: 75%;
+  left: 6.69872981%;
+}
+.mdp-clock-deg270 {
+  top: 50%;
+  left: 0%;
+}
+.mdp-clock-deg300 {
+  top: 25%;
+  left: 6.69872981%;
+}
+.mdp-clock-deg330 {
+  top: 6.69872981%;
+  left: 25%;
+}
+.mdp-clock-deg360 {
+  top: 0%;
+  left: 50%;
 }
