@@ -208,18 +208,16 @@ module.provider("$mdpTimePicker", function() {
                 clickOutsideToClose: true,
                 template: '<md-dialog aria-label="" class="mdp-timepicker" ng-class="{ \'portrait\': !$mdMedia(\'gt-xs\') }">' +
                             '<md-dialog-content layout-gt-xs="row" layout-wrap>' +
-                                '<div layout="column" layout-align="start center">' +
-                                    '<md-toolbar layout-gt-xs="column" layout-xs="row" layout-align="center center" flex class="mdp-timepicker-time md-hue-1 md-primary">' +
-                                        '<div class="mdp-timepicker-selected-time">' +
-											'<span ng-class="{ \'active\': timepicker.currentView == timepicker.VIEW_HOURS }" ng-click="timepicker.currentView = timepicker.VIEW_HOURS">{{ timepicker.currentMoment.format("h") }}</span>:' + 
-                                            '<span ng-class="{ \'active\': timepicker.currentView == timepicker.VIEW_MINUTES }" ng-click="timepicker.currentView = timepicker.VIEW_MINUTES">{{ timepicker.currentMoment.format("mm") }}</span>' +
-										'</div>' +
-										'<div layout="column" class="mdp-timepicker-selected-ampm">' + 
-											'<span ng-click="timepicker.setAM()" ng-class="{ \'active\': timepicker.currentMoment.format(\'A\') == \'AM\' }">AM</span>' +
-											'<span ng-click="timepicker.setPM()" ng-class="{ \'active\': timepicker.currentMoment.format(\'A\') == \'PM\' }">PM</span>' +
-										'</div>' + 
-                                    '</md-toolbar>' +
-                                '</div>' +  
+                                '<md-toolbar layout-gt-xs="column" layout-xs="row" layout-align="center center" flex class="mdp-timepicker-time md-hue-1 md-primary">' +
+                                    '<div class="mdp-timepicker-selected-time">' +
+                                        '<span ng-class="{ \'active\': timepicker.currentView == timepicker.VIEW_HOURS }" ng-click="timepicker.currentView = timepicker.VIEW_HOURS">{{ timepicker.currentMoment.format("h") }}</span>:' + 
+                                        '<span ng-class="{ \'active\': timepicker.currentView == timepicker.VIEW_MINUTES }" ng-click="timepicker.currentView = timepicker.VIEW_MINUTES">{{ timepicker.currentMoment.format("mm") }}</span>' +
+                                    '</div>' +
+                                    '<div layout="column" class="mdp-timepicker-selected-ampm">' + 
+                                        '<span ng-click="timepicker.setAM()" ng-class="{ \'active\': timepicker.currentMoment.format(\'A\') == \'AM\' }">AM</span>' +
+                                        '<span ng-click="timepicker.setPM()" ng-class="{ \'active\': timepicker.currentMoment.format(\'A\') == \'PM\' }">PM</span>' +
+                                    '</div>' + 
+                                '</md-toolbar>' +
                                 '<div>' +
                                     '<div class="mdp-clock-switch-container" ng-switch="timepicker.currentView" layout layout-align="center center">' +
 									   '<mdp-clock class="mdp-animation-zoom" ng-model="timepicker.clockHours" type="hours" ng-switch-when="1"></mdp-clock>' +
