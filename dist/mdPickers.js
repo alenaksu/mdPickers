@@ -255,7 +255,9 @@ function DatePickerCtrl($scope, $mdDialog, currentDate, minDate, maxDate, $mdMed
 
     this.currentDate = currentDate;
     this.minDate = (minDate) ? moment(minDate).subtract(1, 'days') : undefined;
+    console.log(minDate);
     this.maxDate = (maxDate) ? moment(maxDate).add(1, 'days') : undefined;
+    console.log(maxDate);
     this.currentMoment = moment(self.currentDate);
     this.selectingYear = false;
 
