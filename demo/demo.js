@@ -7,7 +7,7 @@
   ]); 
   module.controller("MainCtrl", ['$scope', '$mdpDatePicker', '$mdpTimePicker', function($scope, $mdpDatePicker, $mdpTimePicker){
   	this.showDatePicker = function(ev) {
-    	$mdpDatePicker(ev, $scope.currentDate, new Date(2015,12,1), new Date(2015,12,24)).then(function(selectedDate) {
+    	$mdpDatePicker(ev, $scope.currentDate, new Date(2015,11,1), new Date(2015,11,24)).then(function(selectedDate) {
         $scope.currentDate = selectedDate;
       });;
     }  
