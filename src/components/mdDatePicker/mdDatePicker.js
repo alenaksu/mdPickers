@@ -77,7 +77,7 @@ module.provider("$mdpDatePicker", function() {
                 controller:  ['$scope', '$mdDialog', 'currentDate', '$mdMedia', '$timeout', DatePickerCtrl],
                 controllerAs: 'datepicker',
                 clickOutsideToClose: true,
-                template: '<md-dialog aria-label="" class="mdp-datepicker" ng-class="{ \'portrait\': !$mdMedia(\'gt-md\') }">' +
+                template: '<md-dialog aria-label="" class="mdp-datepicker" ng-class="{ \'portrait\': !$mdMedia(\'gt-xs\') }">' +
                             '<md-dialog-content layout="row" layout-wrap>' +
                                 '<div layout="column" layout-align="start center">' +
                                     '<md-toolbar layout-align="start start" flex class="mdp-datepicker-date-wrapper md-hue-1 md-primary" layout="column">' +
@@ -154,27 +154,30 @@ module.directive("mdpCalendar", ["$animate", function($animate) {
         template: '<div class="mdp-calendar">' +
                     '<div layout="row" layout-align="space-between center">' +
                         '<md-button aria-label="previous month" class="md-icon-button" ng-click="calendar.prevMonth()"><md-icon md-font-set="material-icons"> chevron_left </md-icon></md-button>' +
-                        '<mdp-calendar-monthyear class="mdp-calendar-monthyear" ng-show="!calendar.animating">{{ calendar.currentMoment.format("MMMM YYYY") }}</mdp-calendar-monthyear>' +
+                        '<div class="mdp-calendar-monthyear" ng-show="!calendar.animating">{{ calendar.currentMoment.format("MMMM YYYY") }}</div>' +
                         '<md-button aria-label="next month" class="md-icon-button" ng-click="calendar.nextMonth()"><md-icon md-font-set="material-icons"> chevron_right </md-icon></md-button>' +
                     '</div>' +
-                    '<mdp-calendar-week-days layout="row" layout-align="space-around center" class="mdp-calendar-week-days" ng-show="!calendar.animating">' +
+                    '<div layout="row" layout-align="space-around center" class="mdp-calendar-week-days" ng-show="!calendar.animating">' +
                         '<div layout layout-align="center center" ng-repeat="d in calendar.weekDays track by $index">{{ d }}</div>' +
-                    '</mdp-calendar-week-days>' +
-                    '<mdp-calendar-days layout="row" layout-wrap class="mdp-calendar-days" ng-class="{ \'mdp-animate-next\': calendar.animating }" ng-show="!calendar.animating">' +
+                    '</div>' +
+                    '<div layout="row" layout-wrap class="mdp-calendar-days" ng-class="{ \'mdp-animate-next\': calendar.animating }" ng-show="!calendar.animating">' +
                         '<div layout layout-align="center center" ng-repeat-start="n in calendar.getDaysInMonth() track by $index" ng-class="{ \'mdp-day-placeholder\': n === false }">' +
                             '<md-button class="md-icon-button md-raised" aria-label="seleziona giorno" ng-if="n !== false" ng-class="{\'md-accent\': calendar.currentMoment.date() == n}" ng-click="calendar.selectDate(n)">{{ n }}</md-button>' +
                         '</div>' +
                         '<div flex="100" ng-if="($index + 1) % 7 == 0" ng-repeat-end></div>' +
-                    '</mdp-calendar-days>' +
+                    '</div>' +
                 '</div>',
         controller: ["$scope", CalendarCtrl],
         controllerAs: "calendar",
         link: function(scope, element, attrs, ctrl) {
             var animElements = [
-                element.find("mdp-calendar-week-days"),
-                element.find('mdp-calendar-days'),
-                element.find('mdp-calendar-monthyear')
+                element[0].querySelector(".mdp-calendar-week-days"),
+                element[0].querySelector('.mdp-calendar-days'),
+                element[0].querySelector('.mdp-calendar-monthyear')
             ];
+            animElements = animElements.map(function(a) {
+               return angular.element(a); 
+            });
                 
             ctrl.init(scope.date);
             
