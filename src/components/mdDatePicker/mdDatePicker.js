@@ -8,7 +8,8 @@ function DatePickerCtrl($scope, $mdDialog, currentDate, minDate, maxDate, $mdMed
     this.maxDate = (maxDate) ? moment(maxDate).add(1, 'days') : undefined;
     this.currentMoment = moment(self.currentDate);
     this.selectingYear = false;
-
+    console.log(minDate);
+    console.log(maxDate);
     $scope.$mdMedia = $mdMedia;
     this.yearItems = {
         currentIndex_: 0,
