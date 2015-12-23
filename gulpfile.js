@@ -15,7 +15,7 @@ var outputFolder = 'dist/';
 var moduleName = 'mdPickers';
 
 gulp.task('assets', function() {
-  return gulp.src('src/components/**/*.less')
+  return gulp.src(['src/core/**/*.less', 'src/components/**/*.less'])
         .pipe(concat('mdPickers.less'))
         .pipe(less())
         .pipe(autoprefixer())
@@ -26,7 +26,7 @@ gulp.task('assets', function() {
 });
 
 gulp.task('build-app', function() {  
-    return gulp.src(['src/mdPickers.js', 'src/components/**/*.js'])
+    return gulp.src(['src/mdPickers.js', 'src/core/**/*.js', 'src/components/**/*.js'])
         .pipe(concat('mdPickers.js'))
         .pipe(wrap('(function() {\n"use strict";\n<%= contents %>\n})();'))
         .pipe(sourcemaps.init())
