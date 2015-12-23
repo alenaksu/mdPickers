@@ -63,18 +63,6 @@ function DatePickerCtrl($scope, $mdDialog, currentDate, minDate, maxDate, $mdMed
             self.animating = false;
         })
     };
-    this.isDisabled = function (day) {
-        console.log('joder ' + day);
-        var testMoment = moment(this.currentMoment);
-        testMoment.date(day);
-        if (this.minDate && this.maxDate) {
-            if (this.minDate.isBefore(testMoment, 'day') && this.maxDate.isAfter(testMoment, 'day')) {
-                return false;
-            }
-            return true;
-        }
-        return false;
-    };
 }
 
 module.provider("$mdpDatePicker", function () {
@@ -91,8 +79,7 @@ module.provider("$mdpDatePicker", function () {
 
     this.$get = ["$mdDialog", function ($mdDialog) {
         var datePicker = function (targetEvent, currentDate, minDate, maxDate) {
-            console.log('entro aca min date' + minDate);
-            console.log('entro aca max date' + maxDate);
+         
             if (!angular.isDate(currentDate)) currentDate = Date.now();
 
             return $mdDialog.show({
@@ -170,13 +157,9 @@ function CalendarCtrl($scope) {
         self.currentMoment = date;
         self.minDate = min;
         self.maxDate = max;
-
-        console.log('Inside');
-        console.log(min);
-        console.log(max);
     };
     this.isDisabled = function (day) {
-        console.log('joder ' + day);
+        
         var testMoment = moment(this.currentMoment);
         testMoment.date(day);
         if (this.minDate && this.maxDate) {
@@ -208,7 +191,12 @@ module.directive("mdpCalendar", ["$animate", function ($animate) {
         '</div>' +
         '<div layout="row" layout-wrap class="mdp-calendar-days" ng-class="{ \'mdp-animate-next\': calendar.animating }" ng-show="!calendar.animating">' +
         '<div layout layout-align="center center" ng-repeat-start="n in calendar.getDaysInMonth() track by $index" ng-class="{ \'mdp-day-placeholder\': n === false }">' +
-        '<md-button class="md-icon-button md-raised" aria-label="seleziona giorno" ng-if="n !== false" ng-disabled="calendar.isDisabled(n)" ng-class="{\'md-accent\': calendar.currentMoment.date() == n}" ng-click="calendar.selectDate(n)">{{ n }}</md-button>' +
+        '<div ng-if="calendar.isDisabled(n)">' +
+        '<md-button class="md-icon-button " disabled aria-label="seleziona giorno" ng-if="n !== false" ng-class="{\'md-accent\': calendar.currentMoment.date() == n}" ng-click="calendar.selectDate(n)">{{ n }}</md-button>' +
+        '</div>' +
+        '<div ng-if="!calendar.isDisabled(n)">' +
+        '<md-button class="md-icon-button md-raised" aria-label="seleziona giorno" ng-if="n !== false" ng-class="{\'md-accent\': calendar.currentMoment.date() == n}" ng-click="calendar.selectDate(n)">{{ n }}</md-button>' +
+        '</div>' +
         '</div>' +
         '<div flex="100" ng-if="($index + 1) % 7 == 0" ng-repeat-end></div>' +
         '</div>' +
