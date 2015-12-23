@@ -8,8 +8,6 @@ function DatePickerCtrl($scope, $mdDialog, currentDate, minDate, maxDate, $mdMed
     this.maxDate = (maxDate) ? moment(maxDate).add(1, 'days') : undefined;
     this.currentMoment = moment(self.currentDate);
     this.selectingYear = false;
-    console.log(minDate);
-    console.log(maxDate);
     $scope.$mdMedia = $mdMedia;
     this.yearItems = {
         currentIndex_: 0,
@@ -59,6 +57,7 @@ function DatePickerCtrl($scope, $mdDialog, currentDate, minDate, maxDate, $mdMed
         })
     };
     this.isDisabled = function (day) {
+        console.log('joder '+ day);
         var testMoment = moment(this.currentMoment);
         testMoment.date(day);
         if (this.minDate && this.maxDate) {
@@ -85,8 +84,8 @@ module.provider("$mdpDatePicker", function () {
 
     this.$get = ["$mdDialog", function ($mdDialog) {
         var datePicker = function (targetEvent, currentDate, minDate, maxDate) {
-            console.log(minDate);
-            console.log(maxDate);
+            console.log('entro aca min date' + minDate);
+            console.log('entro aca max date' + maxDate);
             if (!angular.isDate(currentDate)) currentDate = Date.now();
 
             return $mdDialog.show({
