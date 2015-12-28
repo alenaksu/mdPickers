@@ -182,9 +182,9 @@ module.directive("mdpCalendar", ["$animate", function ($animate) {
         },
         template: '<div class="mdp-calendar">' +
         '<div layout="row" layout-align="space-between center">' +
-        '<md-button aria-label="previous month" class="md-icon-button" ng-click="calendar.prevMonth()"><md-icon md-font-set="material-icons"> chevron_left </md-icon></md-button>' +
+        '<md-button aria-label="previous month" class="md-icon-button" ng-click="calendar.prevMonth()"><md-icon md-font-set="zmdi zmdi-chevron-left zmdi-hc-lg"> </md-icon></md-button>' +
         '<div class="mdp-calendar-monthyear" ng-show="!calendar.animating">{{ calendar.currentMoment.format("MMMM YYYY") }}</div>' +
-        '<md-button aria-label="next month" class="md-icon-button" ng-click="calendar.nextMonth()"><md-icon md-font-set="material-icons"> chevron_right </md-icon></md-button>' +
+        '<md-button aria-label="next month" class="md-icon-button" ng-click="calendar.nextMonth()"><md-icon md-font-set="zmdi zmdi-chevron-right zmdi-hc-lg">  </md-icon></md-button>' +
         '</div>' +
         '<div layout="row" layout-align="space-around center" class="mdp-calendar-week-days" ng-show="!calendar.animating">' +
         '<div layout layout-align="center center" ng-repeat="d in calendar.weekDays track by $index">{{ d }}</div>' +
