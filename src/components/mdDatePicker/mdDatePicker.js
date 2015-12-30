@@ -155,10 +155,11 @@ function CalendarCtrl($scope) {
         
         var testMoment = moment(this.currentMoment);
         testMoment.date(day);
-        if (this.minDate && this.maxDate) {
-            if (this.minDate.isBefore(testMoment, 'day') && this.maxDate.isAfter(testMoment, 'day')) {
-                return false;
-            }
+        if (this.minDate && testMoment.isBefore(this.minDate, 'day')) {
+            return true;
+        }
+
+        if (this.maxDate && testMoment.isAfter(this.maxDate, 'day')) {
             return true;
         }
         return false;
