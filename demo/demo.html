@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html ng-app="app" ng-strict-di>
+
+<head>
+
+    <link rel="stylesheet" href="https://cdn.rawgit.com/angular/bower-material/v1.0.1/angular-material.min.css">
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:400,700">
+   <!--<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css">
+
+    <link rel="stylesheet" href="../dist/mdPickers.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.3/moment.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angular_material/1.0.0/angular-material.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-animate.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-aria.min.js"></script>
+    <script src="../dist/mdPickers.js"></script>
+    <script src="demo.js"></script>
+    <!-- endinject -->
+    <!-- endbuild -->
+</head>
+
+<body>
+    <!-- build:js js/lib.js -->
+    <!-- bower:js -->
+    <md-content id="content" layout="column" flex ng-controller="MainCtrl as ctrl">
+        <md-toolbar>
+            <div style="text-align: center;">
+                <h1>mdPickers</h1>
+                <h2>Material Design date/time pickers</h2>
+            </div>
+        </md-toolbar>
+
+        <md-content flex layout="column" layout-align="center center" layout-padding>
+            <h3><a href="https://github.com/alenaksu/mdPickers">https://github.com/alenaksu/mdPickers</a></h3>
+
+            <div layout layout-fill layout-align="center start">
+                <md-card layout-align="start center" layout="column">
+                    <md-card-content layout="column">
+                        <h2>$mdpDatePicker</h2>
+                        <md-input-container>
+                            <label>Date</label>
+                            <input type="date" mdp-date-picker ng-model="currentDate" />
+                        </md-input-container>
+                        <md-button class="md-raised md-warn" ng-click="ctrl.showDatePicker($event)" aria-label="show picker">show picker</md-button>
+
+                        <div>{{ currentDate | date:'fullDate' }}</div>
+                        </md-catd-content>
+                </md-card>
+                <md-card layout-align="start center" layout="column">
+                    <md-card-content layout="column">
+                        <h2>$mdpTimePicker</h2>
+                        <md-button class="md-raised md-warn" ng-click="ctrl.showTimePicker($event)" aria-label="show picker">show picker</md-button>
+
+                        <div>{{ currentDate | date:'shortTime' }}</div>
+                    </md-card-content>
+                </md-card>
+            </div>
+        </md-content>
+
+        <script type="text/ng-template" id="/modal.datepicker.html">
+            <md-dialog aria-label="" class="md-datepicker" ng-class="{ 'portrait': !$mdMedia('gt-md') }">
+                <md-dialog-content layout="row" layout-wrap>
+
+                    <div layout="column" layout-align="start center">
+                        <md-toolbar layout-align="center center" class="md-datepicker-dow md-primary"><span>{{ datepicker.currentMoment.format("dddd") }}</span></md-toolbar>
+                        <md-toolbar layout-align="center center" class="md-datepicker-date md-hue-1 md-primary" layout="column">
+                            <div class="md-datepicker-month">{{ datepicker.currentMoment.format("MMM") }}</div>
+                            <div class="md-datepicker-day">{{ datepicker.currentMoment.format("DD") }}</div>
+                            <md-select class="md-datepicker-year" placeholder="{{ datepicker.currentMoment.format('YYYY') }}" ng-model="year" ng-change="datepicker.setYear()">
+                                <md-option ng-value="year" ng-repeat="year in yearsOptions">{{ year }}</md-option>
+                            </md-select>
+                        </md-toolbar>
+                    </div>
+                    <div layout="column" layout-align="start center" class="md-datepicker-calendar">
+                        <div layout="row" layout-align="space-between center" class="md-datepicker-monthyear">
+                            <md-button aria-label="mese precedente" class="md-icon-button" ng-click="datepicker.prevMonth()">
+                                <md-icon md-svg-src="http://upload.wikimedia.org/wikipedia/commons/a/a4/Ic_chevron_left_36px.svg"></md-icon>
+                            </md-button>
+                            {{ datepicker.currentMoment.format("MMMM YYYY") }}
+                            <md-button aria-label="mese successivo" class="md-icon-button" ng-click="datepicker.nextMonth()">
+                                <md-icon md-svg-src="http://upload.wikimedia.org/wikipedia/commons/8/8d/Ic_chevron_right_36px.svg"></md-icon>
+                            </md-button>
+                        </div>
+                        <div layout="row" layout-align="space-around center" class="md-datepicker-week-days">
+                            <div layout layout-align="center center" ng-repeat="d in datepicker.weekDays track by $index">{{ d }}</div>
+                        </div>
+
+                        <div layout="row" layout-wrap class="md-datepicker-days">
+                            <div layout layout-align="center center" ng-repeat-start="n in datepicker.getDaysInMonth() track by $index">
+                                <md-button aria-label="seleziona giorno" ng-if="n !== false" ng-class="{'md-accent': datepicker.currentMoment.date() == n}"
+                                ng-click="datepicker.selectDate(n)">{{ n }}</md-button>
+                            </div>
+                            <div flex ng-if="($index + 1) % 7 == 0" ng-repeat-end></div>
+                        </div>
+                    </div>
+                </md-dialog-content>
+                <div class="md-actions" layout="row">
+                    <md-button ng-click="datepicker.cancel()" aria-label="annulla">Cancel</md-button>
+                    <md-button ng-click="datepicker.confirm()" aria-label="ok">OK</md-button>
+                </div>
+            </md-dialog>
+        </script>
+    </md-content>
+
+
+    <!-- endbower -->
+    <!-- endbuild -->
+    <!-- build:js js/app.js-->
+    <!-- inject:js -->
+
+
+
+
+
+    <!-- endinject -->
+    <!-- inject:templates:js -->
+    <!-- endinject -->
+    <!-- endbuild -->
+</body>
+
+</html>
