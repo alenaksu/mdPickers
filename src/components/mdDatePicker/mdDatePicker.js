@@ -40,6 +40,11 @@ function DatePickerCtrl($scope, $mdDialog, currentDate, $mdMedia, $timeout) {
     this.showCalendar = function() {
         self.selectingYear = false;
     };
+    
+    this.today = function() {
+    	self.currentMoment = moment();
+    	this.selectYear(self.currentMoment.year());
+    };
 
     this.cancel = function() {
         $mdDialog.cancel();
@@ -58,8 +63,9 @@ function DatePickerCtrl($scope, $mdDialog, currentDate, $mdMedia, $timeout) {
 }
 
 module.provider("$mdpDatePicker", function() {
-    var LABEL_OK = "ok",
-        LABEL_CANCEL = "cancel"; 
+    var LABEL_OK = "OK",
+        LABEL_CANCEL = "Cancel",
+        LABEL_TODAY = "Today"; 
         
     this.setOKButtonLabel = function(label) {
         LABEL_OK = label;
@@ -94,9 +100,11 @@ module.provider("$mdpDatePicker", function() {
                                         '</md-virtual-repeat-container>' +
                                     '</div>' +
                                     '<mdp-calendar ng-if="!datepicker.selectingYear" class="mdp-animation-zoom" date="datepicker.currentMoment"></mdp-calendar>' +
-                                    '<md-dialog-actions layout-align="end center" layout="row">' +
+                                    '<md-dialog-actions layout="row">' +
+                                    	'<md-button ng-class="{\'md-icon-button\': $mdMedia(\'xs\')}" ng-click="datepicker.today()" aria-label="' + LABEL_TODAY + '">' + LABEL_TODAY + '</md-button>' +
+                                    	'<span flex></span>' +
                                         '<md-button ng-click="datepicker.cancel()" aria-label="' + LABEL_CANCEL + '">' + LABEL_CANCEL + '</md-button>' +
-                                        '<md-button ng-click="datepicker.confirm()" aria-label="' + LABEL_OK + '">' + LABEL_OK + '</md-button>' +
+                                        '<md-button ng-click="datepicker.confirm()" class="md-primary" aria-label="' + LABEL_OK + '">' + LABEL_OK + '</md-button>' +
                                     '</md-dialog-actions>' +
                                 '</div>' +
                             '</md-dialog-content>' +
@@ -113,35 +121,52 @@ module.provider("$mdpDatePicker", function() {
 });
 
 function CalendarCtrl($scope) {
-    var self = this;
-    this.currentMoment;
     this.weekDays = moment.weekdaysMin();
     
     this.getDaysInMonth = function() {
-        var days = self.currentMoment.daysInMonth(),
-            firstDay = moment(self.currentMoment).date(1).day();
+        var days = $scope.date.daysInMonth(),
+        	firstDay = moment($scope.date).date(1).day();
 
         var arr = [];
-        for(var i = 1; i <= (firstDay + days); i++)
+        for(var i = 1; i <= (firstDay + days); i++) {
             arr.push(i > firstDay ? (i - firstDay) : false);
+        }
+        
+        var weeks = Math.ceil(days / 7);
+        
+        var daysArr = [];
+        for (var w = 0; w < weeks; w++) {
+	        for (var i = 0; i < 6; i++) {
+	        	
+	        	for(var i = 1; i < days; i++) {
+	        		
+	        	}
+	        	
+	        	var day = {day: i, month: , date: };
+	        	daysArr.push()
+	        }
+        }
 
         return arr;
     };
     
+    this.getNextMonthDays = function() {
+    	var days = $scope.date.daysInMonth(),
+    		firstDay = moment($scope.date).date(1).day();
+    	
+    	
+    };
+    
     this.selectDate = function(dom) {
-        self.currentMoment.date(dom);
+    	$scope.date.date(dom);
     };
 
     this.nextMonth = function() {
-        self.currentMoment.add(1, 'months');
+    	$scope.date.add(1, 'months');
     };
 
     this.prevMonth = function() {
-        self.currentMoment.subtract(1, 'months');
-    };
-    
-    this.init = function(date) {
-        self.currentMoment = date;
+    	$scope.date.subtract(1, 'months');
     };
 }
 
@@ -154,16 +179,17 @@ module.directive("mdpCalendar", ["$animate", function($animate) {
         template: '<div class="mdp-calendar">' +
                     '<div layout="row" layout-align="space-between center">' +
                         '<md-button aria-label="previous month" class="md-icon-button" ng-click="calendar.prevMonth()"><md-icon md-font-set="material-icons"> chevron_left </md-icon></md-button>' +
-                        '<div class="mdp-calendar-monthyear" ng-show="!calendar.animating">{{ calendar.currentMoment.format("MMMM YYYY") }}</div>' +
+                        '<div class="mdp-calendar-monthyear" ng-show="!calendar.animating">{{ date.format("MMMM YYYY") }}</div>' +
                         '<md-button aria-label="next month" class="md-icon-button" ng-click="calendar.nextMonth()"><md-icon md-font-set="material-icons"> chevron_right </md-icon></md-button>' +
                     '</div>' +
                     '<div layout="row" layout-align="space-around center" class="mdp-calendar-week-days" ng-show="!calendar.animating">' +
                         '<div layout layout-align="center center" ng-repeat="d in calendar.weekDays track by $index">{{ d }}</div>' +
                     '</div>' +
-                    '<div layout="row" layout-wrap class="mdp-calendar-days" ng-class="{ \'mdp-animate-next\': calendar.animating }" ng-show="!calendar.animating" md-swipe-left="calendar.nextMonth()" md-swipe-right="calendar.prevMonth()">' +
+                    '<div layout="row" layout-align="space-around center" layout-wrap class="mdp-calendar-days" ng-class="{ \'mdp-animate-next\': calendar.animating }" ng-show="!calendar.animating" md-swipe-left="calendar.nextMonth()" md-swipe-right="calendar.prevMonth()">' +
                         '<div layout layout-align="center center" ng-repeat-start="n in calendar.getDaysInMonth() track by $index" ng-class="{ \'mdp-day-placeholder\': n === false }">' +
-                            '<md-button class="md-icon-button md-raised" aria-label="Select day" ng-if="n !== false" ng-class="{\'md-accent\': calendar.currentMoment.date() == n}" ng-click="calendar.selectDate(n)">{{ n }}</md-button>' +
+                            '<md-button class="md-icon-button md-raised" aria-label="Select day" ng-if="n !== false" ng-class="{\'md-accent\': date.date() == n}" ng-click="calendar.selectDate(n)">{{ n }}</md-button>' +
                         '</div>' +
+                        '<span flex ng-if="$last" ng-repeat="i in "></span>' + 
                         '<div flex="100" ng-if="($index + 1) % 7 == 0" ng-repeat-end></div>' +
                     '</div>' +
                 '</div>',
@@ -179,8 +205,6 @@ module.directive("mdpCalendar", ["$animate", function($animate) {
                return angular.element(a); 
             });
                 
-            ctrl.init(scope.date);
-            
             scope.$watch(function() { return  scope.date.format("YYYYMM") }, function(newValue, oldValue) {
                 var direction = null;
                 
