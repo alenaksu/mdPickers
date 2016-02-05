@@ -240,7 +240,7 @@ module.provider("$mdpTimePicker", function() {
                                     '</div>' +
                                     
                                     '<md-dialog-actions layout="row">' +
-	                                    '<md-button ng-class="{\'md-icon-button\': $mdMedia(\'xs\')}" ng-click="timepicker.now()" aria-label="' + LABEL_NOW + '">' + LABEL_NOW + '</md-button>' +
+	                                    '<md-button ng-click="timepicker.now()" aria-label="' + LABEL_NOW + '">' + LABEL_NOW + '</md-button>' +
 	                                	'<span flex></span>' +
                                         '<md-button ng-click="timepicker.cancel()" aria-label="' + LABEL_CANCEL + '">' + LABEL_CANCEL + '</md-button>' +
                                         '<md-button ng-click="timepicker.confirm()" class="md-primary" aria-label="' + LABEL_OK + '">' + LABEL_OK + '</md-button>' +
