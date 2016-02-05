@@ -127,7 +127,7 @@ function CalendarCtrl($scope) {
         var days = $scope.date.daysInMonth(),
         	firstDay = moment($scope.date).date(1).day();
         
-        var viewDays = Math.ceil(days / 7) * 7;
+        var viewDays = Math.ceil((days + firstDay) / 7) * 7;
 
         var arr = [];
         for(var i = 1; i <= viewDays; i++) {
