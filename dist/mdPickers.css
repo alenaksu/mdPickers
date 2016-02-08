@@ -120,6 +120,9 @@
   box-shadow: none !important;
   background-color: transparent;
 }
+.mdp-calendar-days .md-button[disabled] {
+  background-color: transparent !important;
+}
 .mdp-calendar-monthyear {
   font-size: 0.8125rem;
   font-weight: bold;
