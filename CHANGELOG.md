@@ -1,3 +1,19 @@
+### 0.6.0
+
+# features
+
+### mdDatePicker
+- Swipe capabilities
+- Button 'TODAY'
+- Support for min and max date
+- Improved alignment of days' container
+
+### mdTimePicker
+- Button 'NOW'
+- Directive *mdpTimePicker* for *input[type=time]*
+
+> *All dependencies have been updated to their latest version*
+
 ### 0.5.0
 
 #### Breaking Changes
