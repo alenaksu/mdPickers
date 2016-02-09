@@ -26,8 +26,8 @@
     "tests"
   ],
   "dependencies": {
-    "angular": "~1.4.9",
-    "angular-material": "~1.0.4",
-    "moment": "~2.11.1"
+    "angular": "~1.5.0",
+    "angular-material": "~1.0.5",
+    "moment": "~2.11.2"
   }
 }
