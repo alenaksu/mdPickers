@@ -1,0 +1,132 @@
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/angular_material/1.0.4/angular-material.min.css">
+    <link rel="stylesheet" href="../dist/mdPickers.css">
+    <style>
+    body {
+        font-family: 'Roboto', sans-serif;
+    }
+
+    #content {
+        height: 100%;
+    }
+
+    #content > md-content {
+        background-color: #eee;
+    }
+
+    .github-link {
+        display: block;
+        margin-top: 20px;
+        text-align: center;
+        color: #AAA;
+        text-decoration: none;
+    }
+    .calendar-icon {
+        margin-top: 17px !important;
+    }
+    </style>
+</head>
+
+<body ng-app="app" ng-cloak layout="column">
+    <md-toolbar class="md-whiteframe-z2">
+        <div style="text-align: center;">
+            <h1>mdPickers</h1>
+            <h2 class="md-headline">Material Design date/time pickers</h2>
+        </div>
+    </md-toolbar>
+    <md-content flex layout="row" layout-align="center center" ng-controller="MainCtrl as ctrl">
+        <div>
+            <div layout="row">
+                <md-card flex="50">
+                    <md-card-content layout="column">
+                        <h2>$mdpDatePicker</h2>
+                        <div layout="row">
+                            <md-button ng-click="ctrl.showDatePicker($event)" class="md-icon-button calendar-icon">
+                                <md-icon>today</md-icon>
+                            </md-button>
+                            <md-input-container>
+                                <label>Date</label>
+                                <input type="text" mdp-date-picker ng-model="currentDateFormat" />
+                            </md-input-container>
+                        </div>
+                        <md-button class="md-raised md-warn" ng-click="ctrl.showDatePicker($event)" aria-label="show picker">show picker</md-button>
+                    </md-card-content>
+                </md-card>
+                <div flex="50" layout="column">
+                    <md-card flex>
+                        <md-card-content layout="column">
+                            <h2>$mdpTimePicker</h2>
+                            <md-button class="md-raised md-warn" ng-click="ctrl.showTimePicker($event)" aria-label="show picker">show picker</md-button>
+                        </md-card-content>
+                    </md-card>
+                    <md-card>
+                        <md-card-content>
+                            {{ currentDate | date:'EEEE, MMMM d, y HH:mm' }}
+                        </md-card-content>
+                    </md-card>
+                </div>
+            </div>
+            <a class="md-headline github-link" href="https://github.com/alenaksu/mdPickers" target="_blank">https://github.com/alenaksu/mdPickers</a>
+        </div>
+    </md-content>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.3/moment.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-animate.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-aria.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-messages.min.js"></script>
+
+    <script src="http://ajax.googleapis.com/ajax/libs/angular_material/1.0.4/angular-material.min.js"></script>
+
+    <script src="../dist/mdPickers.js"></script>
+    <script type="text/javascript">
+    /**
+     * You must include the dependency on 'ngMaterial'
+     */
+    (function() {
+
+        var dateFormat = 'DD/MM/YYYY';
+
+        var module = angular.module("app", [
+            "ngMaterial",
+            "ngAnimate",
+            "ngAria",
+            "mdPickers"
+        ]);
+
+        module.config(['$mdpDatePickerProvider', '$mdpTimePickerProvider', function ($mdpDatePickerProvider, $mdpTimePickerProvider) {
+            $mdpDatePickerProvider.setDateFormat('DD/MM/YYYY');
+            $mdpTimePickerProvider.setAutoSwitch(true);
+        }])
+
+        module.controller("MainCtrl", ['$scope', '$mdpDatePicker', '$mdpTimePicker', function($scope, $mdpDatePicker, $mdpTimePicker) {
+
+            $scope.currentDate = moment().toDate();
+            $scope.currentDateFormat = moment().format(dateFormat);
+
+            $scope.$watch('currentDateFormat', function (nv) {
+                if (nv) {
+                    $scope.currentDate = moment(nv, dateFormat).toDate();
+                }
+            })
+
+            this.showDatePicker = function(ev) {
+                $mdpDatePicker.show(ev, $scope.currentDate).then(function(selectedDate) {
+                    $scope.currentDate = selectedDate;
+                    $scope.currentDateFormat = moment(selectedDate).format(dateFormat);
+                });
+            }
+            this.showTimePicker = function(ev) {
+                $mdpTimePicker.show(ev, $scope.currentDate).then(function(selectedDate) {
+                    $scope.currentDate = selectedDate;
+                });
+            }
+        }]);
+    })();
+    </script>
+</body>
+
+</html>
