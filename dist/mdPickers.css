@@ -258,6 +258,10 @@ mdp-calendar {
   width: 200px;
   height: 200px;
   border-radius: 50%;
+<<<<<<< HEAD
+=======
+  cursor: pointer;
+>>>>>>> release/0.5.1
   padding: 24px;
   background: #ededed;
 }

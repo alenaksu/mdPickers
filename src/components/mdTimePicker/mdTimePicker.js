@@ -164,8 +164,7 @@ module.directive("mdpClock", ["$animate", "$timeout", function($animate, $timeou
         controllerAs: "clock",
         link: function(scope, element, attrs, ctrl) {
                 
-            var container = angular.element(element[0].querySelector(".mdp-clock-container")),
-                pointer = angular.element(element[0].querySelector(".mdp-pointer"));
+            var pointer = angular.element(element[0].querySelector(".mdp-pointer"));
             
             scope.type = scope.type || "hours";
             $timeout(function() {
@@ -173,9 +172,9 @@ module.directive("mdpClock", ["$animate", "$timeout", function($animate, $timeou
             });
             
             var onEvent = function(event) {
-                if(event.target != container[0]) return;
-                var x = ((event.target.offsetWidth / 2) - event.offsetX),
-                    y = (event.offsetY - (event.target.offsetHeight / 2));
+                var containerCoords = event.currentTarget.getClientRects()[0];
+                var x = ((event.currentTarget.offsetWidth / 2) - (event.pageX - containerCoords.left)),
+                    y = ((event.pageY - containerCoords.top) - (event.currentTarget.offsetHeight / 2));
 
                 var deg = Math.round((Math.atan2(x, y) * (180 / Math.PI)));
                 $timeout(function() {
@@ -183,18 +182,18 @@ module.directive("mdpClock", ["$animate", "$timeout", function($animate, $timeou
                 });
             }; 
             
-            container.on("mousedown", function() {
-               container.on("mousemove", onEvent);
+            element.on("mousedown", function() {
+               element.on("mousemove", onEvent);
             });
             
-            container.on("mouseup mouseout", function() {
-               container.off("mousemove", onEvent);
+            element.on("mouseup mouseleave", function() {
+               element.off("mousemove", onEvent);
             });
             
-            container.on("click", onEvent);
+            element.on("click", onEvent);
             scope.$on("$destroy", function() {
-                container.off("click", onEvent);
-                container.off("mousemove", onEvent); 
+                element.off("click", onEvent);
+                element.off("mousemove", onEvent); 
             });
         }
     }
@@ -263,25 +262,16 @@ module.directive("mdpTimePicker", ["$mdpTimePicker", "$timeout", function($mdpTi
     return  {
         restrict: 'A',
         require: '?ngModel',
-        scope: {
-        	format : "@mdPattern"
-        },
         link: function(scope, element, attrs, ngModel) {
             if ('undefined' !== typeof attrs.type && 'time' === attrs.type && ngModel) {
                 angular.element(element).on("click", function(ev) {
-                	ev.preventDefault();
-                	
-                	$mdpTimePicker(ev, ngModel.$modelValue).then(function(selectedDate) {
-                		$timeout(function() {
-                			var format = "HH:mm";
-                    	    if (scope.format) {
-                    	    	format = scope.format;
-                    	    }  
-                			
-                			ngModel.$setViewValue(moment(selectedDate).format(format)); 
-                			ngModel.$render(); 
-                          });
-                      });
+                    ev.preventDefault();
+                    $mdpTimePicker(ev, ngModel.$modelValue).then(function(selectedDate) {
+                        $timeout(function() { 
+                        	ngModel.$setViewValue(moment(selectedDate).format("HH:mm")); 
+                        	ngModel.$render(); 
+                        });
+                    });
                 });
             }
         }
