@@ -1,3 +1,9 @@
+### 0.6.0
+
+#### Breaking Changes
+
+* Service `$mdpDatePicker` now accept an object as argument. (see demo for more detail)
+
 ### 0.5.0
 
 #### Breaking Changes
