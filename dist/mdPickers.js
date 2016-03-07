@@ -770,11 +770,15 @@ module.provider("$mdpTimePicker", function() {
     }];
 });
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> master
 
 module.directive("mdpTimePicker", ["$mdpTimePicker", "$timeout", function($mdpTimePicker, $timeout) {
     return  {
         restrict: 'A',
         require: '?ngModel',
+<<<<<<< HEAD
         scope: {
         	format : "@mdPattern"
         },
@@ -792,6 +796,16 @@ module.directive("mdpTimePicker", ["$mdpTimePicker", "$timeout", function($mdpTi
                 			
                 			ngModel.$setViewValue(moment(selectedDate).format(format)); 
                 			ngModel.$render(); 
+=======
+        link: function(scope, element, attrs, ngModel) {
+            if ('undefined' !== typeof attrs.type && 'time' === attrs.type && ngModel) {
+                angular.element(element).on("click", function(ev) {
+                  		ev.preventDefault();
+                      $mdpTimePicker(ev, ngModel.$modelValue).then(function(selectedDate) {
+                          $timeout(function() { 
+                            	ngModel.$setViewValue(moment(selectedDate).format("HH:mm")); 
+                            	ngModel.$render(); 
+>>>>>>> master
                           });
                       });
                 });
@@ -799,6 +813,9 @@ module.directive("mdpTimePicker", ["$mdpTimePicker", "$timeout", function($mdpTi
         }
     };
 }]);
+<<<<<<< HEAD
 =======
 >>>>>>> release/0.5.1
+=======
+>>>>>>> master
 })();
