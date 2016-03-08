@@ -1,3 +1,5 @@
+/* global moment, angular */
+
 function TimePickerCtrl($scope, $mdDialog, currentDate, $mdMedia) {
 	var self = this;
     this.VIEW_HOURS = 1;
@@ -212,8 +214,9 @@ module.provider("$mdpTimePicker", function() {
     };
     
     this.$get = ["$mdDialog", function($mdDialog) {
-        var timePicker = function(targetEvent, currentDate) {
+        var timePicker = function(currentDate, options) {
             if(!angular.isDate(currentDate)) currentDate = Date.now();
+            if (!angular.isObject(options)) options = {};
     
             return $mdDialog.show({
                 controller:  ['$scope', '$mdDialog', 'currentDate', '$mdMedia', TimePickerCtrl],
@@ -245,7 +248,7 @@ module.provider("$mdpTimePicker", function() {
                                 '</div>' +
                             '</md-dialog-content>' +
                         '</md-dialog>',
-                targetEvent: targetEvent,
+                targetEvent: options.targetEvent,
                 locals: {
                     currentDate: currentDate
                 }
@@ -260,13 +263,26 @@ module.directive("mdpTimePicker", ["$mdpTimePicker", "$timeout", function($mdpTi
     return  {
         restrict: 'A',
         require: '?ngModel',
+        scope: {
+            "timeFormat": "@mdpFormat"
+        },
         link: function(scope, element, attrs, ngModel) {
-            if ('undefined' !== typeof attrs.type && 'time' === attrs.type && ngModel) {
+            var timeFormat = scope.timeFormat || "HH:mm";
+            if ('undefined' !== typeof attrs.type && ngModel) {
                 angular.element(element).on("click", function(ev) {
                     ev.preventDefault();
-                    $mdpTimePicker(ev, ngModel.$modelValue).then(function(selectedDate) {
+                    $mdpTimePicker(ngModel.$modelValue, {
+                        targetEvent: ev
+                    }).then(function(selectedDate) {
                         $timeout(function() { 
-                        	ngModel.$setViewValue(moment(selectedDate).format("HH:mm")); 
+                            switch(attrs.type) {
+                		        case "time":
+                        	        ngModel.$setViewValue(moment(selectedDate).format("HH:mm")); 
+                        	        break;
+                    	        default:
+                    	            ngModel.$setViewValue(moment(selectedDate).format(timeFormat));
+                    	            break;
+                            }
                         	ngModel.$render(); 
                         });
                     });

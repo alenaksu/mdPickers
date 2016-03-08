@@ -66,26 +66,6 @@ function DatePickerCtrl($scope, $mdDialog, $mdMedia, $timeout, currentDate, opti
     this.showCalendar = function() {
         self.selectingYear = false;
     };
-    
-    this.today = function() {
-    	self.date = moment();
-    	this.selectYear(self.date.year());
-    };
-    
-    this.isTodayAvailable = function() {
-    	var minValid = true, maxValid = true;
-    	var date = moment().startOf("day").toDate();
-    	
-    	if (this.minDate) {
-    		minValid = date >= this.minDate.toDate();
-    	}
-    	
-    	if (this.maxDate) {
-    		maxValid = date <= this.maxDate.toDate();
-    	}
-    	
-    	return minValid && maxValid;
-    };
 
     this.cancel = function() {
         $mdDialog.cancel();
@@ -115,8 +95,7 @@ function DatePickerCtrl($scope, $mdDialog, $mdMedia, $timeout, currentDate, opti
 
 module.provider("$mdpDatePicker", function() {
     var LABEL_OK = "OK",
-        LABEL_CANCEL = "Cancel",
-        LABEL_TODAY = "Today"; 
+        LABEL_CANCEL = "Cancel";
         
     this.setOKButtonLabel = function(label) {
         LABEL_OK = label;
@@ -153,7 +132,6 @@ module.provider("$mdpDatePicker", function() {
                                     '</div>' +
                                     '<mdp-calendar ng-if="!datepicker.selectingYear" class="mdp-animation-zoom" date="datepicker.date" min-date="datepicker.minDate" date-filter="datepicker.dateFilter" max-date="datepicker.maxDate"></mdp-calendar>' +
                                     '<md-dialog-actions layout="row">' +
-                                    	'<md-button ng-click="datepicker.today()" ng-if="datepicker.isTodayAvailable()" aria-label="' + LABEL_TODAY + '">' + LABEL_TODAY + '</md-button>' +
                                     	'<span flex></span>' +
                                         '<md-button ng-click="datepicker.cancel()" aria-label="' + LABEL_CANCEL + '">' + LABEL_CANCEL + '</md-button>' +
                                         '<md-button ng-click="datepicker.confirm()" class="md-primary" aria-label="' + LABEL_OK + '">' + LABEL_OK + '</md-button>' +
@@ -199,7 +177,8 @@ function CalendarCtrl($scope) {
     
     this.isDayEnabled = function(day) {
         return (!this.minDate || this.minDate <= day) && 
-            (!this.maxDate || this.maxDate >= day) && (!self.dateFilter || !self.dateFilter(day));
+            (!this.maxDate || this.maxDate >= day) && 
+            (!self.dateFilter || !self.dateFilter(day));
     };
     
     this.selectDate = function(dom) {
@@ -288,10 +267,13 @@ module.directive("mdpDatePicker", ["$mdpDatePicker", "$timeout", function($mdpDa
         scope: {
             "minDate": "=min",
             "maxDate": "=max",
-            "dateFilter": "mdpDateFilter"
+            "dateFilter": "=mdpDateFilter",
+            "dateFormat": "@mdpFormat"
         },
         link: function(scope, element, attrs, ngModel) {
-            if ('undefined' !== typeof attrs.type && 'date' === attrs.type && ngModel) {
+            var dateFormat = scope.dateFormat || moment.defaultFormat;
+            if ('undefined' !== typeof attrs.type && ngModel) {
+                
                 angular.element(element).on("click", function(ev) {
                 	ev.preventDefault();
                 	
@@ -302,7 +284,15 @@ module.directive("mdpDatePicker", ["$mdpDatePicker", "$timeout", function($mdpDa
                 	    targetEvent: ev
             	    }).then(function(selectedDate) {
                 		$timeout(function() {
-                			ngModel.$setViewValue(moment(selectedDate).format("YYYY-MM-DD")); 
+                		    switch(attrs.type) {
+                		        case "date":
+                		            ngModel.$setViewValue(moment(selectedDate).format("YYYY-MM-DD"));
+                		            break;
+            		            default:
+            		                ngModel.$setViewValue(moment(selectedDate).format(dateFormat));
+            		                break;
+                		    }
+                			
                 			ngModel.$render(); 
                         });
                       });
