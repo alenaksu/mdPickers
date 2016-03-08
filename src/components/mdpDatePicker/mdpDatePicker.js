@@ -4,8 +4,8 @@ function DatePickerCtrl($scope, $mdDialog, $mdMedia, $timeout, currentDate, opti
     var self = this;
 
     this.date = moment(currentDate);
-    this.minDate = angular.isDate(options.minDate) ? moment(options.minDate) : null;
-    this.maxDate = angular.isDate(options.maxDate) ? moment(options.maxDate) : null;
+    this.minDate = moment(options.minDate).isValid() ? moment(options.minDate) : null;
+    this.maxDate = moment(options.maxDate).isValid() ? moment(options.maxDate) : null;
     this.dateFilter = angular.isFunction(options.dateFilter) ? options.dateFilter : null;
     this.selectingYear = false;
     
@@ -265,8 +265,8 @@ module.directive("mdpDatePicker", ["$mdpDatePicker", "$timeout", function($mdpDa
         restrict: 'A',
         require: '?ngModel',
         scope: {
-            "minDate": "=min",
-            "maxDate": "=max",
+            "minDate": "@min",
+            "maxDate": "@max",
             "dateFilter": "=mdpDateFilter",
             "dateFormat": "@mdpFormat"
         },
