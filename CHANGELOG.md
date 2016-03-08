@@ -1,3 +1,30 @@
+### 0.6.0
+
+#### Breaking Changes
+
+* Removed Material Design Icons dependency
+* `$mdpDatePicker` and `$mdpTimePicker` now accept the date/time and an object containing the options as arguments. _(see demo for more details)_
+ 
+#### Features
+
+* `mdpDatePicker` directive now accept min/max date and a filter function
+
+```html
+<input type="date" min="2000-01-01" max="2050-01-01" mdp-date-filter="myFilterFunction" />
+```
+```javascript
+function myFilterFunction(date) {
+    ...
+}
+```
+
+* Output format in `mdpTimePicker` and `mdpDatePicker` directives thorugh `mdp-format` attribute _(see moment.js documentation for details)_
+```html
+<input type="text" min="2000-01-01" max="2050-01-01" mdp-format="DD/MM/YYYY" />
+```
+* Swipe capabilities on date picker
+* Automatic switch between hours and minutes view in the time picker
+
 ### 0.5.2
 
 #### Bugfixes

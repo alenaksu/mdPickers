@@ -35,8 +35,8 @@
 @-webkit-keyframes mdp-animation-bounce {
   from {
     opacity: 0;
-    -webkit-transform: scale(0.9);
-            transform: scale(0.9);
+    -webkit-transform: scale(0.95);
+            transform: scale(0.95);
   }
   70% {
     opacity: 1;
@@ -51,8 +51,8 @@
 @keyframes mdp-animation-bounce {
   from {
     opacity: 0;
-    -webkit-transform: scale(0.9);
-            transform: scale(0.9);
+    -webkit-transform: scale(0.95);
+            transform: scale(0.95);
   }
   70% {
     opacity: 1;
@@ -120,6 +120,9 @@
   box-shadow: none !important;
   background-color: transparent;
 }
+.mdp-calendar-days .md-button[disabled]:not(.md-accent) {
+  background-color: transparent !important;
+}
 .mdp-calendar-monthyear {
   font-size: 0.8125rem;
   font-weight: bold;
@@ -184,6 +187,7 @@
 .mdp-datepicker-select-year .md-virtual-repeat-offsetter,
 .mdp-datepicker-select-year .md-virtual-repeat-scroller {
   height: 100%;
+  width: 100%;
 }
 .mdp-datepicker:not(.portrait) .mdp-datepicker-select-year {
   width: 309px;
@@ -214,9 +218,6 @@
 .mdp-datepicker md-dialog-content .mdp-calendar {
   width: 294px;
   overflow-x: hidden;
-}
-.mdp-datepicker.portrait {
-  width: 244px;
 }
 .mdp-datepicker.portrait .mdp-calendar {
   text-align: center;

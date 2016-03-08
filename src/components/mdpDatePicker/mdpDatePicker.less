@@ -50,6 +50,10 @@
         box-shadow: none !important;
         background-color: transparent;
     }
+    
+    .md-button[disabled]:not(.md-accent) {
+	    background-color: transparent !important;
+    }
 }
 
 .mdp-calendar-monthyear {
@@ -119,6 +123,7 @@
     .md-virtual-repeat-offsetter,
     .md-virtual-repeat-scroller {
         height: 100%;
+        width: 100%;
     } 
 }
 
@@ -165,7 +170,6 @@
     }
     
     &.portrait {
-        width: 244px;
         .mdp-calendar {
             text-align: center;
             width: 100%;
