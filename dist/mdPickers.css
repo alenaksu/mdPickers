@@ -35,8 +35,8 @@
 @-webkit-keyframes mdp-animation-bounce {
   from {
     opacity: 0;
-    -webkit-transform: scale(0.9);
-            transform: scale(0.9);
+    -webkit-transform: scale(0.95);
+            transform: scale(0.95);
   }
   70% {
     opacity: 1;
@@ -51,8 +51,8 @@
 @keyframes mdp-animation-bounce {
   from {
     opacity: 0;
-    -webkit-transform: scale(0.9);
-            transform: scale(0.9);
+    -webkit-transform: scale(0.95);
+            transform: scale(0.95);
   }
   70% {
     opacity: 1;
@@ -120,7 +120,7 @@
   box-shadow: none !important;
   background-color: transparent;
 }
-.mdp-calendar-days .md-button[disabled] {
+.mdp-calendar-days .md-button[disabled]:not(.md-accent) {
   background-color: transparent !important;
 }
 .mdp-calendar-monthyear {
@@ -258,10 +258,7 @@ mdp-calendar {
   width: 200px;
   height: 200px;
   border-radius: 50%;
-<<<<<<< HEAD
-=======
   cursor: pointer;
->>>>>>> release/0.5.1
   padding: 24px;
   background: #ededed;
 }
