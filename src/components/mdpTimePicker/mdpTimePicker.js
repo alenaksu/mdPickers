@@ -10,21 +10,6 @@ function TimePickerCtrl($scope, $mdDialog, currentDate, $mdMedia) {
     
     this.clockHours = parseInt(this.time.format("h"));
     this.clockMinutes = parseInt(this.time.minutes());
-	
-    $scope.$watch(function() { return self.clockHours }, function(newValue, oldValue) {
-        if(angular.isDefined(oldValue)) {
-            if(self.time.format("A") == "AM")
-                self.time.hour(self.clockHours);
-            else
-                self.time.hour(self.clockHours < 12 ? self.clockHours + 12 : self.clockHours);
-        }
-    });
-    
-     $scope.$watch(function() { return self.clockMinutes }, function(newValue, oldValue) {
-        if(angular.isDefined(oldValue)) {
-            self.time.minutes(newValue < 60 ? newValue : 0);
-        }
-    });
     
 	$scope.$mdMedia = $mdMedia;
 	
@@ -54,11 +39,10 @@ function TimePickerCtrl($scope, $mdDialog, currentDate, $mdMedia) {
 function ClockCtrl($scope) {
     var TYPE_HOURS = "hours";
     var TYPE_MINUTES = "minutes";
+    var self = this;
     
     this.STEP_DEG = 360 / 12;
-    var self = this;
     this.steps = [];
-    this.selected = 0;
     
     this.CLOCK_TYPES = {
         "hours": {
@@ -106,51 +90,49 @@ function ClockCtrl($scope) {
     
     this.setTime = function(time, type) {
         this.selected = time;
-        if (!type) {
-        	type = self.type;
-        }
         
-        switch(type) {
+        switch(self.type) {
             case TYPE_HOURS:
-            	$scope.date.hours(time);
+                if(self.time.format("A") == "PM") time += 12;
+                this.time.hours(time);
                 break;
             case TYPE_MINUTES:
-            	$scope.date.minutes(time);
+                if(time > 59) time -= 60;
+                this.time.minutes(time);
                 break;
         }
+        
     };
     
-    this.init = function(type) {
-        self.type = type;
-        switch(type) {
+    this.init = function() {
+        self.type = self.type || "hours";
+        switch(self.type) {
             case TYPE_HOURS:
                 for(var i = 1; i <= 12; i++)
                     self.steps.push(i);
-                self.selected = $scope.date.hours() || 0;
+                self.selected = self.time.hours() || 0;
+                if(self.selected > 12) self.selected -= 12;
                     
                 break;
             case TYPE_MINUTES:
                 for(var i = 5; i <= 55; i+=5)
                     self.steps.push(i);
                 self.steps.push(0);
-                self.selected = $scope.date.minutes() || 0;
+                self.selected = self.time.minutes() || 0;
                 
                 break;
         }
     };
     
-    $scope.$watch('date', function(newValue, oldValue) {
-    	self.setTime(newValue.hours(), TYPE_HOURS);
-    	self.setTime(newValue.minutes(), TYPE_MINUTES);
-    });
+    this.init();
 }
 
 module.directive("mdpClock", ["$animate", "$timeout", function($animate, $timeout) {
     return {
         restrict: 'E',
-        scope: {
+        bindToController: {
             'type': '@?',
-            'date' : '='
+            'time': '='
         },
         replace: true,
         template: '<div class="mdp-clock">' +
@@ -165,12 +147,8 @@ module.directive("mdpClock", ["$animate", "$timeout", function($animate, $timeou
         controller: ["$scope", ClockCtrl],
         controllerAs: "clock",
         link: function(scope, element, attrs, ctrl) {
-            var pointer = angular.element(element[0].querySelector(".mdp-pointer"));
-            
-            scope.type = scope.type || "hours";
-            $timeout(function() {
-            	ctrl.init(scope.type);
-            });
+            var pointer = angular.element(element[0].querySelector(".mdp-pointer")),
+                timepickerCtrl = scope.$parent.timepicker;
             
             var onEvent = function(event) {
                 var containerCoords = event.currentTarget.getClientRects()[0];
@@ -180,6 +158,7 @@ module.directive("mdpClock", ["$animate", "$timeout", function($animate, $timeou
                 var deg = Math.round((Math.atan2(x, y) * (180 / Math.PI)));
                 $timeout(function() {
                     ctrl.setTimeByDeg(deg + 180);
+                    if(["mouseup", "click"].indexOf(event.type) !== -1 && timepickerCtrl) timepickerCtrl.switchView();
                 });
             }; 
             
@@ -189,7 +168,6 @@ module.directive("mdpClock", ["$animate", "$timeout", function($animate, $timeou
             
             element.on("mouseup", function(e) {
                 element.off("mousemove", onEvent);
-                scope.$parent.timepicker && $timeout(scope.$parent.timepicker.switchView);
             });
             
             element.on("click", onEvent);
@@ -236,8 +214,8 @@ module.provider("$mdpTimePicker", function() {
                                 '</md-toolbar>' +
                                 '<div>' +
                                     '<div class="mdp-clock-switch-container" ng-switch="timepicker.currentView" layout layout-align="center center">' +
-	                                    '<mdp-clock class="mdp-animation-zoom" date="timepicker.time" type="hours" ng-switch-when="1"></mdp-clock>' +
-	                                    '<mdp-clock class="mdp-animation-zoom" date="timepicker.time" type="minutes" ng-switch-when="2"></mdp-clock>' +
+	                                    '<mdp-clock class="mdp-animation-zoom" time="timepicker.time" type="hours" ng-switch-when="1"></mdp-clock>' +
+	                                    '<mdp-clock class="mdp-animation-zoom" time="timepicker.time" type="minutes" ng-switch-when="2"></mdp-clock>' +
                                     '</div>' +
                                     
                                     '<md-dialog-actions layout="row">' +
