@@ -229,7 +229,8 @@ module.provider("$mdpTimePicker", function() {
                 targetEvent: options.targetEvent,
                 locals: {
                     currentDate: currentDate
-                }
+                },
+                skipHide: true
             });
         };
     
