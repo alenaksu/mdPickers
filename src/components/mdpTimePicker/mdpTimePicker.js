@@ -209,7 +209,7 @@ module.directive("mdpClock", ["$animate", "$timeout", function($animate, $timeou
                                     '</div>' +
                                     '<div layout="column" class="mdp-timepicker-selected-ampm">' + 
                                         '<span ng-click="timepicker.setAM()" ng-class="{ \'active\': timepicker.time.locale(\'en\').format(\'A\') == \'AM\' }">AM</span>' +
-                                        '<span ng-click="timepicker.setPM()" ng-class="{ \'active\': timepicker.time..locale(\'en\')format(\'A\') == \'PM\' }">PM</span>' +
+                                        '<span ng-click="timepicker.setPM()" ng-class="{ \'active\': timepicker.time.locale(\'en\')format(\'A\') == \'PM\' }">PM</span>' +
                                     '</div>' + 
                                 '</md-toolbar>' +
                                 '<div>' +
