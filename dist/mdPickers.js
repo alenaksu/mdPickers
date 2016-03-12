@@ -354,12 +354,12 @@ function TimePickerCtrl($scope, $mdDialog, currentDate, $mdMedia) {
 	};
     
 	this.setAM = function() {
-        if(self.time.format("A") == "PM")
+        if(self.time.locale('en').format("A") == "PM")
             self.time.hour(self.time.hour() - 12);
 	};
     
     this.setPM = function() {
-        if(self.time.format("A") == "AM")
+        if(self.time.locale('en').format("A") == "AM")
             self.time.hour(self.time.hour() + 12);
 	};
     
@@ -429,7 +429,7 @@ function ClockCtrl($scope) {
         
         switch(self.type) {
             case TYPE_HOURS:
-                if(self.time.format("A") == "PM") time += 12;
+                if(self.time.locale('en').format("A") == "PM") time += 12;
                 this.time.hours(time);
                 break;
             case TYPE_MINUTES:
@@ -515,7 +515,7 @@ module.directive("mdpClock", ["$animate", "$timeout", function($animate, $timeou
     }
 }]);
 
-module.provider("$mdpTimePicker", function() {
+    module.provider("$mdpTimePicker", function() {
     var LABEL_OK = "OK",
         LABEL_CANCEL = "Cancel";
         
@@ -544,8 +544,8 @@ module.provider("$mdpTimePicker", function() {
                                         '<span ng-class="{ \'active\': timepicker.currentView == timepicker.VIEW_MINUTES }" ng-click="timepicker.currentView = timepicker.VIEW_MINUTES">{{ timepicker.time.format("mm") }}</span>' +
                                     '</div>' +
                                     '<div layout="column" class="mdp-timepicker-selected-ampm">' + 
-                                        '<span ng-click="timepicker.setAM()" ng-class="{ \'active\': timepicker.time.format(\'A\') == \'AM\' }">AM</span>' +
-                                        '<span ng-click="timepicker.setPM()" ng-class="{ \'active\': timepicker.time.format(\'A\') == \'PM\' }">PM</span>' +
+                                        '<span ng-click="timepicker.setAM()" ng-class="{ \'active\': timepicker.time.locale(\'en\').format(\'A\') == \'AM\' }">AM</span>' +
+                                        '<span ng-click="timepicker.setPM()" ng-class="{ \'active\': timepicker.time..locale(\'en\')format(\'A\') == \'PM\' }">PM</span>' +
                                     '</div>' + 
                                 '</md-toolbar>' +
                                 '<div>' +
