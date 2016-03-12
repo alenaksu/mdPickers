@@ -143,7 +143,8 @@ module.provider("$mdpDatePicker", function() {
                 locals: {
                     currentDate: currentDate,
                     options: options
-                }
+                },
+                skipHide: true
             });
         };
     
@@ -153,12 +154,26 @@ module.provider("$mdpDatePicker", function() {
 
 function CalendarCtrl($scope) {
 	var self = this;
-    this.weekDays = moment.weekdaysMin();
+	this.dow = moment.localeData().firstDayOfWeek();
+	
+    this.weekDays = [].concat(
+        moment.weekdaysMin().slice(
+            this.dow
+        ),
+        moment.weekdaysMin().slice(
+            0, 
+            this.dow
+        )
+    );
+    
     this.daysInMonth = [];
     
     this.getDaysInMonth = function() {
         var days = self.date.daysInMonth(),
-            firstDay = moment(self.date).date(1).day();
+            firstDay = moment(self.date).date(1).day() - this.dow;
+            
+        if(firstDay < 0) firstDay = this.weekDays.length - 1;
+            
 
         var arr = [];
         for(var i = 1; i <= (firstDay + days); i++) {
