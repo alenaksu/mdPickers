@@ -6,6 +6,7 @@ function DatePickerCtrl($scope, $mdDialog, $mdMedia, $timeout, currentDate, opti
     this.date = moment(currentDate);
     this.minDate = options.minDate && moment(options.minDate).isValid() ? moment(options.minDate) : null;
     this.maxDate = options.maxDate && moment(options.maxDate).isValid() ? moment(options.maxDate) : null;
+    this.displayFormat = options.displayFormat || "ddd, MMM DD";
     this.dateFilter = angular.isFunction(options.dateFilter) ? options.dateFilter : null;
     this.selectingYear = false;
     
@@ -95,7 +96,12 @@ function DatePickerCtrl($scope, $mdDialog, $mdMedia, $timeout, currentDate, opti
 
 module.provider("$mdpDatePicker", function() {
     var LABEL_OK = "OK",
-        LABEL_CANCEL = "Cancel";
+        LABEL_CANCEL = "Cancel",
+        DISPLAY_FORMAT = "ddd, MMM DD";
+        
+    this.setDisplayFormat = function(format) {
+        DISPLAY_FORMAT = format;    
+    };
         
     this.setOKButtonLabel = function(label) {
         LABEL_OK = label;
@@ -109,6 +115,8 @@ module.provider("$mdpDatePicker", function() {
         var datePicker = function(currentDate, options) {
             if (!angular.isDate(currentDate)) currentDate = Date.now();
             if (!angular.isObject(options)) options = {};
+            
+            options.displayFormat = DISPLAY_FORMAT;
     
             return $mdDialog.show({
                 controller:  ['$scope', '$mdDialog', '$mdMedia', '$timeout', 'currentDate', 'options', DatePickerCtrl],
@@ -119,7 +127,7 @@ module.provider("$mdpDatePicker", function() {
                                 '<div layout="column" layout-align="start center">' +
                                     '<md-toolbar layout-align="start start" flex class="mdp-datepicker-date-wrapper md-hue-1 md-primary" layout="column">' +
                                         '<span class="mdp-datepicker-year" ng-click="datepicker.showYear()" ng-class="{ \'active\': datepicker.selectingYear }">{{ datepicker.date.format(\'YYYY\') }}</span>' +
-                                        '<span class="mdp-datepicker-date" ng-click="datepicker.showCalendar()" ng-class="{ \'active\': !datepicker.selectingYear }">{{ datepicker.date.format("ddd, MMM DD") }}</span> ' +
+                                        '<span class="mdp-datepicker-date" ng-click="datepicker.showCalendar()" ng-class="{ \'active\': !datepicker.selectingYear }">{{ datepicker.date.format(datepicker.displayFormat) }}</span> ' +
                                     '</md-toolbar>' + 
                                 '</div>' +  
                                 '<div>' + 
