@@ -290,7 +290,7 @@ module.directive("mdpDatePicker", ["$mdpDatePicker", "$timeout", function($mdpDa
         transclude: true,
         template: '<div layout layout-align="start start">' +
                     '<md-button class="md-icon-button" ng-click="showPicker($event)">' +
-                        '<md-icon md-font-set="material-icons"> event </md-icon>' +
+                        '<md-icon md-svg-icon="mdp-event"></md-icon>' +
                     '</md-button>' +
                     '<md-input-container md-no-float class="md-block">' +
                         '<input type="{{ type }}" placeholder="{{ placeholder }}" aria-label="{{ placeholder }}" />' +
