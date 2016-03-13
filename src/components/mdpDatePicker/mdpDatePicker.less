@@ -1,5 +1,6 @@
 .mdp-datepicker {
     max-height: initial;
+    min-width: 234px;
     * {
         outline: 0;
     }
@@ -9,6 +10,7 @@
         padding: 0px 5px;
     }
 }
+
 .mdp-calendar-week-days {
     font-size: 0.75rem;
     opacity: 0.6;
@@ -125,6 +127,16 @@
         height: 100%;
         width: 100%;
     } 
+}
+
+mdp-date-picker {
+    & > md-input-container.md-has-icon {
+        padding-left: 40px;
+    }
+    
+    .md-button.md-icon-button {
+        margin: 18px 0 0 0;
+    }
 }
 
 .mdp-datepicker {

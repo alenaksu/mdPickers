@@ -74,6 +74,7 @@
 }
 .mdp-datepicker {
   max-height: initial;
+  min-width: 234px;
 }
 .mdp-datepicker * {
   outline: 0;
@@ -188,6 +189,12 @@
 .mdp-datepicker-select-year .md-virtual-repeat-scroller {
   height: 100%;
   width: 100%;
+}
+mdp-date-picker > md-input-container.md-has-icon {
+  padding-left: 40px;
+}
+mdp-date-picker .md-button.md-icon-button {
+  margin: 18px 0 0 0;
 }
 .mdp-datepicker:not(.portrait) .mdp-datepicker-select-year {
   width: 309px;
@@ -336,6 +343,12 @@ mdp-calendar {
 .mdp-timepicker.portrait .mdp-timepicker-selected-time {
   font-size: 4rem;
   margin-right: 1.5rem;
+}
+mdp-time-picker md-input-container.md-has-icon {
+  padding-left: 40px;
+}
+mdp-time-picker .md-button.md-icon-button {
+  margin: 18px 0 0 0;
 }
 .mdp-timepicker-selected-time > span,
 .mdp-timepicker-selected-ampm > span {
