@@ -405,7 +405,7 @@ module.directive("mdpDatePicker", ["$mdpDatePicker", "$timeout", function($mdpDa
                     inputElement[0].size = strValue.length;
                     ngModel.$setViewValue(strValue);
                 } else {
-                    if(ngModel.$pristine) inputContainerCtrl.setInvalid(true);
+                    if(ngModel.$pristine && ngModel.$invalid) inputContainerCtrl.setInvalid(true);
                     ngModel.$setViewValue(date);
                 }
                 if(!ngModel.$pristine && messages.hasClass("md-auto-hide") && inputContainer.hasClass("md-input-invalid")) messages.removeClass("md-auto-hide");

@@ -74,7 +74,7 @@
 }
 .mdp-datepicker {
   max-height: initial;
-  max-width: 0px;
+  min-width: 234px;
 }
 .mdp-datepicker * {
   outline: 0;
