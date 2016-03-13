@@ -257,45 +257,56 @@ module.directive("mdpTimePicker", ["$mdpTimePicker", "$timeout", function($mdpTi
         scope: {
             "timeFormat": "@mdpFormat",
             "placeholder": "@mdpPlaceholder",
-            "autoSwitch": "=?mdpAutoSwitch"
+            "autoSwitch": "=?mdpAutoSwitch",
+            "messages": "=?mdpMessages"
         },
-        link: function(scope, element, attrs, ngModel, transclude) {
-            var inputElement = element[0].querySelector('input'),
+        link: function(scope, element, attrs, ngModel, $transclude) {
+            var inputElement = angular.element(element[0].querySelector('input')),
                 inputContainer = angular.element(element[0].querySelector('md-input-container')),
                 inputContainerCtrl = inputContainer.controller("mdInputContainer");
+                
+            $transclude(function(clone) {
+               inputContainer.append(clone); 
+            });
+            
+            var messages = angular.element(inputContainer[0].querySelector("[ng-messages]"));
             
             scope.placeholder = scope.placeholder || "";
             scope.type = scope.timeFormat ? "text" : "time"
             scope.timeFormat = scope.timeFormat || "HH:mm";
             scope.autoSwitch = scope.autoSwitch || false;
-            scope.time = ngModel.$modelValue;
             
             scope.$watch(function() { return ngModel.$error }, function(newValue, oldValue) {
                 inputContainerCtrl.setInvalid(!ngModel.$pristine && !!Object.keys(ngModel.$error).length);
             }, true);
             
-            ngModel.$validators.format = function(value) {
-                return !value || moment(value, scope.timeFormat).isValid();
+            ngModel.$validators.format = function(modelValue, viewValue) {
+                return !viewValue || moment(viewValue, scope.timeFormat, true).isValid();
             };
             
             ngModel.$parsers.unshift(function(value) {
-                var parsed = moment(value, scope.timeFormat);
+                var parsed = moment(value, scope.timeFormat, true);
                 if(parsed.isValid())
                     return parsed.toDate(); 
                 else
                     return null;
             });
             
-            function updateTime(time) {
-                var value = moment(time, angular.isDate(time) ? null : scope.timeFormat),
+            function updateTime(time, updateInput) {
+                var value = moment(time, angular.isDate(time) ? null : scope.timeFormat, true),
                     strValue = value.format(scope.timeFormat);
+
                 if(value.isValid()) {
-                    inputElement.value = strValue;
-                    inputElement.size = strValue.length;
+                    if(updateInput) inputElement.val(strValue);
+                    inputElement[0].size = strValue.length;
                     ngModel.$setViewValue(strValue);
                 } else {
+                    if(ngModel.$pristine) inputContainerCtrl.setInvalid(true);
                     ngModel.$setViewValue(time);
                 }
+                if(!ngModel.$pristine && messages.hasClass("md-auto-hide") && inputContainer.hasClass("md-input-invalid")) messages.removeClass("md-auto-hide");
+                
+                inputContainerCtrl.setHasValue(ngModel.$isEmpty());
                     
             	ngModel.$render();
             }
@@ -304,21 +315,16 @@ module.directive("mdpTimePicker", ["$mdpTimePicker", "$timeout", function($mdpTi
                 $mdpTimePicker(ngModel.$modelValue, {
                     targetEvent: ev,
                     autoSwitch: scope.autoSwitch
-                }).then(updateTime);
+                }).then(function(time) {
+                    updateTime(time, true);
+                });
             };
             
-            transclude(function(clone) {
-                inputContainer.append(clone);
-            });
-            
-            angular.element(inputElement).on("blur", function(event) {
-                $timeout(function() { 
-                    updateTime(event.target.value);
-                });
+            inputElement.on("input blur", function(event) {
+                updateTime(event.target.value);
             });
             
             scope.$on("$destroy", function() {
-                
             })
         }
     };
