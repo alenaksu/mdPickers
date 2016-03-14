@@ -280,10 +280,12 @@ module.directive("mdpTimePicker", ["$mdpTimePicker", "$timeout", function($mdpTi
             }, true);
             
             scope.getValue = function() {
-                var strVal = moment(ngModel.$modelValue).format(scope.timeFormat);
-                inputContainerCtrl.setHasValue(!ngModel.$isEmpty(ngModel.$modelValue));
-                
-                return strVal;
+                if(angular.isDate(ngModel.$modelValue)) {
+                    var strVal = moment(ngModel.$modelValue).format(scope.timeFormat);
+                    inputContainerCtrl.setHasValue(!ngModel.$isEmpty(ngModel.$modelValue));
+                    
+                    return strVal;
+                 } else return "";
             };
             
             ngModel.$validators.format = function(modelValue, viewValue) {
