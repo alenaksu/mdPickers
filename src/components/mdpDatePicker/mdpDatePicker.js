@@ -320,10 +320,12 @@ module.directive("mdpDatePicker", ["$mdpDatePicker", "$timeout", function($mdpDa
             scope.autoSwitch = scope.autoSwitch || false;
             
             scope.getValue = function() {
-                var strVal = moment(ngModel.$modelValue).format(scope.dateFormat);
-                inputContainerCtrl.setHasValue(!ngModel.$isEmpty(ngModel.$modelValue));
-                
-                return strVal;
+                if(angular.isDate(ngModel.$modelValue)) {
+                    var strVal = moment(ngModel.$modelValue).format(scope.dateFormat);
+                    inputContainerCtrl.setHasValue(!ngModel.$isEmpty(ngModel.$modelValue));
+                    
+                    return strVal;
+                 } else return "";
             };
             
             scope.$watch(function() { return ngModel.$error }, function(newValue, oldValue) {
