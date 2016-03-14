@@ -293,7 +293,7 @@ module.directive("mdpDatePicker", ["$mdpDatePicker", "$timeout", function($mdpDa
                         '<md-icon md-svg-icon="mdp-event"></md-icon>' +
                     '</md-button>' +
                     '<md-input-container md-no-float class="md-block">' +
-                        '<input type="{{ type }}" placeholder="{{ placeholder }}" ng-value="getValue()" aria-label="{{ placeholder }}" />' +
+                        '<input type="{{ type }}" placeholder="{{ placeholder }}" value="{{ getValue() }}" aria-label="{{ placeholder }}" />' +
                     '</md-input-container>' +
                 '</div>',
         scope: {
@@ -347,7 +347,7 @@ module.directive("mdpDatePicker", ["$mdpDatePicker", "$timeout", function($mdpDa
                     }
                     return parsed.toDate(); 
                 } else
-                    return null;
+                    return angular.isDate(ngModel.$modelValue) ? ngModel.$modelValue : null;
             });
             
             function updateDate(date) {
