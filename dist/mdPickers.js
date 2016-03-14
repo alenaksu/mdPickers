@@ -354,7 +354,7 @@ module.directive("mdpDatePicker", ["$mdpDatePicker", "$timeout", function($mdpDa
                         '<md-icon md-svg-icon="mdp-event"></md-icon>' +
                     '</md-button>' +
                     '<md-input-container md-no-float class="md-block">' +
-                        '<input type="{{ type }}" placeholder="{{ placeholder }}" aria-label="{{ placeholder }}" />' +
+                        '<input type="{{ type }}" placeholder="{{ placeholder }}" value="{{ getValue() }}" aria-label="{{ placeholder }}" />' +
                     '</md-input-container>' +
                 '</div>',
         scope: {
@@ -380,28 +380,42 @@ module.directive("mdpDatePicker", ["$mdpDatePicker", "$timeout", function($mdpDa
             scope.placeholder = scope.placeholder || scope.dateFormat;
             scope.autoSwitch = scope.autoSwitch || false;
             
+            scope.getValue = function() {
+                var strVal = moment(ngModel.$modelValue).format(scope.dateFormat);
+                inputContainerCtrl.setHasValue(!ngModel.$isEmpty(ngModel.$modelValue));
+                
+                return strVal;
+            };
+            
             scope.$watch(function() { return ngModel.$error }, function(newValue, oldValue) {
                 inputContainerCtrl.setInvalid(!ngModel.$pristine && !!Object.keys(ngModel.$error).length);
             }, true);
             
             ngModel.$validators.format = function(modelValue, viewValue) {
-                return !viewValue || moment(viewValue, scope.dateFormat, true).isValid();
+                return !viewValue || angular.isDate(viewValue) || moment(viewValue, scope.dateFormat, true).isValid();
             };
             
             ngModel.$parsers.unshift(function(value) {
                 var parsed = moment(value, scope.dateFormat, true);
-                if(parsed.isValid())
+                if(parsed.isValid()) {
+                    if(angular.isDate(ngModel.$modelValue)) {
+                        var originalModel = moment(ngModel.$modelValue);
+                        originalModel.year(parsed.year());
+                        originalModel.month(parsed.month());
+                        originalModel.date(parsed.date());
+                        
+                        parsed = originalModel;
+                    }
                     return parsed.toDate(); 
-                else
-                    return null;
+                } else
+                    return angular.isDate(ngModel.$modelValue) ? ngModel.$modelValue : null;
             });
             
-            function updateDate(date, updateInput) {
+            function updateDate(date) {
                 var value = moment(date, angular.isDate(date) ? null : scope.dateFormat, true),
                     strValue = value.format(scope.dateFormat);
 
                 if(value.isValid()) {
-                    if(updateInput) inputElement.val(strValue);
                     inputElement[0].size = strValue.length;
                     ngModel.$setViewValue(strValue);
                 } else {
@@ -409,8 +423,6 @@ module.directive("mdpDatePicker", ["$mdpDatePicker", "$timeout", function($mdpDa
                     ngModel.$setViewValue(date);
                 }
                 if(!ngModel.$pristine && messages.hasClass("md-auto-hide") && inputContainer.hasClass("md-input-invalid")) messages.removeClass("md-auto-hide");
-                
-                inputContainerCtrl.setHasValue(ngModel.$isEmpty());
                     
             	ngModel.$render();
             }
@@ -421,9 +433,7 @@ module.directive("mdpDatePicker", ["$mdpDatePicker", "$timeout", function($mdpDa
             	    maxDate: scope.maxDate,
             	    dateFilter: scope.dateFilter,
             	    targetEvent: ev
-        	    }).then(function(date) {
-            		updateDate(date, true);
-        	    });
+        	    }).then(updateDate);
             };
             
             inputElement.on("input blur", function(event) {
@@ -688,7 +698,7 @@ module.directive("mdpTimePicker", ["$mdpTimePicker", "$timeout", function($mdpTi
                         '<md-icon md-svg-icon="mdp-access-time"></md-icon>' +
                     '</md-button>' +
                     '<md-input-container md-no-float class="md-block">' +
-                        '<input type="{{ type }}" placeholder="{{ placeholder }}" aria-label="{{ placeholder }}" />' +
+                        '<input type="{{ type }}" placeholder="{{ placeholder }}" value="{{ getValue() }}" aria-label="{{ placeholder }}" />' +
                     '</md-input-container>' +
                 '</div>',
         scope: {
@@ -716,16 +726,31 @@ module.directive("mdpTimePicker", ["$mdpTimePicker", "$timeout", function($mdpTi
                 inputContainerCtrl.setInvalid(!ngModel.$pristine && !!Object.keys(ngModel.$error).length);
             }, true);
             
+            scope.getValue = function() {
+                var strVal = moment(ngModel.$modelValue).format(scope.timeFormat);
+                inputContainerCtrl.setHasValue(!ngModel.$isEmpty(ngModel.$modelValue));
+                
+                return strVal;
+            };
+            
             ngModel.$validators.format = function(modelValue, viewValue) {
-                return !viewValue || moment(viewValue, scope.timeFormat, true).isValid();
+                return !viewValue || angular.isDate(viewValue) || moment(viewValue, scope.timeFormat, true).isValid();
             };
             
             ngModel.$parsers.unshift(function(value) {
                 var parsed = moment(value, scope.timeFormat, true);
-                if(parsed.isValid())
+                if(parsed.isValid()) {
+                    if(angular.isDate(ngModel.$modelValue)) {
+                        var originalModel = moment(ngModel.$modelValue);
+                        originalModel.minutes(parsed.minutes());
+                        originalModel.hours(parsed.hours());
+                        originalModel.seconds(parsed.seconds());
+                        
+                        parsed = originalModel;
+                    }
                     return parsed.toDate(); 
-                else
-                    return null;
+                } else
+                    return angular.isDate(ngModel.$modelValue) ? ngModel.$modelValue : null;
             });
             
             function updateTime(time, updateInput) {
