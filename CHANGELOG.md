@@ -1,3 +1,7 @@
+### 0.7.1
+
+Bugfixes and improvements
+
 ### 0.7.0
 
 Bugfixes and improvements (obviously.. :))
