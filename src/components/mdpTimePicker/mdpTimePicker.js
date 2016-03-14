@@ -251,7 +251,7 @@ module.directive("mdpTimePicker", ["$mdpTimePicker", "$timeout", function($mdpTi
                         '<md-icon md-svg-icon="mdp-access-time"></md-icon>' +
                     '</md-button>' +
                     '<md-input-container md-no-float class="md-block">' +
-                        '<input type="{{ type }}" placeholder="{{ placeholder }}" aria-label="{{ placeholder }}" />' +
+                        '<input type="{{ type }}" placeholder="{{ placeholder }}" ng-value="getValue()" aria-label="{{ placeholder }}" />' +
                     '</md-input-container>' +
                 '</div>',
         scope: {
@@ -279,15 +279,30 @@ module.directive("mdpTimePicker", ["$mdpTimePicker", "$timeout", function($mdpTi
                 inputContainerCtrl.setInvalid(!ngModel.$pristine && !!Object.keys(ngModel.$error).length);
             }, true);
             
+            scope.getValue = function() {
+                var strVal = moment(ngModel.$modelValue).format(scope.timeFormat);
+                inputContainerCtrl.setHasValue(!ngModel.$isEmpty(ngModel.$modelValue));
+                
+                return strVal;
+            };
+            
             ngModel.$validators.format = function(modelValue, viewValue) {
-                return !viewValue || moment(viewValue, scope.timeFormat, true).isValid();
+                return !viewValue || angular.isDate(viewValue) || moment(viewValue, scope.timeFormat, true).isValid();
             };
             
             ngModel.$parsers.unshift(function(value) {
                 var parsed = moment(value, scope.timeFormat, true);
-                if(parsed.isValid())
+                if(parsed.isValid()) {
+                    if(angular.isDate(ngModel.$modelValue)) {
+                        var originalModel = moment(ngModel.$modelValue);
+                        originalModel.minutes(parsed.minutes());
+                        originalModel.hours(parsed.hours());
+                        originalModel.seconds(parsed.seconds());
+                        
+                        parsed = originalModel;
+                    }
                     return parsed.toDate(); 
-                else
+                } else
                     return null;
             });
             
