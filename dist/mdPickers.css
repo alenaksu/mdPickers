@@ -226,6 +226,9 @@ mdp-date-picker .md-button.md-icon-button {
   width: 294px;
   overflow-x: hidden;
 }
+.mdp-datepicker.portrait {
+  max-width: 234px;
+}
 .mdp-datepicker.portrait .mdp-calendar {
   text-align: center;
   width: 100%;

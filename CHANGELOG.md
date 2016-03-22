@@ -1,3 +1,15 @@
+### 0.7.2
+
+#### Breaking changes
+
+`min` and `max` attributes are refactored to `mdp-min-date` and `mdp-max-date` respectively and are setup as two-way binding
+
+#### Features
+
+* Floating labels and `mdp-no-float` attribute
+* Directives are restricted to (A)ttribute and (E)lement
+* `mdp-open-on-click` attribute for open date picker by clicking on the input
+
 ### 0.7.1
 
 Bugfixes and improvements
