@@ -284,15 +284,6 @@ module.directive("mdpTimePicker", ["$mdpTimePicker", "$timeout", function($mdpTi
                 inputContainerCtrl.setInvalid(!ngModel.$pristine && !!Object.keys(ngModel.$error).length);
             }, true);
             
-            scope.getValue = function() {
-                if(angular.isDate(ngModel.$modelValue)) {
-                    var strVal = moment(ngModel.$modelValue).format(scope.timeFormat);
-                    inputContainerCtrl.setHasValue(!ngModel.$isEmpty(ngModel.$modelValue));
-                    
-                    return strVal;
-                 } else return "";
-            };
-            
             // update input element if model has changed
             ngModel.$formatters.unshift(function(value) {
                 var time = angular.isDate(value) && moment(value);
