@@ -2,7 +2,7 @@
 
 #### Breaking changes
 
-`min` and `max` attributes are refactored to `mdp-min-date` and `mdp-max-date` respectively
+`min` and `max` attributes are refactored to `mdp-min-date` and `mdp-max-date` respectively and are setup as two-way binding
 
 #### Features
 
