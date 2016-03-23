@@ -1,3 +1,3 @@
-require ('./src/mdPickers');
+require ('./dist/mdPickers');
 
 module.exports = 'mdPickers';
