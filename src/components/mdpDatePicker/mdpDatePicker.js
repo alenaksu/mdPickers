@@ -359,7 +359,7 @@ module.directive("mdpDatePicker", ["$mdpDatePicker", "$timeout", function($mdpDa
                 
                 var messages = angular.element(inputContainer[0].querySelector("[ng-messages]"));
                 
-                scope.type = scope.dateFormat ? "text" : "date"
+                scope.type = scope.dateFormat ? "text" : "date";
                 scope.dateFormat = scope.dateFormat || "YYYY-MM-DD";
                 scope.model = ngModel;
                 
@@ -370,8 +370,10 @@ module.directive("mdpDatePicker", ["$mdpDatePicker", "$timeout", function($mdpDa
                 // update input element if model has changed
                 ngModel.$formatters.unshift(function(value) {
                     var date = angular.isDate(value) && moment(value);
-                    if(date && date.isValid()) 
+                    if(date && date.isValid())
                         updateInputElement(date.format(scope.dateFormat));
+                    else
+                        updateInputElement();
                 });
                 
                 ngModel.$validators.format = function(modelValue, viewValue) {
@@ -405,12 +407,14 @@ module.directive("mdpDatePicker", ["$mdpDatePicker", "$timeout", function($mdpDa
                     } else
                         return angular.isDate(ngModel.$modelValue) ? ngModel.$modelValue : null;
                 });
-                
+
                 // update input element value
                 function updateInputElement(value) {
-                    if(ngModel.$valid)
+                    if (value) {
                         inputElement[0].size = value.length + 1;
-                    inputElement[0].value = value;
+                        inputElement[0].value = value;
+                    } else
+                        inputElement[0].value = '';
                     inputContainerCtrl.setHasValue(!ngModel.$isEmpty(value));
                 }
                 
