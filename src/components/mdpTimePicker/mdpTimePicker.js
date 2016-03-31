@@ -29,7 +29,7 @@ function TimePickerCtrl($scope, $mdDialog, time, autoSwitch, $mdMedia) {
 	};
     
     this.cancel = function() {
-        $mdDialog.cancel();
+        $mdDialog.hide();
     };
 
     this.confirm = function() {
@@ -201,7 +201,8 @@ module.provider("$mdpTimePicker", function() {
             return $mdDialog.show({
                 controller:  ['$scope', '$mdDialog', 'time', 'autoSwitch', '$mdMedia', TimePickerCtrl],
                 controllerAs: 'timepicker',
-                clickOutsideToClose: true,
+                clickOutsideToClose: false,
+                escapeToClose: false,
                 template: '<md-dialog aria-label="" class="mdp-timepicker" ng-class="{ \'portrait\': !$mdMedia(\'gt-xs\') }">' +
                             '<md-dialog-content layout-gt-xs="row" layout-wrap>' +
                                 '<md-toolbar layout-gt-xs="column" layout-xs="row" layout-align="center center" flex class="mdp-timepicker-time md-hue-1 md-primary">' +
