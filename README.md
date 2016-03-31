@@ -21,7 +21,7 @@
 
 <p><trans data-src="Install via Bower:" data-dst="安装通过凉亭：" style="background: transparent;">安装通过凉亭：</trans></p>
 
-<div class="highlight highlight-source-shell"><pre><trans data-src="bower install mdPickers" data-dst="安装mdpickers凉亭">安装mdpickers凉亭</trans></pre></div>
+<div class="highlight highlight-source-shell"><pre><trans data-src="bower install mdPickers" data-dst="bower install mdPickers">bower install mdPickers</trans></pre></div>
 
 <p><trans data-src="Use in Angular:" data-dst="使用角：">使用角：</trans></p>
 
