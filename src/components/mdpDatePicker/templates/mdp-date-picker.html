@@ -1,0 +1,38 @@
+<md-dialog
+	class="mdp-datepicker"
+	ng-class="{portrait: !$mdMedia('gt-xs')}">
+    <md-dialog-content layout="row" layout-wrap>
+        <div layout="column" layout-align="start center">
+            <md-toolbar layout-align="start start" flex="noshrink" class="mdp-datepicker-date-wrapper md-hue-1 md-primary" layout="column">
+                <span
+                	class="mdp-datepicker-year"
+                	ng-click="datepicker.showYear()"
+                	ng-class="{active: datepicker.selectingYear}">
+                	{{ datepicker.date.format('YYYY') }}
+                </span>
+                <span
+                	class="mdp-datepicker-date"
+                	ng-click="datepicker.showCalendar()" ng-class="{active: !datepicker.selectingYear}">
+                	{{ datepicker.date.format(datepicker.displayFormat) }}
+                </span>
+            </md-toolbar>
+        </div>
+        <div>
+            <div class="mdp-datepicker-select-year mdp-animation-zoom" layout="column" layout-align="center start" ng-if="datepicker.selectingYear">
+                <md-virtual-repeat-container md-auto-shrink md-top-index="datepicker.yearTopIndex">
+                    <div flex md-virtual-repeat="item in ::datepicker.yearItems" md-on-demand class="repeated-year">
+                        <span class="md-button" ng-click="datepicker.selectYear(item)" md-ink-ripple ng-class="{ 'md-primary current': item == year }">{{ item }}</span>
+                    </div>
+                </md-virtual-repeat-container>
+            </div>
+
+            <mdp-calendar ng-if="!datepicker.selectingYear" class="mdp-animation-zoom" date="datepicker.date" min-date="datepicker.minDate" date-filter="datepicker.dateFilter" max-date="datepicker.maxDate"></mdp-calendar>
+
+            <md-dialog-actions layout="row">
+                <span flex></span>
+                <md-button ng-click="datepicker.cancel()" aria-label="{{::datepicker.labels.cancel}}">{{::datepicker.labels.cancel}}</md-button>
+                <md-button ng-click="datepicker.confirm()" class="md-primary" aria-label="{{::datepicker.labels.ok}}">{{::datepicker.labels.ok}}</md-button>
+            </md-dialog-actions>
+        </div>
+    </md-dialog-content>
+</md-dialog>

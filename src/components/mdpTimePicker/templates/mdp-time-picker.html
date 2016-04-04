@@ -1,0 +1,24 @@
+<md-dialog class="mdp-timepicker" ng-class="{portrait: !$mdMedia('gt-xs')}">
+    <md-dialog-content layout="column" layout-gt-xs="row">
+        <md-toolbar layout-gt-xs="column" layout-xs="row" layout-align="center center" flex="noshrink" class="mdp-timepicker-time md-hue-1 md-primary">
+            <div class="mdp-timepicker-selected-time">
+                <span ng-class="{ 'active': timepicker.currentView == timepicker.VIEW_HOURS }" ng-click="timepicker.currentView = timepicker.VIEW_HOURS">{{ timepicker.time.format("h") }}</span>:<span ng-class="{ 'active': timepicker.currentView == timepicker.VIEW_MINUTES }" ng-click="timepicker.currentView = timepicker.VIEW_MINUTES">{{ timepicker.time.format("mm") }}</span>
+            </div>
+            <div layout="column" class="mdp-timepicker-selected-ampm">
+                <span ng-click="timepicker.setAM()" ng-class="{ 'active': timepicker.time.hours() < 12 }">AM</span>
+                <span ng-click="timepicker.setPM()" ng-class="{ 'active': timepicker.time.hours() >= 12 }">PM</span>
+            </div>
+        </md-toolbar>
+        <div flex="noshrink">
+            <div class="mdp-clock-switch-container" ng-switch="timepicker.currentView" layout layout-align="center center">
+                <mdp-clock class="mdp-animation-zoom" auto-switch="timepicker.autoSwitch" time="timepicker.time" type="hours" ng-switch-when="1"></mdp-clock>
+                <mdp-clock class="mdp-animation-zoom" auto-switch="timepicker.autoSwitch" time="timepicker.time" type="minutes" ng-switch-when="2"></mdp-clock>
+            </div>
+            <md-dialog-actions layout="row">
+                <span flex></span>
+                <md-button ng-click="timepicker.cancel()" aria-label="{{::timepicker.labels.cancel}}">{{::timepicker.labels.cancel}}</md-button>
+                <md-button ng-click="timepicker.confirm()" class="md-primary" aria-label="{{::timepicker.labels.ok}}">{{::timepicker.labels.ok}}</md-button>
+            </md-dialog-actions>
+        </div>
+    </md-dialog-content>
+</md-dialog>

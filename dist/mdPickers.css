@@ -130,6 +130,9 @@
   line-height: 32px;
   min-height: 32px;
 }
+.mdp-datepicker-date {
+  width: 100%;
+}
 .mdp-datepicker-date,
 .mdp-datepicker-day,
 .mdp-datepicker-dow,
