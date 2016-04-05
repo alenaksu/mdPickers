@@ -42,6 +42,10 @@
                         <mdp-date-picker mdp-placeholder="Date" ng-model="currentDate"></mdp-date-picker>
                     </div>
                     <div>
+                        <h4 class="md-subhead">Standard date picker (disabled)</h4>
+                        <mdp-date-picker mdp-disabled mdp-placeholder="Date" ng-model="currentDate"></mdp-date-picker>
+                    </div>
+                    <div>
                         <h4 class="md-subhead">Custom format + error messages</h4>
                         <mdp-date-picker required name="dateFormat" mdp-format="DD/MM/YYYY" mdp-placeholder="Date (DD/MM/YYYY)" ng-model="currentDateFormat">
                             <div ng-messages="demoForm.dateFormat.$error">
@@ -71,6 +75,10 @@
                     <div>
                         <h4 class="md-subhead">Standard time picker</h4>
                         <mdp-time-picker ng-model="currentTime"></mdp-time-picker>
+                    </div>
+                    <div>
+                        <h4 class="md-subhead">Standard time picker (disabled)</h4>
+                        <mdp-time-picker mdp-disabled ng-model="currentTime"></mdp-time-picker>
                     </div>
                     <div>
                         <h4 class="md-subhead">Auto switch between hours and minutes</h4>

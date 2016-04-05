@@ -18,11 +18,11 @@
                     openOnClick = angular.isDefined(attrs.mdpOpenOnClick) ? true : false;
 
                 return '<div layout layout-align="start start">' +
-                            '<md-button class="md-icon-button" ng-click="showPicker($event)">' +
+                            '<md-button ng-disabled="disabled" class="md-icon-button" ng-click="showPicker($event)">' +
                                 '<md-icon md-svg-icon="mdp-event"></md-icon>' +
                             '</md-button>' +
                             '<md-input-container' + (noFloat ? ' md-no-float' : '') + ' md-is-error="isError()" flex>' +
-                                '<input type="{{ type }}" aria-label="' + placeholder + '" placeholder="' + placeholder + '"' + (openOnClick ? ' ng-click="showPicker($event)" ' : '') + ' />' +
+                                '<input ng-disabled="disabled" type="{{ type }}" aria-label="' + placeholder + '" placeholder="' + placeholder + '"' + (openOnClick ? ' ng-click="showPicker($event)" ' : '') + ' />' +
                             '</md-input-container>' +
                         '</div>';
             },
@@ -33,7 +33,8 @@
                 'dateFormat': '@mdpFormat',
                 'placeholder': '@mdpPlaceholder',
                 'noFloat': '=mdpNoFloat',
-                'openOnClick': '=mdpOpenOnClick'
+                'openOnClick': '=mdpOpenOnClick',
+                'disabled': '=?mdpDisabled'
             },
             link: {
                 post: postLink
@@ -56,6 +57,10 @@
             scope.type = scope.dateFormat ? 'text' : 'date';
             scope.dateFormat = scope.dateFormat || 'YYYY-MM-DD';
             scope.model = ngModel;
+
+            if (!angular.isDefined(scope.disabled)) {
+                scope.disabled = attrs.hasOwnProperty('mdpDisabled');
+            }
 
             scope.isError = function() {
                 return !ngModel.$pristine && !!ngModel.$invalid;

@@ -17,11 +17,11 @@
                     openOnClick = angular.isDefined(attrs.mdpOpenOnClick) ? true : false;
 
                 return '<div layout layout-align="start start">' +
-                            '<md-button class="md-icon-button" ng-click="showPicker($event)">' +
+                            '<md-button ng-disabled="disabled" class="md-icon-button" ng-click="showPicker($event)">' +
                                 '<md-icon md-svg-icon="mdp-access-time"></md-icon>' +
                             '</md-button>' +
                             '<md-input-container flex' + (noFloat ? ' md-no-float' : '') + ' md-is-error="isError()">' +
-                                '<input type="{{ ::type }}" aria-label="' + placeholder + '" placeholder="' + placeholder + '"' + (openOnClick ? ' ng-click="showPicker($event)" ' : '') + ' />' +
+                                '<input ng-disabled="disabled" type="{{ ::type }}" aria-label="' + placeholder + '" placeholder="' + placeholder + '"' + (openOnClick ? ' ng-click="showPicker($event)" ' : '') + ' />' +
                             '</md-input-container>' +
                         '</div>';
             },
@@ -29,6 +29,7 @@
                 'timeFormat': '@mdpFormat',
                 'placeholder': '@mdpPlaceholder',
                 'autoSwitch': '=?mdpAutoSwitch',
+                'disabled': '=?mdpDisabled'
             },
             link: linkFn
         };
@@ -49,6 +50,10 @@
             scope.type = scope.timeFormat ? 'text' : 'time';
             scope.timeFormat = scope.timeFormat || 'HH:mm';
             scope.autoSwitch = scope.autoSwitch || false;
+
+            if (!angular.isDefined(scope.disabled)) {
+                scope.disabled = attrs.hasOwnProperty('mdpDisabled');
+            }
 
             scope.$watch(function() {
                 return ngModel.$error;
