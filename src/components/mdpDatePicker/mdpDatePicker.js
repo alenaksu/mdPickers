@@ -389,6 +389,10 @@ module.directive("mdpDatePicker", ["$mdpDatePicker", "$timeout", function($mdpDa
                 ngModel.$validators.filter = function(modelValue, viewValue) {
                     return filterValidator(viewValue, scope.dateFormat, scope.dateFilter);
                 };
+
+                ngModel.$validators.required = function(modelValue, viewValue) {
+                    return !(modelValue === undefined || modelValue == null || modelValue == '');
+                };
                 
                 ngModel.$parsers.unshift(function(value) {
                     var parsed = moment(value, scope.dateFormat, true);
