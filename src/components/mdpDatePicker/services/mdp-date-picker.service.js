@@ -28,7 +28,7 @@
             return !value ||
                 angular.isDate(value) ||
                 !minDate.isValid() ||
-                date.isAfter(minDate);
+                date.isSameOrAfter(minDate);
         }
 
         function maxDateValidator(value, format, maxDate) {
@@ -38,7 +38,7 @@
             return !value ||
                 angular.isDate(value) ||
                 !maxDate.isValid() ||
-                date.isBefore(maxDate);
+                date.isSameOrBefore(maxDate);
         }
 
         function filterValidator(value, format, filter) {
