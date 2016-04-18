@@ -274,6 +274,64 @@
 
 })();
 
+(function() {
+    'use strict';
+
+    angular
+        .module('mdPickers')
+        .provider("$mdpDatePicker", $mdpDatePicker);
+
+    /** @ngInject */
+    function $mdpDatePicker() {
+        var LABEL_OK = 'OK',
+            LABEL_CANCEL = 'Cancel',
+            DISPLAY_FORMAT = 'ddd, MMM DD';
+
+        this.setDisplayFormat = function(format) {
+            DISPLAY_FORMAT = format;
+        };
+
+        this.setOKButtonLabel = function(label) {
+            LABEL_OK = label;
+        };
+
+        this.setCancelButtonLabel = function(label) {
+            LABEL_CANCEL = label;
+        };
+
+        /** @ngInject */
+        this.$get = ["$mdDialog", function($mdDialog) {
+            var datePicker = function(currentDate, options) {
+                if (!angular.isDate(currentDate)) currentDate = Date.now();
+                if (!angular.isObject(options)) options = {};
+
+                options.displayFormat = DISPLAY_FORMAT;
+                options.labels = {
+                    cancel: LABEL_CANCEL,
+                    ok: LABEL_OK
+                };
+
+                return $mdDialog.show({
+                    controller: 'DatePickerCtrl',
+                    controllerAs: 'datepicker',
+                    clickOutsideToClose: true,
+                    templateUrl: 'mdpDatePicker/templates/mdp-date-picker.html',
+                    targetEvent: options.targetEvent,
+                    locals: {
+                        currentDate: currentDate,
+                        options: options
+                    },
+                    skipHide: true
+                });
+            };
+
+            return datePicker;
+        }];
+        this.$get.$inject = ["$mdDialog"];
+    }
+
+})();
+
 /* global moment, angular */
 
 (function() {
@@ -374,6 +432,10 @@
 
             ngModel.$validators.filter = function(modelValue, viewValue) {
                 return mdpDatePickerService.filterValidator(viewValue, scope.format, scope.dateFilter);
+            };
+
+            ngModel.$validators.required = function(modelValue, viewValue) {
+                return mdpDatePickerService.requiredValidator(viewValue);
             };
 
             function showPicker(ev) {
@@ -489,6 +551,10 @@
                 return mdpDatePickerService.filterValidator(viewValue, scope.dateFormat, scope.dateFilter);
             };
 
+            ngModel.$validators.required = function(modelValue, viewValue) {
+                return mdpDatePickerService.requiredValidator(viewValue);
+            };
+
             ngModel.$parsers.unshift(function(value) {
                 var parsed = moment(value, scope.dateFormat, true);
                 if (parsed.isValid()) {
@@ -561,64 +627,6 @@
 
     angular
         .module('mdPickers')
-        .provider("$mdpDatePicker", $mdpDatePicker);
-
-    /** @ngInject */
-    function $mdpDatePicker() {
-        var LABEL_OK = 'OK',
-            LABEL_CANCEL = 'Cancel',
-            DISPLAY_FORMAT = 'ddd, MMM DD';
-
-        this.setDisplayFormat = function(format) {
-            DISPLAY_FORMAT = format;
-        };
-
-        this.setOKButtonLabel = function(label) {
-            LABEL_OK = label;
-        };
-
-        this.setCancelButtonLabel = function(label) {
-            LABEL_CANCEL = label;
-        };
-
-        /** @ngInject */
-        this.$get = ["$mdDialog", function($mdDialog) {
-            var datePicker = function(currentDate, options) {
-                if (!angular.isDate(currentDate)) currentDate = Date.now();
-                if (!angular.isObject(options)) options = {};
-
-                options.displayFormat = DISPLAY_FORMAT;
-                options.labels = {
-                    cancel: LABEL_CANCEL,
-                    ok: LABEL_OK
-                };
-
-                return $mdDialog.show({
-                    controller: 'DatePickerCtrl',
-                    controllerAs: 'datepicker',
-                    clickOutsideToClose: true,
-                    templateUrl: 'mdpDatePicker/templates/mdp-date-picker.html',
-                    targetEvent: options.targetEvent,
-                    locals: {
-                        currentDate: currentDate,
-                        options: options
-                    },
-                    skipHide: true
-                });
-            };
-
-            return datePicker;
-        }];
-        this.$get.$inject = ["$mdDialog"];
-    }
-
-})();
-
-(function() {
-    'use strict';
-
-    angular
-        .module('mdPickers')
         .factory('mdpDatePickerService', mdpDatePickerService);
 
     /** @ngInject */
@@ -628,7 +636,8 @@
             formatValidator: formatValidator,
             minDateValidator: minDateValidator,
             maxDateValidator: maxDateValidator,
-            filterValidator: filterValidator
+            filterValidator: filterValidator,
+            requiredValidator: requiredValidator
         };
 
         return service;
@@ -666,6 +675,170 @@
                 !filter(date);
         }
 
+        function requiredValidator(value) {
+            return !(value === undefined || value === null || value === '');
+        }
+
+    }
+})();
+
+(function() {
+    'use strict';
+
+    ClockCtrl.$inject = ["$scope"];
+    angular
+        .module('mdPickers')
+        .controller('ClockCtrl', ClockCtrl);
+
+    /** @ngInject */
+    function ClockCtrl($scope) {
+        var vm = this;
+
+        var TYPE_HOURS = "hours";
+        var TYPE_MINUTES = "minutes";
+
+        vm.STEP_DEG = 360 / 12;
+        vm.steps = [];
+        vm.CLOCK_TYPES = {
+            "hours": {
+                range: 12,
+            },
+            "minutes": {
+                range: 60,
+            }
+        };
+
+        vm.getPointerStyle = getPointerStyle;
+        vm.setTimeByDeg = setTimeByDeg;
+        vm.setTime = setTime;
+        vm.init = init;
+
+        vm.init();
+
+        function getPointerStyle() {
+            var divider = 1;
+            switch (vm.type) {
+                case TYPE_HOURS:
+                    divider = 12;
+                    break;
+                case TYPE_MINUTES:
+                    divider = 60;
+                    break;
+            }
+            var degrees = Math.round(vm.selected * (360 / divider)) - 180;
+            return {
+                "-webkit-transform": "rotate(" + degrees + "deg)",
+                "-ms-transform": "rotate(" + degrees + "deg)",
+                "transform": "rotate(" + degrees + "deg)"
+            }
+        }
+
+        function setTimeByDeg(deg) {
+            deg = deg >= 360 ? 0 : deg;
+            var divider = 0;
+            switch (vm.type) {
+                case TYPE_HOURS:
+                    divider = 12;
+                    break;
+                case TYPE_MINUTES:
+                    divider = 60;
+                    break;
+            }
+
+            vm.setTime(
+                Math.round(divider / 360 * deg)
+            );
+        }
+
+        function setTime(time, type) {
+            vm.selected = time;
+
+            switch (vm.type) {
+                case TYPE_HOURS:
+                    if (vm.time.format("A") == "PM") time += 12;
+                    vm.time.hours(time);
+                    break;
+                case TYPE_MINUTES:
+                    if (time > 59) time -= 60;
+                    vm.time.minutes(time);
+                    break;
+            }
+        }
+
+        function init() {
+            vm.type = vm.type || "hours";
+            switch (vm.type) {
+                case TYPE_HOURS:
+                    for (var i = 1; i <= 12; i++)
+                        vm.steps.push(i);
+                    vm.selected = vm.time.hours() || 0;
+                    if (vm.selected > 12) vm.selected -= 12;
+
+                    break;
+                case TYPE_MINUTES:
+                    for (var i = 5; i <= 55; i += 5)
+                        vm.steps.push(i);
+                    vm.steps.push(0);
+                    vm.selected = vm.time.minutes() || 0;
+
+                    break;
+            }
+        }
+    }
+
+})();
+
+(function() {
+    'use strict';
+
+    TimePickerCtrl.$inject = ["$scope", "$mdDialog", "time", "options", "$mdMedia"];
+    angular
+        .module('mdPickers')
+        .controller('TimePickerCtrl', TimePickerCtrl);
+
+    /** @ngInject */
+    function TimePickerCtrl($scope, $mdDialog, time, options, $mdMedia) {
+        var vm = this;
+
+        vm.VIEW_HOURS = 1;
+        vm.VIEW_MINUTES = 2;
+        vm.currentView = vm.VIEW_HOURS;
+        vm.time = moment(time);
+        vm.labels = options.labels;
+        vm.autoSwitch = !!options.autoSwitch;
+
+        vm.clockHours = parseInt(vm.time.format("h"));
+        vm.clockMinutes = parseInt(vm.time.minutes());
+
+        vm.switchView = switchView;
+        vm.setAM = setAM;
+        vm.setPM = setPM;
+        vm.cancel = cancel;
+        vm.confirm = confirm;
+
+        $scope.$mdMedia = $mdMedia;
+
+        function switchView() {
+            vm.currentView = vm.currentView == vm.VIEW_HOURS ? vm.VIEW_MINUTES : vm.VIEW_HOURS;
+        }
+
+        function setAM() {
+            if (vm.time.hours() >= 12)
+                vm.time.hour(vm.time.hour() - 12);
+        }
+
+        function setPM() {
+            if (vm.time.hours() < 12)
+                vm.time.hour(vm.time.hour() + 12);
+        }
+
+        function cancel() {
+            $mdDialog.cancel();
+        }
+
+        function confirm() {
+            $mdDialog.hide(vm.time.toDate());
+        }
     }
 })();
 
@@ -916,166 +1089,6 @@
         }
     }
 
-})();
-
-(function() {
-    'use strict';
-
-    ClockCtrl.$inject = ["$scope"];
-    angular
-        .module('mdPickers')
-        .controller('ClockCtrl', ClockCtrl);
-
-    /** @ngInject */
-    function ClockCtrl($scope) {
-        var vm = this;
-
-        var TYPE_HOURS = "hours";
-        var TYPE_MINUTES = "minutes";
-
-        vm.STEP_DEG = 360 / 12;
-        vm.steps = [];
-        vm.CLOCK_TYPES = {
-            "hours": {
-                range: 12,
-            },
-            "minutes": {
-                range: 60,
-            }
-        };
-
-        vm.getPointerStyle = getPointerStyle;
-        vm.setTimeByDeg = setTimeByDeg;
-        vm.setTime = setTime;
-        vm.init = init;
-
-        vm.init();
-
-        function getPointerStyle() {
-            var divider = 1;
-            switch (vm.type) {
-                case TYPE_HOURS:
-                    divider = 12;
-                    break;
-                case TYPE_MINUTES:
-                    divider = 60;
-                    break;
-            }
-            var degrees = Math.round(vm.selected * (360 / divider)) - 180;
-            return {
-                "-webkit-transform": "rotate(" + degrees + "deg)",
-                "-ms-transform": "rotate(" + degrees + "deg)",
-                "transform": "rotate(" + degrees + "deg)"
-            }
-        }
-
-        function setTimeByDeg(deg) {
-            deg = deg >= 360 ? 0 : deg;
-            var divider = 0;
-            switch (vm.type) {
-                case TYPE_HOURS:
-                    divider = 12;
-                    break;
-                case TYPE_MINUTES:
-                    divider = 60;
-                    break;
-            }
-
-            vm.setTime(
-                Math.round(divider / 360 * deg)
-            );
-        }
-
-        function setTime(time, type) {
-            vm.selected = time;
-
-            switch (vm.type) {
-                case TYPE_HOURS:
-                    if (vm.time.format("A") == "PM") time += 12;
-                    vm.time.hours(time);
-                    break;
-                case TYPE_MINUTES:
-                    if (time > 59) time -= 60;
-                    vm.time.minutes(time);
-                    break;
-            }
-        }
-
-        function init() {
-            vm.type = vm.type || "hours";
-            switch (vm.type) {
-                case TYPE_HOURS:
-                    for (var i = 1; i <= 12; i++)
-                        vm.steps.push(i);
-                    vm.selected = vm.time.hours() || 0;
-                    if (vm.selected > 12) vm.selected -= 12;
-
-                    break;
-                case TYPE_MINUTES:
-                    for (var i = 5; i <= 55; i += 5)
-                        vm.steps.push(i);
-                    vm.steps.push(0);
-                    vm.selected = vm.time.minutes() || 0;
-
-                    break;
-            }
-        }
-    }
-
-})();
-
-(function() {
-    'use strict';
-
-    TimePickerCtrl.$inject = ["$scope", "$mdDialog", "time", "options", "$mdMedia"];
-    angular
-        .module('mdPickers')
-        .controller('TimePickerCtrl', TimePickerCtrl);
-
-    /** @ngInject */
-    function TimePickerCtrl($scope, $mdDialog, time, options, $mdMedia) {
-        var vm = this;
-
-        vm.VIEW_HOURS = 1;
-        vm.VIEW_MINUTES = 2;
-        vm.currentView = vm.VIEW_HOURS;
-        vm.time = moment(time);
-        vm.labels = options.labels;
-        vm.autoSwitch = !!options.autoSwitch;
-
-        vm.clockHours = parseInt(vm.time.format("h"));
-        vm.clockMinutes = parseInt(vm.time.minutes());
-
-        vm.switchView = switchView;
-        vm.setAM = setAM;
-        vm.setPM = setPM;
-        vm.cancel = cancel;
-        vm.confirm = confirm;
-
-        $scope.$mdMedia = $mdMedia;
-
-        function switchView() {
-            vm.currentView = vm.currentView == vm.VIEW_HOURS ? vm.VIEW_MINUTES : vm.VIEW_HOURS;
-        }
-
-        function setAM() {
-            if (vm.time.hours() >= 12)
-                vm.time.hour(vm.time.hour() - 12);
-        }
-
-        function setPM() {
-            if (vm.time.hours() < 12)
-                vm.time.hour(vm.time.hour() + 12);
-        }
-
-        function cancel() {
-            $mdDialog.cancel();
-        }
-
-        function confirm() {
-            $mdDialog.hide(vm.time.toDate());
-        }
-    }
 })();
 
 (function() {

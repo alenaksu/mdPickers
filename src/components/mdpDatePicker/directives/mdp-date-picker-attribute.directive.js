@@ -40,6 +40,10 @@
                 return mdpDatePickerService.filterValidator(viewValue, scope.format, scope.dateFilter);
             };
 
+            ngModel.$validators.required = function(modelValue, viewValue) {
+                return mdpDatePickerService.requiredValidator(viewValue);
+            };
+
             function showPicker(ev) {
                 $mdpDatePicker(ngModel.$modelValue, {
                     minDate: scope.minDate,

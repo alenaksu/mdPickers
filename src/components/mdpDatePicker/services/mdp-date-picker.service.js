@@ -12,7 +12,8 @@
             formatValidator: formatValidator,
             minDateValidator: minDateValidator,
             maxDateValidator: maxDateValidator,
-            filterValidator: filterValidator
+            filterValidator: filterValidator,
+            requiredValidator: requiredValidator
         };
 
         return service;
@@ -48,6 +49,10 @@
                 angular.isDate(value) ||
                 !angular.isFunction(filter) ||
                 !filter(date);
+        }
+
+        function requiredValidator(value) {
+            return !(value === undefined || value === null || value === '');
         }
 
     }

@@ -89,6 +89,10 @@
                 return mdpDatePickerService.filterValidator(viewValue, scope.dateFormat, scope.dateFilter);
             };
 
+            ngModel.$validators.required = function(modelValue, viewValue) {
+                return mdpDatePickerService.requiredValidator(viewValue);
+            };
+
             ngModel.$parsers.unshift(function(value) {
                 var parsed = moment(value, scope.dateFormat, true);
                 if (parsed.isValid()) {
