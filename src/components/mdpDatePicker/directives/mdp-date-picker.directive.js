@@ -117,7 +117,7 @@
 
             // update input element value
             function updateInputElement(value) {
-                if (ngModel.$valid) {
+                if (ngModel.$valid && value && value.length) {
                     inputElement[0].size = value.length + 1;
                 }
                 inputElement[0].value = value;
@@ -136,6 +136,8 @@
                         updateInputElement(date);
                         ngModel.$setViewValue(date);
                     }
+                } else {
+                    ngModel.$setViewValue('');
                 }
 
                 if (!ngModel.$pristine &&
@@ -155,11 +157,9 @@
             };
 
             function onInputElementEvents(event) {
-                var value = scope.$eval(event.target.value);
-                if (!value || value === ngModel.$viewVaue) {
-                    return;
+                if (event.target.value !== ngModel.$viewValue) {
+                    updateDate(event.target.value);
                 }
-                updateDate(value);
             }
 
             inputElement.on('reset input blur', onInputElementEvents);
