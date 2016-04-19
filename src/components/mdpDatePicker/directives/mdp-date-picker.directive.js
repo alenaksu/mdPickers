@@ -73,8 +73,9 @@
             // update input element if model has changed
             ngModel.$formatters.unshift(function(value) {
                 var date = angular.isDate(value) && moment(value);
-                if (date && date.isValid())
+                if (date && date.isValid()) {
                     updateInputElement(date.format(scope.dateFormat));
+                }
             });
 
             ngModel.$validators.format = function(modelValue, viewValue) {
@@ -109,28 +110,32 @@
                         parsed = originalModel;
                     }
                     return parsed.toDate();
-                } else
+                } else {
                     return angular.isDate(ngModel.$modelValue) ? ngModel.$modelValue : null;
+                }
             });
 
             // update input element value
             function updateInputElement(value) {
-                if (ngModel.$valid)
+                if (ngModel.$valid) {
                     inputElement[0].size = value.length + 1;
+                }
                 inputElement[0].value = value;
                 inputContainerCtrl.setHasValue(!ngModel.$isEmpty(value));
             }
 
             function updateDate(date) {
-                var value = moment(date, angular.isDate(date) ? null : scope.dateFormat, true),
-                    strValue = value.format(scope.dateFormat);
+                if (date) {
+                    var value = moment(date, angular.isDate(date) ? null : scope.dateFormat, true),
+                        strValue = value.format(scope.dateFormat);
 
-                if (value.isValid()) {
-                    updateInputElement(strValue);
-                    ngModel.$setViewValue(strValue);
-                } else {
-                    updateInputElement(date);
-                    ngModel.$setViewValue(date);
+                    if (value.isValid()) {
+                        updateInputElement(strValue);
+                        ngModel.$setViewValue(strValue);
+                    } else {
+                        updateInputElement(date);
+                        ngModel.$setViewValue(date);
+                    }
                 }
 
                 if (!ngModel.$pristine &&
@@ -150,8 +155,11 @@
             };
 
             function onInputElementEvents(event) {
-                if (event.target.value !== ngModel.$viewVaue)
-                    updateDate(event.target.value);
+                var value = scope.$eval(event.target.value);
+                if (!value || value === ngModel.$viewVaue) {
+                    return;
+                }
+                updateDate(value);
             }
 
             inputElement.on('reset input blur', onInputElementEvents);

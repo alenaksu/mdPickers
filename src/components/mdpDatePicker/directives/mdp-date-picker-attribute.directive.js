@@ -57,7 +57,7 @@
                 }).then(applyValue);
             }
 
-            function applyValue (value) {
+            function applyValue () {
                 ngModel.$setViewValue(moment(time).format(scope.format));
                 ngModel.$render();
             }
