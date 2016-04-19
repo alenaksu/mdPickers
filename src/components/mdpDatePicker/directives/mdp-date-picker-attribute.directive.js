@@ -24,6 +24,10 @@
         function linkFn(scope, element, attrs, ngModel, $transclude) {
             scope.dateFormat = scope.dateFormat || "YYYY-MM-DD";
 
+            scope.$watch(function () {
+                return ngModel.$modelValue;
+            }, applyValue);
+
             ngModel.$validators.format = function(modelValue, viewValue) {
                 return mdpDatePickerService.formatValidator(viewValue, scope.format);
             };
@@ -50,10 +54,12 @@
                     maxDate: scope.maxDate,
                     dateFilter: scope.dateFilter,
                     targetEvent: ev
-                }).then(function(time) {
-                    ngModel.$setViewValue(moment(time).format(scope.format));
-                    ngModel.$render();
-                });
+                }).then(applyValue);
+            }
+
+            function applyValue (value) {
+                ngModel.$setViewValue(moment(time).format(scope.format));
+                ngModel.$render();
             }
 
             element.on('click', showPicker);
