@@ -9,16 +9,16 @@
     function ClockCtrl($scope) {
         var vm = this;
 
-        var TYPE_HOURS = "hours";
-        var TYPE_MINUTES = "minutes";
+        var TYPE_HOURS = 'hours';
+        var TYPE_MINUTES = 'minutes';
 
         vm.STEP_DEG = 360 / 12;
         vm.steps = [];
         vm.CLOCK_TYPES = {
-            "hours": {
+            hours: {
                 range: 12,
             },
-            "minutes": {
+            minutes: {
                 range: 60,
             }
         };
@@ -40,11 +40,17 @@
                     divider = 60;
                     break;
             }
+
+            if (angular.isNumber(vm.minutesSteps) && vm.type === TYPE_MINUTES) {
+                vm.selected = getClosestStep(vm.selected);
+            }
+
             var degrees = Math.round(vm.selected * (360 / divider)) - 180;
+
             return {
-                "-webkit-transform": "rotate(" + degrees + "deg)",
-                "-ms-transform": "rotate(" + degrees + "deg)",
-                "transform": "rotate(" + degrees + "deg)"
+                '-webkit-transform': 'rotate(' + degrees + 'deg)',
+                '-ms-transform': 'rotate(' + degrees + 'deg)',
+                'transform': 'rotate(' + degrees + 'deg)'
             }
         }
 
@@ -65,15 +71,22 @@
             );
         }
 
+        function getClosestStep (time) {
+            return Math.round(time / vm.minutesSteps) * vm.minutesSteps;
+        }
+
         function setTime(time, type) {
             vm.selected = time;
 
             switch (vm.type) {
                 case TYPE_HOURS:
-                    if (vm.time.format("A") == "PM") time += 12;
+                    if (vm.time.format('A') == 'PM') time += 12;
                     vm.time.hours(time);
                     break;
                 case TYPE_MINUTES:
+                    if (angular.isNumber(vm.minutesSteps)) {
+                        time = getClosestStep(time);
+                    }
                     if (time > 59) time -= 60;
                     vm.time.minutes(time);
                     break;
@@ -81,7 +94,7 @@
         }
 
         function init() {
-            vm.type = vm.type || "hours";
+            vm.type = vm.type || 'hours';
             switch (vm.type) {
                 case TYPE_HOURS:
                     for (var i = 1; i <= 12; i++)

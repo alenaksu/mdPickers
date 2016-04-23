@@ -13,6 +13,8 @@
             scope: {
                 'timeFormat': '@mdpFormat',
                 'autoSwitch': '=?mdpAutoSwitch',
+                'autoClose': '=?mdpAutoClose',
+                'minutesSteps': '=?mdpMinutesSteps'
             },
             link: linkFn
         }
@@ -20,14 +22,16 @@
         return directive;
 
         function linkFn(scope, element, attrs, ngModel, $transclude) {
-            scope.format = scope.format || "HH:mm";
+            scope.timeFormat = scope.timeFormat || 'HH:mm';
 
             function showPicker(ev) {
                 $mdpTimePicker(ngModel.$modelValue, {
                     targetEvent: ev,
-                    autoSwitch: scope.autoSwitch
+                    autoSwitch: scope.autoSwitch,
+                    autoClose: scope.autoClose,
+                    minutesSteps: scope.minutesSteps
                 }).then(function(time) {
-                    ngModel.$setViewValue(moment(time).format(scope.format));
+                    ngModel.$setViewValue(moment(time).format(scope.timeFormat));
                     ngModel.$render();
                 });
             };

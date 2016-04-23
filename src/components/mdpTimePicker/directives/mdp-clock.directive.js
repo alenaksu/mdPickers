@@ -6,13 +6,15 @@
         .directive('mdpClock', mdpClock);
 
     /** @ngInject */
-    function mdpClock($animate, $timeout, $$rAF) {
+    function mdpClock($animate, $timeout, $$rAF, $window) {
         var directive = {
             restrict: 'E',
             bindToController: {
                 'type': '@?',
                 'time': '=',
-                'autoSwitch': '=?'
+                'autoSwitch': '=?',
+                'autoClose': '=?',
+                'minutesSteps': '=?'
             },
             replace: true,
             templateUrl: 'mdpTimePicker/templates/clock.html',
@@ -33,26 +35,51 @@
                     y = ((event.pageY - containerCoords.top) - (event.currentTarget.offsetHeight / 2));
 
                 var deg = Math.round((Math.atan2(x, y) * (180 / Math.PI)));
+
                 $$rAF(function() {
-                    $timeout(function() {
+                    $timeout(function () {
                         ctrl.setTimeByDeg(deg + 180);
-                        if (ctrl.autoSwitch && ['mouseup', 'click'].indexOf(event.type) !== -1 && timepickerCtrl) timepickerCtrl.switchView();
+
+                        if (!timepickerCtrl) {
+                            return;
+                        }
+
+                        var isClickOrUp = ['mouseup', 'click'].indexOf(event.type) !== -1;
+                        var isMinutesPicker = timepickerCtrl.currentView === 2;
+                        var shouldClose = ctrl.autoClose && isMinutesPicker;
+
+                        if (!isClickOrUp) {
+                            return;
+                        }
+                        if (ctrl.autoSwitch && !shouldClose) {
+                            timepickerCtrl.switchView();
+                            return;
+                        };
+
+                        if (shouldClose) {
+                            timepickerCtrl.confirm();
+                            return;
+                        };
                     });
                 });
             };
 
             element.on('mousedown', function() {
                 element.on('mousemove', onEvent);
-            });
 
-            element.on('mouseup', function(e) {
-                element.off('mousemove', onEvent);
+                element.on('mouseup', function(e) {
+                    element.off('mousemove', onEvent);
+                    element.off('mouseup');
+                    onEvent(e);
+                });
             });
 
             element.on('click', onEvent);
+
             scope.$on('$destroy', function() {
                 element.off('click', onEvent);
                 element.off('mousemove', onEvent);
+                element.off('mousedown', onEvent);
             });
         }
     }

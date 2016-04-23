@@ -11,8 +11,8 @@
         </md-toolbar>
         <div flex="noshrink">
             <div class="mdp-clock-switch-container" ng-switch="timepicker.currentView" layout layout-align="center center">
-                <mdp-clock class="mdp-animation-zoom" auto-switch="timepicker.autoSwitch" time="timepicker.time" type="hours" ng-switch-when="1"></mdp-clock>
-                <mdp-clock class="mdp-animation-zoom" auto-switch="timepicker.autoSwitch" time="timepicker.time" type="minutes" ng-switch-when="2"></mdp-clock>
+                <mdp-clock class="mdp-animation-zoom" auto-switch="timepicker.autoSwitch" auto-close="timepicker.autoClose" minutes-steps="timepicker.minutesSteps" time="timepicker.time" type="hours" ng-switch-when="1"></mdp-clock>
+                <mdp-clock class="mdp-animation-zoom" auto-switch="timepicker.autoSwitch" auto-close="timepicker.autoClose" minutes-steps="timepicker.minutesSteps" time="timepicker.time" type="minutes" ng-switch-when="2"></mdp-clock>
             </div>
             <md-dialog-actions layout="row">
                 <span flex></span>

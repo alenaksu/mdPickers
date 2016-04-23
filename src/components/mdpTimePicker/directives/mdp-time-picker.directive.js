@@ -29,6 +29,8 @@
                 'timeFormat': '@mdpFormat',
                 'placeholder': '@mdpPlaceholder',
                 'autoSwitch': '=?mdpAutoSwitch',
+                'autoClose': '=?mdpAutoClose',
+                'minutesSteps': '=?mdpMinutesSteps',
                 'disabled': '=?mdpDisabled'
             },
             link: linkFn
@@ -50,6 +52,8 @@
             scope.type = scope.timeFormat ? 'text' : 'time';
             scope.timeFormat = scope.timeFormat || 'HH:mm';
             scope.autoSwitch = scope.autoSwitch || false;
+            scope.autoClose = scope.autoClose || false;
+            scope.minutesSteps = scope.minutesSteps || null;
 
             if (!angular.isDefined(scope.disabled)) {
                 scope.disabled = attrs.hasOwnProperty('mdpDisabled');
@@ -118,7 +122,9 @@
             scope.showPicker = function(ev) {
                 $mdpTimePicker(ngModel.$modelValue, {
                     targetEvent: ev,
-                    autoSwitch: scope.autoSwitch
+                    autoSwitch: scope.autoSwitch,
+                    autoClose: scope.autoClose,
+                    minutesSteps: scope.minutesSteps
                 }).then(function(time) {
                     updateTime(time, true);
                 });

@@ -15,6 +15,8 @@
         vm.time = moment(time);
         vm.labels = options.labels;
         vm.autoSwitch = !!options.autoSwitch;
+        vm.autoClose = !!options.autoClose;
+        vm.minutesSteps = options.minutesSteps || null;
 
         vm.clockHours = parseInt(vm.time.format("h"));
         vm.clockMinutes = parseInt(vm.time.minutes());

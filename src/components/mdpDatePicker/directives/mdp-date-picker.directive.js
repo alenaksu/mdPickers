@@ -58,10 +58,6 @@
             scope.dateFormat = scope.dateFormat || 'YYYY-MM-DD';
             scope.model = ngModel;
 
-            scope.$watch(function () {
-                return ngModel.$modelValue;
-            }, updateDate);
-
             if (!angular.isDefined(scope.disabled)) {
                 scope.disabled = attrs.hasOwnProperty('mdpDisabled');
             }
