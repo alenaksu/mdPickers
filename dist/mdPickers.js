@@ -87,194 +87,6 @@
 })();
 
 /* global moment, angular */
-(function () {
-    'use strict';
-
-    CalendarCtrl.$inject = ["$scope"];
-    angular
-        .module('mdPickers')
-        .controller('CalendarCtrl', CalendarCtrl);
-
-    /** @ngInject */
-    function CalendarCtrl($scope) {
-        var self = this;
-        this.dow = moment.localeData().firstDayOfWeek();
-
-        this.weekDays = [].concat(
-            moment.weekdaysMin().slice(
-                this.dow
-            ),
-            moment.weekdaysMin().slice(
-                0,
-                this.dow
-            )
-        );
-
-        this.daysInMonth = [];
-
-        this.getDaysInMonth = function() {
-            var days = self.date.daysInMonth(),
-                firstDay = moment(self.date).date(1).day() - this.dow;
-
-            if (firstDay < 0) firstDay = this.weekDays.length - 1;
-
-
-            var arr = [];
-            for (var i = 1; i <= (firstDay + days); i++) {
-                var day = null;
-                if (i > firstDay) {
-                    day = {
-                        value: (i - firstDay),
-                        enabled: self.isDayEnabled(moment(self.date).date(i - firstDay).toDate())
-                    };
-                }
-                arr.push(day);
-            }
-
-            return arr;
-        };
-
-        this.isDayEnabled = function(day) {
-            return (!this.minDate || this.minDate <= day) &&
-                (!this.maxDate || this.maxDate >= day) &&
-                (!self.dateFilter || !self.dateFilter(day));
-        };
-
-        this.selectDate = function(dom) {
-            self.date.date(dom);
-        };
-
-        this.nextMonth = function() {
-            self.date.add(1, 'months');
-        };
-
-        this.prevMonth = function() {
-            self.date.subtract(1, 'months');
-        };
-
-        this.updateDaysInMonth = function() {
-            self.daysInMonth = self.getDaysInMonth();
-        };
-
-        $scope.$watch(function() {
-            return self.date.unix() }, function(newValue, oldValue) {
-            if (newValue && newValue !== oldValue)
-                self.updateDaysInMonth();
-        })
-
-        self.updateDaysInMonth();
-    }
-
-})();
-
-/* global moment, angular */
-(function() {
-    'use strict';
-
-    DatePickerCtrl.$inject = ["$scope", "$mdDialog", "$mdMedia", "$timeout", "currentDate", "options"];
-    angular
-        .module('mdPickers')
-        .controller('DatePickerCtrl', DatePickerCtrl);
-
-    /** @ngInject */
-    function DatePickerCtrl($scope, $mdDialog, $mdMedia, $timeout, currentDate, options) {
-        var self = this;
-
-        this.date = moment(currentDate);
-        this.minDate = options.minDate && moment(options.minDate).isValid() ? moment(options.minDate) : null;
-        this.maxDate = options.maxDate && moment(options.maxDate).isValid() ? moment(options.maxDate) : null;
-        this.displayFormat = options.displayFormat || "ddd, MMM DD";
-        this.labels = options.labels;
-        this.dateFilter = angular.isFunction(options.dateFilter) ? options.dateFilter : null;
-        this.selectingYear = false;
-
-        // validate min and max date
-        if (this.minDate && this.maxDate) {
-            if (this.maxDate.isBefore(this.minDate)) {
-                this.maxDate = moment(this.minDate).add(1, 'days');
-            }
-        }
-
-        if (this.date) {
-            // check min date
-            if (this.minDate && this.date.isBefore(this.minDate)) {
-                this.date = moment(this.minDate);
-            }
-
-            // check max date
-            if (this.maxDate && this.date.isAfter(this.maxDate)) {
-                this.date = moment(this.maxDate);
-            }
-        }
-
-        this.yearItems = {
-            currentIndex_: 0,
-            PAGE_SIZE: 5,
-            START: (self.minDate ? self.minDate.year() : 1900),
-            END: (self.maxDate ? self.maxDate.year() : 0),
-            getItemAtIndex: function(index) {
-                if (this.currentIndex_ < index)
-                    this.currentIndex_ = index;
-
-                return this.START + index;
-            },
-            getLength: function() {
-                return Math.min(
-                    this.currentIndex_ + Math.floor(this.PAGE_SIZE / 2),
-                    Math.abs(this.START - this.END) + 1
-                );
-            }
-        };
-
-        $scope.$mdMedia = $mdMedia;
-        $scope.year = this.date.year();
-
-        this.selectYear = function(year) {
-            self.date.year(year);
-            $scope.year = year;
-            self.selectingYear = false;
-            self.animate();
-        };
-
-        this.showYear = function() {
-            self.yearTopIndex = (self.date.year() - self.yearItems.START) + Math.floor(self.yearItems.PAGE_SIZE / 2);
-            self.yearItems.currentIndex_ = (self.date.year() - self.yearItems.START) + 1;
-            self.selectingYear = true;
-        };
-
-        this.showCalendar = function() {
-            self.selectingYear = false;
-        };
-
-        this.cancel = function() {
-            $mdDialog.cancel();
-        };
-
-        this.confirm = function() {
-            var date = this.date;
-
-            if (this.minDate && this.date.isBefore(this.minDate)) {
-                date = moment(this.minDate);
-            }
-
-            if (this.maxDate && this.date.isAfter(this.maxDate)) {
-                date = moment(this.maxDate);
-            }
-
-            $mdDialog.hide(date.toDate());
-        };
-
-        this.animate = function() {
-            self.animating = true;
-            $timeout(angular.noop).then(function() {
-                self.animating = false;
-            })
-        };
-    }
-
-})();
-
-/* global moment, angular */
 
 (function() {
     'use strict';
@@ -481,6 +293,7 @@
                 var date = angular.isDate(value) && moment(value);
                 if (date && date.isValid()) {
                     updateInputElement(date.format(scope.dateFormat));
+                    ngModel.$setValidity('required', true);
                 } else {
                     updateInputElement('');
                 }
@@ -534,23 +347,22 @@
 
             function updateDate(date) {
                 if (date) {
-                    var value = moment(date, angular.isDate(date) ? null : scope.dateFormat, true),
-                        strValue = value.format(scope.dateFormat);
-
-                    if (value.isValid()) {
-                        updateInputElement(strValue);
-                        ngModel.$setViewValue(strValue);
-                    } else {
-                        updateInputElement(date);
-                        ngModel.$setViewValue(date);
+                    if (angular.isDate(date)) {
+                        date = moment(date).format(scope.dateFormat);
                     }
+                    var value = moment.isMoment(date) ? date.format(scope.dateFormat) : date;
+
+                    ngModel.$setViewValue(value);
+                    updateInputElement(value);
                 } else {
                     ngModel.$setViewValue('');
                 }
 
                 if (!ngModel.$pristine &&
                     messages.hasClass('md-auto-hide') &&
-                    inputContainer.hasClass('md-input-invalid')) messages.removeClass('md-auto-hide');
+                    inputContainer.hasClass('md-input-invalid')) {
+                    messages.removeClass('md-auto-hide');
+                }
 
                 ngModel.$render();
             }
@@ -576,6 +388,194 @@
                 inputElement.off('reset input blur', onInputElementEvents);
             });
         }
+    }
+
+})();
+
+/* global moment, angular */
+(function () {
+    'use strict';
+
+    CalendarCtrl.$inject = ["$scope"];
+    angular
+        .module('mdPickers')
+        .controller('CalendarCtrl', CalendarCtrl);
+
+    /** @ngInject */
+    function CalendarCtrl($scope) {
+        var self = this;
+        this.dow = moment.localeData().firstDayOfWeek();
+
+        this.weekDays = [].concat(
+            moment.weekdaysMin().slice(
+                this.dow
+            ),
+            moment.weekdaysMin().slice(
+                0,
+                this.dow
+            )
+        );
+
+        this.daysInMonth = [];
+
+        this.getDaysInMonth = function() {
+            var days = self.date.daysInMonth(),
+                firstDay = moment(self.date).date(1).day() - this.dow;
+
+            if (firstDay < 0) firstDay = this.weekDays.length - 1;
+
+
+            var arr = [];
+            for (var i = 1; i <= (firstDay + days); i++) {
+                var day = null;
+                if (i > firstDay) {
+                    day = {
+                        value: (i - firstDay),
+                        enabled: self.isDayEnabled(moment(self.date).date(i - firstDay).toDate())
+                    };
+                }
+                arr.push(day);
+            }
+
+            return arr;
+        };
+
+        this.isDayEnabled = function(day) {
+            return (!this.minDate || this.minDate <= day) &&
+                (!this.maxDate || this.maxDate >= day) &&
+                (!self.dateFilter || !self.dateFilter(day));
+        };
+
+        this.selectDate = function(dom) {
+            self.date.date(dom);
+        };
+
+        this.nextMonth = function() {
+            self.date.add(1, 'months');
+        };
+
+        this.prevMonth = function() {
+            self.date.subtract(1, 'months');
+        };
+
+        this.updateDaysInMonth = function() {
+            self.daysInMonth = self.getDaysInMonth();
+        };
+
+        $scope.$watch(function() {
+            return self.date.unix() }, function(newValue, oldValue) {
+            if (newValue && newValue !== oldValue)
+                self.updateDaysInMonth();
+        })
+
+        self.updateDaysInMonth();
+    }
+
+})();
+
+/* global moment, angular */
+(function() {
+    'use strict';
+
+    DatePickerCtrl.$inject = ["$scope", "$mdDialog", "$mdMedia", "$timeout", "currentDate", "options"];
+    angular
+        .module('mdPickers')
+        .controller('DatePickerCtrl', DatePickerCtrl);
+
+    /** @ngInject */
+    function DatePickerCtrl($scope, $mdDialog, $mdMedia, $timeout, currentDate, options) {
+        var self = this;
+
+        this.date = moment(currentDate);
+        this.minDate = options.minDate && moment(options.minDate).isValid() ? moment(options.minDate) : null;
+        this.maxDate = options.maxDate && moment(options.maxDate).isValid() ? moment(options.maxDate) : null;
+        this.displayFormat = options.displayFormat || "ddd, MMM DD";
+        this.labels = options.labels;
+        this.dateFilter = angular.isFunction(options.dateFilter) ? options.dateFilter : null;
+        this.selectingYear = false;
+
+        // validate min and max date
+        if (this.minDate && this.maxDate) {
+            if (this.maxDate.isBefore(this.minDate)) {
+                this.maxDate = moment(this.minDate).add(1, 'days');
+            }
+        }
+
+        if (this.date) {
+            // check min date
+            if (this.minDate && this.date.isBefore(this.minDate)) {
+                this.date = moment(this.minDate);
+            }
+
+            // check max date
+            if (this.maxDate && this.date.isAfter(this.maxDate)) {
+                this.date = moment(this.maxDate);
+            }
+        }
+
+        this.yearItems = {
+            currentIndex_: 0,
+            PAGE_SIZE: 5,
+            START: (self.minDate ? self.minDate.year() : 1900),
+            END: (self.maxDate ? self.maxDate.year() : 0),
+            getItemAtIndex: function(index) {
+                if (this.currentIndex_ < index)
+                    this.currentIndex_ = index;
+
+                return this.START + index;
+            },
+            getLength: function() {
+                return Math.min(
+                    this.currentIndex_ + Math.floor(this.PAGE_SIZE / 2),
+                    Math.abs(this.START - this.END) + 1
+                );
+            }
+        };
+
+        $scope.$mdMedia = $mdMedia;
+        $scope.year = this.date.year();
+
+        this.selectYear = function(year) {
+            self.date.year(year);
+            $scope.year = year;
+            self.selectingYear = false;
+            self.animate();
+        };
+
+        this.showYear = function() {
+            self.yearTopIndex = (self.date.year() - self.yearItems.START) + Math.floor(self.yearItems.PAGE_SIZE / 2);
+            self.yearItems.currentIndex_ = (self.date.year() - self.yearItems.START) + 1;
+            self.selectingYear = true;
+        };
+
+        this.showCalendar = function() {
+            self.selectingYear = false;
+        };
+
+        this.cancel = function() {
+            $mdDialog.cancel();
+        };
+
+        this.confirm = function() {
+            var date = this.date;
+
+            if (this.minDate && this.date.isBefore(this.minDate)) {
+                date = moment(this.minDate);
+            }
+
+            if (this.maxDate && this.date.isAfter(this.maxDate)) {
+                date = moment(this.maxDate);
+            }
+
+            $mdDialog.hide(date.toDate());
+        };
+
+        this.animate = function() {
+            self.animating = true;
+            $timeout(angular.noop).then(function() {
+                self.animating = false;
+            })
+        };
     }
 
 })();
@@ -911,6 +911,11 @@
                     y = ((event.pageY - containerCoords.top) - (event.currentTarget.offsetHeight / 2));
 
                 var deg = Math.round((Math.atan2(x, y) * (180 / Math.PI)));
+                var isMinutesPicker = timepickerCtrl.currentView === 2;
+                var shouldClose = ctrl.autoClose && isMinutesPicker;
+                var isClickOrUp = ['mouseup', 'click'].indexOf(event.type) !== -1;
+
+                console.log(shouldClose, isMinutesPicker, isClickOrUp);
 
                 $$rAF(function() {
                     $timeout(function () {
@@ -919,10 +924,6 @@
                         if (!timepickerCtrl) {
                             return;
                         }
-
-                        var isClickOrUp = ['mouseup', 'click'].indexOf(event.type) !== -1;
-                        var isMinutesPicker = timepickerCtrl.currentView === 2;
-                        var shouldClose = ctrl.autoClose && isMinutesPicker;
 
                         if (!isClickOrUp) {
                             return;
@@ -949,8 +950,6 @@
                     onEvent(e);
                 });
             });
-
-            element.on('click', onEvent);
 
             scope.$on('$destroy', function() {
                 element.off('click', onEvent);
@@ -1082,8 +1081,12 @@
             // update input element if model has changed
             ngModel.$formatters.unshift(function(value) {
                 var time = angular.isDate(value) && moment(value);
-                if (time && time.isValid())
+                if (time && time.isValid()) {
                     updateInputElement(time.format(scope.timeFormat));
+                    ngModel.$setValidity('required', true);
+                } else {
+                    updateInputElement('');
+                }
             });
 
             ngModel.$validators.format = function(modelValue, viewValue) {
@@ -1108,27 +1111,32 @@
 
             // update input element value
             function updateInputElement(value) {
-                if (ngModel.$valid)
+                if (ngModel.$valid) {
                     inputElement[0].size = value.length + 1;
+                }
                 inputElement[0].value = value;
                 inputContainerCtrl.setHasValue(!ngModel.$isEmpty(value));
             }
 
             function updateTime(time) {
-                var value = moment(time, angular.isDate(time) ? null : scope.timeFormat, true),
-                    strValue = value.format(scope.timeFormat);
+                if (time) {
+                    if (angular.isDate(time)) {
+                        time = moment(time).format(scope.timeFormat);
+                    }
 
-                if (value.isValid()) {
-                    updateInputElement(strValue);
-                    ngModel.$setViewValue(strValue);
+                    var value = moment.isMoment(time) ? time.format(scope.dateFormat) : time;
+
+                    updateInputElement(value);
+                    ngModel.$setViewValue(value);
                 } else {
-                    updateInputElement(time);
-                    ngModel.$setViewValue(time);
+                    ngModel.$setViewValue('');
                 }
 
                 if (!ngModel.$pristine &&
                     messages.hasClass('md-auto-hide') &&
-                    inputContainer.hasClass('md-input-invalid')) messages.removeClass('md-auto-hide');
+                    inputContainer.hasClass('md-input-invalid')) {
+                    messages.removeClass('md-auto-hide');
+                }
 
                 ngModel.$render();
             }
@@ -1145,8 +1153,9 @@
             };
 
             function onInputElementEvents(event) {
-                if (event.target.value !== ngModel.$viewVaue)
+                if (event.target.value !== ngModel.$viewValue) {
                     updateTime(event.target.value);
+                }
             }
 
             inputElement.on('reset input blur', onInputElementEvents);

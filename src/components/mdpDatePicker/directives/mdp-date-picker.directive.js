@@ -71,6 +71,7 @@
                 var date = angular.isDate(value) && moment(value);
                 if (date && date.isValid()) {
                     updateInputElement(date.format(scope.dateFormat));
+                    ngModel.$setValidity('required', true);
                 } else {
                     updateInputElement('');
                 }
@@ -124,23 +125,22 @@
 
             function updateDate(date) {
                 if (date) {
-                    var value = moment(date, angular.isDate(date) ? null : scope.dateFormat, true),
-                        strValue = value.format(scope.dateFormat);
-
-                    if (value.isValid()) {
-                        updateInputElement(strValue);
-                        ngModel.$setViewValue(strValue);
-                    } else {
-                        updateInputElement(date);
-                        ngModel.$setViewValue(date);
+                    if (angular.isDate(date)) {
+                        date = moment(date).format(scope.dateFormat);
                     }
+                    var value = moment.isMoment(date) ? date.format(scope.dateFormat) : date;
+
+                    ngModel.$setViewValue(value);
+                    updateInputElement(value);
                 } else {
                     ngModel.$setViewValue('');
                 }
 
                 if (!ngModel.$pristine &&
                     messages.hasClass('md-auto-hide') &&
-                    inputContainer.hasClass('md-input-invalid')) messages.removeClass('md-auto-hide');
+                    inputContainer.hasClass('md-input-invalid')) {
+                    messages.removeClass('md-auto-hide');
+                }
 
                 ngModel.$render();
             }

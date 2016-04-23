@@ -46,7 +46,11 @@
                     </div>
                     <div>
                         <h4 class="md-subhead">Standard date picker (disabled)</h4>
-                        <mdp-date-picker mdp-disabled mdp-placeholder="Date" ng-model="currentDate2"></mdp-date-picker>
+                        <mdp-date-picker name="disabledDateFormat" mdp-disabled mdp-placeholder="Date" ng-model="currentDate2">
+                            <div md-auto-hide="false" ng-messages="demoForm.disabledDateFormat.$error">
+                                <div ng-message="required">This is required</div>
+                            </div>
+                        </mdp-date-picker>
                     </div>
                     <div>
                         <h4 class="md-subhead">Custom format + error messages</h4>
@@ -88,7 +92,11 @@
                     </div>
                     <div>
                         <h4 class="md-subhead">Standard time picker (disabled)</h4>
-                        <mdp-time-picker mdp-disabled ng-model="currentDate2"></mdp-time-picker>
+                        <mdp-time-picker required mdp-disabled ng-model="currentDate2" name="disabledTimeFormat">
+                            <div md-auto-hide="false" ng-messages="demoForm.disabledTimeFormat.$error">
+                                <div ng-message="required">This is required</div>
+                            </div>
+                        </mdp-time-picker>
                     </div>
                     <div>
                         <h4 class="md-subhead">Auto switch between hours and minutes + steps + auto close</h4>
@@ -144,6 +152,10 @@
                     $timeout(function () {
                         $scope.currentDate2 = moment().toDate();
                     }, 2500);
+
+                    $timeout(function () {
+                        $scope.currentDateFormat = moment().toDate();
+                    }, 3500);
 
                     this.clearDate = function () {
                         $scope.currentDate = '';

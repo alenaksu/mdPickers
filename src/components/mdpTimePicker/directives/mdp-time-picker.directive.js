@@ -68,8 +68,12 @@
             // update input element if model has changed
             ngModel.$formatters.unshift(function(value) {
                 var time = angular.isDate(value) && moment(value);
-                if (time && time.isValid())
+                if (time && time.isValid()) {
                     updateInputElement(time.format(scope.timeFormat));
+                    ngModel.$setValidity('required', true);
+                } else {
+                    updateInputElement('');
+                }
             });
 
             ngModel.$validators.format = function(modelValue, viewValue) {
@@ -94,27 +98,32 @@
 
             // update input element value
             function updateInputElement(value) {
-                if (ngModel.$valid)
+                if (ngModel.$valid) {
                     inputElement[0].size = value.length + 1;
+                }
                 inputElement[0].value = value;
                 inputContainerCtrl.setHasValue(!ngModel.$isEmpty(value));
             }
 
             function updateTime(time) {
-                var value = moment(time, angular.isDate(time) ? null : scope.timeFormat, true),
-                    strValue = value.format(scope.timeFormat);
+                if (time) {
+                    if (angular.isDate(time)) {
+                        time = moment(time).format(scope.timeFormat);
+                    }
 
-                if (value.isValid()) {
-                    updateInputElement(strValue);
-                    ngModel.$setViewValue(strValue);
+                    var value = moment.isMoment(time) ? time.format(scope.dateFormat) : time;
+
+                    updateInputElement(value);
+                    ngModel.$setViewValue(value);
                 } else {
-                    updateInputElement(time);
-                    ngModel.$setViewValue(time);
+                    ngModel.$setViewValue('');
                 }
 
                 if (!ngModel.$pristine &&
                     messages.hasClass('md-auto-hide') &&
-                    inputContainer.hasClass('md-input-invalid')) messages.removeClass('md-auto-hide');
+                    inputContainer.hasClass('md-input-invalid')) {
+                    messages.removeClass('md-auto-hide');
+                }
 
                 ngModel.$render();
             }
@@ -131,8 +140,9 @@
             };
 
             function onInputElementEvents(event) {
-                if (event.target.value !== ngModel.$viewVaue)
+                if (event.target.value !== ngModel.$viewValue) {
                     updateTime(event.target.value);
+                }
             }
 
             inputElement.on('reset input blur', onInputElementEvents);

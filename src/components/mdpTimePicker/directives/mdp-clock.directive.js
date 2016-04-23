@@ -35,6 +35,11 @@
                     y = ((event.pageY - containerCoords.top) - (event.currentTarget.offsetHeight / 2));
 
                 var deg = Math.round((Math.atan2(x, y) * (180 / Math.PI)));
+                var isMinutesPicker = timepickerCtrl.currentView === 2;
+                var shouldClose = ctrl.autoClose && isMinutesPicker;
+                var isClickOrUp = ['mouseup', 'click'].indexOf(event.type) !== -1;
+
+                console.log(shouldClose, isMinutesPicker, isClickOrUp);
 
                 $$rAF(function() {
                     $timeout(function () {
@@ -43,10 +48,6 @@
                         if (!timepickerCtrl) {
                             return;
                         }
-
-                        var isClickOrUp = ['mouseup', 'click'].indexOf(event.type) !== -1;
-                        var isMinutesPicker = timepickerCtrl.currentView === 2;
-                        var shouldClose = ctrl.autoClose && isMinutesPicker;
 
                         if (!isClickOrUp) {
                             return;
@@ -73,8 +74,6 @@
                     onEvent(e);
                 });
             });
-
-            element.on('click', onEvent);
 
             scope.$on('$destroy', function() {
                 element.off('click', onEvent);
