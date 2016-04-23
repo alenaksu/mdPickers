@@ -481,6 +481,8 @@
                 var date = angular.isDate(value) && moment(value);
                 if (date && date.isValid()) {
                     updateInputElement(date.format(scope.dateFormat));
+                } else {
+                    updateInputElement('');
                 }
             });
 
