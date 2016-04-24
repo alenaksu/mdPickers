@@ -5,7 +5,7 @@
     <meta charset='UTF-8'>
     <meta name="robots" content="noindex">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
-    <link rel='stylesheet prefetch' href='http://fonts.googleapis.com/css?family=Roboto:400,700'>
+    <!-- <link rel='stylesheet prefetch' href='http://fonts.googleapis.com/css?family=Roboto:400,700'> -->
     <link rel='stylesheet prefetch' href='https://fonts.googleapis.com/icon?family=Material+Icons'>
     <link rel='stylesheet prefetch' href='https://cdn.rawgit.com/angular/bower-material/v1.1.0-rc4/angular-material.min.css'>
     <link rel='stylesheet prefetch' href='../dist/mdPickers.css'>
@@ -39,7 +39,11 @@
                     <h2>Date picker</h2>
                     <div>
                         <h4 class="md-subhead">Standard date picker</h4>
-                        <mdp-date-picker mdp-placeholder="Date" ng-model="currentDate"></mdp-date-picker>
+                        <mdp-date-picker mdp-placeholder="Date" name="currentDate" ng-model="currentDate">
+                            <div md-auto-hide="false" ng-messages="demoForm.currentDate.$error">
+                                <div ng-message="required">This is required</div>
+                            </div>
+                        </mdp-date-picker>
                         <md-button ng-click="ctrl.clearDate()" class="md-primary md-raised">
                             Clear Value
                         </md-button>
@@ -63,14 +67,22 @@
                     </div>
                     <div>
                         <h4 class="md-subhead">Min/max date</h4>
-                        <mdp-date-picker name="minMaxDate" mdp-placeholder="Date" mdp-min-date="'2000-01-01'" mdp-max-date="'2005-01-01'" ng-model="currentDate">
-                            <div ng-messages="demoForm.minMaxDate.$error">
+                        <mdp-date-picker name="minMaxDate" mdp-placeholder="Date" mdp-min-date="minDate" mdp-max-date="'2004-12-31'" ng-model="currentDateMinMax">
+                            <div md-auto-hide="false" ng-messages="demoForm.minMaxDate.$error">
                               <div ng-message="required">This is required</div>
                               <div ng-message="format">Invalid format</div>
                               <div ng-message="minDate">Min date</div>
                               <div ng-message="maxDate">Max date</div>
                             </div>
                           </mdp-date-picker>
+                          <div layout="row">
+                              <md-button ng-class="{'md-raised': minDate === '2000-01-01'}" ng-click="ctrl.setMinDate('2000-01-01')" class="md-primary">
+                                Min date: 2000-01-05
+                              </md-button>
+                              <md-button ng-class="{'md-raised': minDate === '2001-08-15'}" ng-click="ctrl.setMinDate('2001-08-15')" class="md-primary">
+                                Min date: 2001-08-15
+                              </md-button>
+                          </div>
                     </div>
                     <div>
                         <h4 class="md-subhead">Filtering date</h4>
@@ -149,24 +161,25 @@
                 '$timeout',
                 function($scope, $mdpDatePicker, $mdpTimePicker, $timeout) {
 
-                    $timeout(function () {
-                        $scope.currentDate2 = moment().toDate();
-                    }, 2500);
+                    $scope.minDate = '2000-01-01';
+                    $scope.currentDate = moment().toDate();
 
                     $timeout(function () {
-                        $scope.currentDateFormat = moment().toDate();
-                    }, 3500);
+                        $scope.currentDate2 = moment().toDate();
+                    }, 3000);
 
                     this.clearDate = function () {
                         $scope.currentDate = '';
                     };
-
+                    this.setMinDate = function (date) {
+                        $scope.minDate = date;
+                    };
                     this.showDatePicker = function(ev) {
                         $mdpDatePicker($scope.currentDate, {
                             targetEvent: ev
                         }).then(function(selectedDate) {
                             $scope.currentDate = selectedDate;
-                        });;
+                        });
                     };
                     this.filterDate = function(date) {
                         return moment(date).date() % 2 == 0;

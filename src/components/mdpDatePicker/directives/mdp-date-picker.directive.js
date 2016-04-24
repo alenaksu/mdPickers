@@ -21,7 +21,7 @@
                             '<md-button ng-disabled="disabled" class="md-icon-button" ng-click="showPicker($event)">' +
                                 '<md-icon md-svg-icon="mdp-event"></md-icon>' +
                             '</md-button>' +
-                            '<md-input-container' + (noFloat ? ' md-no-float' : '') + ' md-is-error="isError()" flex>' +
+                            '<md-input-container' + (noFloat ? ' md-no-float' : '') + ' ng-model="model" md-is-error="isError()" flex>' +
                                 '<input ng-disabled="disabled" type="{{ type }}" aria-label="' + placeholder + '" placeholder="' + placeholder + '"' + (openOnClick ? ' ng-click="showPicker($event)" ' : '') + ' />' +
                             '</md-input-container>' +
                         '</div>';
@@ -62,19 +62,28 @@
                 scope.disabled = attrs.hasOwnProperty('mdpDisabled');
             }
 
+            function updateView (newValue) {
+                if (angular.isDefined(newValue)) {
+                    ngModel.$validate();
+                }
+            }
+
+            scope.$watch('minDate', updateView);
+            scope.$watch('maxDate', updateView);
+            scope.$watch('dateFilter', updateView);
+
             scope.isError = function() {
                 return !ngModel.$pristine && !!ngModel.$invalid;
             };
 
             // update input element if model has changed
             ngModel.$formatters.unshift(function(value) {
-                var date = angular.isDate(value) && moment(value);
-                if (date && date.isValid()) {
-                    updateInputElement(date.format(scope.dateFormat));
-                    ngModel.$setValidity('required', true);
-                } else {
-                    updateInputElement('');
-                }
+                var localValue = angular.copy(value);
+                var date = angular.isDate(localValue) && moment(localValue);
+                updateInputElement(
+                    date && date.isValid() ? date.format(scope.dateFormat) : ''
+                );
+                ngModel.$validate();
             });
 
             ngModel.$validators.format = function(modelValue, viewValue) {
@@ -94,6 +103,9 @@
             };
 
             ngModel.$validators.required = function(modelValue, viewValue) {
+                if (modelValue && !viewValue) {
+                    updateDate(modelValue);
+                }
                 return mdpDatePickerService.requiredValidator(viewValue);
             };
 

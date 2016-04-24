@@ -39,8 +39,6 @@
                 var shouldClose = ctrl.autoClose && isMinutesPicker;
                 var isClickOrUp = ['mouseup', 'click'].indexOf(event.type) !== -1;
 
-                console.log(shouldClose, isMinutesPicker, isClickOrUp);
-
                 $$rAF(function() {
                     $timeout(function () {
                         ctrl.setTimeByDeg(deg + 180);

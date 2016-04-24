@@ -19,6 +19,7 @@
                 ng-if="day"
                 ng-class="{ 'md-accent': calendar.date.date() == day.value }"
                 ng-click="calendar.selectDate(day.value)"
+                ng-dblclick="datepicker.confirm()"
                 ng-disabled="!day.enabled">{{ day.value }}</md-button>
         </div>
         <div flex="100" ng-if="($index + 1) % 7 == 0" ng-repeat-end></div>
