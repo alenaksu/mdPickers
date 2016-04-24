@@ -68,16 +68,22 @@
             // update input element if model has changed
             ngModel.$formatters.unshift(function(value) {
                 var time = angular.isDate(value) && moment(value);
-                if (time && time.isValid()) {
-                    updateInputElement(time.format(scope.timeFormat));
-                    ngModel.$setValidity('required', true);
-                } else {
-                    updateInputElement('');
-                }
+
+                updateInputElement(
+                    time && time.isValid() ? time.format(scope.timeFormat) : ''
+                );
+
+                ngModel.$validate();
             });
 
             ngModel.$validators.format = function(modelValue, viewValue) {
                 return !viewValue || angular.isDate(viewValue) || moment(viewValue, scope.timeFormat, true).isValid();
+            };
+            ngModel.$validators.required = function(modelValue, viewValue) {
+                if (angular.isDefined(modelValue) && !angular.isDefined(viewValue)) {
+                    updateTime(modelValue);
+                }
+                return !(viewValue === undefined || viewValue === null || viewValue === '');
             };
 
             ngModel.$parsers.unshift(function(value) {

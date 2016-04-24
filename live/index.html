@@ -100,11 +100,15 @@
                     <h2>Time picker</h2>
                     <div>
                         <h4 class="md-subhead">Standard time picker</h4>
-                        <mdp-time-picker ng-model="currentTime"></mdp-time-picker>
+                        <mdp-time-picker required ng-model="currentTime" name="standardTime">
+                            <div md-auto-hide="false" ng-messages="demoForm.standardTime.$error">
+                                <div ng-message="required">This is required</div>
+                            </div>
+                        </mdp-time-picker>
                     </div>
                     <div>
                         <h4 class="md-subhead">Standard time picker (disabled)</h4>
-                        <mdp-time-picker required mdp-disabled ng-model="currentDate2" name="disabledTimeFormat">
+                        <mdp-time-picker required mdp-disabled ng-model="currentTime2" name="disabledTimeFormat">
                             <div md-auto-hide="false" ng-messages="demoForm.disabledTimeFormat.$error">
                                 <div ng-message="required">This is required</div>
                             </div>
@@ -112,7 +116,7 @@
                     </div>
                     <div>
                         <h4 class="md-subhead">Auto switch between hours and minutes + steps + auto close</h4>
-                        <mdp-time-picker mdp-auto-switch="true" mdp-minutes-steps="2" mdp-auto-close="true" ng-model="currentTime"></mdp-time-picker>
+                        <mdp-time-picker mdp-auto-switch="true" mdp-minutes-steps="2" mdp-auto-close="true" ng-model="currentTimeSteps"></mdp-time-picker>
                     </div>
                     <div>
                         <h4 class="md-subhead">Custom format + error messages</h4>
@@ -163,9 +167,11 @@
 
                     $scope.minDate = '2000-01-01';
                     $scope.currentDate = moment().toDate();
+                    $scope.currentTime = moment().toDate();
 
                     $timeout(function () {
                         $scope.currentDate2 = moment().toDate();
+                        $scope.currentTime2 = moment().toDate();
                     }, 3000);
 
                     this.clearDate = function () {

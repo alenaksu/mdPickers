@@ -103,7 +103,7 @@
             };
 
             ngModel.$validators.required = function(modelValue, viewValue) {
-                if (modelValue && !viewValue) {
+                if (angular.isDefined(modelValue) && !angular.isDefined(viewValue)) {
                     updateDate(modelValue);
                 }
                 return mdpDatePickerService.requiredValidator(viewValue);
