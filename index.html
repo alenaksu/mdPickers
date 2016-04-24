@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html >
+  <head>
+    <meta charset="UTF-8">
+    <title>mdPickers - 对角材料的日期/时间选择器</title>
+    <meta name="viewport" content="width=device-width, user-scalable=no, 
+initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
+    <link rel='stylesheet prefetch' href='http://font.c2cmalls.com/css?family=Roboto:400,700'>
+<link rel='stylesheet prefetch' href='https://font.c2cmalls.com/icon?family=Material+Icons'>
+<link rel='stylesheet prefetch' href='https://cdn.c2cbc.com/angular.material/1.0.6/angular-material.min.css'>
+<link rel='stylesheet prefetch' href='http://cdn.c2cmalls.com/mdpickers/0.7.2/dist/mdPickers.min.css'>
+        <link rel="stylesheet" href="http://cdn.c2cmalls.com/mdpickers/css/style.css">
+  </head>
+  <body>
+    <md-content id="content" layout="column" flex ng-app="app" ng-controller="MainCtrl as ctrl">
+  <md-toolbar class="md-whiteframe-z2">
+    <div style="text-align: center;">
+      <h1>mdPickers</h1>
+      <h2>mdPickers材料设计的日期/时间选择器</h2>
+    </div>
+  </md-toolbar>
+  <md-content flex layout="column" layout-align="center center" layout-padding>
+    <h3><a href="https://github.com/2947721120/mdPickers">https://github.com/2947721120/mdPickers</a></h3>
+    <div layout="row" ng-form="demoForm">
+          <div layout-padding>
+            <h2>日期选择器</h2>
+            <div>
+              <h4 class="md-subhead">标准的日期选择器</h4>
+              <mdp-date-picker mdp-placeholder="日期" ng-model="currentDate"></mdp-date-picker>
+            </div>
+            <div>
+              <h4 class="md-subhead">自定义格式+错误信息</h4>
+              <mdp-date-picker mdp-open-on-click required name="dateFormat" mdp-placeholder="选择日期(dd/mm/yyyy)" mdp-format="DD/MM/YYYY" ng-model="currentDate">
+                <div ng-messages="demoForm.dateFormat.$error">
+                  <div ng-message="required">这是必需</div>
+                  <div ng-message="format">无效的格式</div>
+                </div>
+              </mdp-date-picker>
+            </div>
+            <div>
+              <h4 class="md-subhead">最小/最大日期</h4>
+              <mdp-date-picker name="minMaxDate" mdp-placeholder="日期" mdp-min-date="'2000-01-01'" mdp-max-date="'2005-01-01'" ng-model="currentDate">
+                <div ng-messages="demoForm.minMaxDate.$error">
+                  <div ng-message="required">这是必需</div>
+                  <div ng-message="format">无效的格式</div>
+                  <div ng-message="minDate">最小日期</div>
+                  <div ng-message="maxDate">最大日期</div>
+                </div>
+              </mdp-date-picker>
+            </div>
+            <div>
+              <h4 class="md-subhead">过滤日期</h4>
+              <mdp-date-picker mdp-placeholder="日期" mdp-date-filter="ctrl.filterDate" ng-model="currentDateMinMax"></mdp-date-picker>
+            </div>
+            <div>
+              <h4 class="md-subhead">使用 $mdpDatePicker服务</h4>
+              <md-button class="md-raised md-warn" ng-click="ctrl.showDatePicker($event)" aria-label="show picker">节目选择器</md-button>
+              <p>
+                {{ currentDate | date:'shortDate' }}
+              </p>
+            </div>
+          </div>
+          <div layout-padding>
+            <h2>时间选择器</h2>
+            <div>
+              <h4 class="md-subhead">标准时间选择器</h4>
+              <mdp-time-picker ng-model="currentDate"></mdp-time-picker>
+            </div>
+            <div>
+              <h4 class="md-subhead">自动的小时和分钟之间切换</h4>
+              <mdp-time-picker mdp-auto-switch="true" ng-model="currentTime"></mdp-time-picker>
+            </div>
+            <div>
+              <h4 class="md-subhead">自定义格式+错误信息</h4>
+              <mdp-time-picker name="timeFormat" ng-model="currentTimeText" mdp-format="HH:mm A">
+                <div ng-messages="demoForm.timeFormat.$error">
+                  <div ng-message="required">这是必需</div>
+                  <div ng-message="format">无效的格式</div>
+                </div>
+              </mdp-time-picker>
+            </div>
+            <input type="time" ng-model="test" mdp-time-picker />
+            <div>
+              <h4 class="md-subhead">使用 $mdpTimePicker服务</h4>
+              <md-button class="md-raised md-warn" ng-click="ctrl.showTimePicker($event)" aria-label="show picker">节目选择器</md-button>
+              <p>
+                {{ currentTime | date:'HH:mm' }}
+              </p>
+            </div>
+          </div>
+        </div>
+  </md-content>
+</md-content>
+    <script src='https://ajax.c2cmalls.com/ajax/libs/jquery/2.1.4/jquery.min.js'></script>
+<script src='https://cdn.c2cmalls.com/angular/1.4.8/angular.js'></script>
+<script src='https://cdn.c2cbc.com/angular.material/1.0.6/angular-material.min.js'></script>
+<script src='https://cdnjs.c2cbc.com/ajax/libs/moment.js/2.10.3/moment.min.js'></script>
+<script src='https://cdn.c2cmalls.com/angular/1.4.8/angular-animate.min.js'></script>
+<script src='https://cdn.c2cmalls.com/angular/1.4.8/angular-aria.min.js'></script>
+<script src='http://cdn.c2cmalls.com/mdpickers/0.7.2/dist/mdPickers.js'></script>
+<script src='https://cdn.c2cmalls.com/angular/1.4.8/angular-messages.min.js'></script>
+<script src='https://cdnjs.c2cbc.com/ajax/libs/fullcalendar/2.7.0/lang/zh-cn.js'></script>
+        <script src="http://cdn.c2cmalls.com/mdpickers/js/index.js"></script>
+  </body>
+</html>
