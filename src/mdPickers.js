@@ -1,19 +1,28 @@
 /* global moment, angular */
+(function() {
+    'use strict';
 
-var module = angular.module("mdPickers", [
-	"ngMaterial",
-	"ngAnimate",
-	"ngAria"
-]);
+    angular
+        .module('mdPickers', [
+            'ngMaterial',
+            'ngAnimate',
+            'ngAria'
+        ])
+        .config(configIcons)
+        .run(runBlock);
 
-module.config(["$mdIconProvider", "mdpIconsRegistry", function($mdIconProvider, mdpIconsRegistry) {
-	angular.forEach(mdpIconsRegistry, function(icon, index) {
-		$mdIconProvider.icon(icon.id, icon.url);
-	});
-}]);
+    /** @ngInject */
+    function configIcons($mdIconProvider, mdpIconsRegistry) {
+        angular.forEach(mdpIconsRegistry, function(icon, index) {
+            $mdIconProvider.icon(icon.id, icon.url);
+        });
+    }
 
-module.run(["$templateCache", "mdpIconsRegistry", function($templateCache, mdpIconsRegistry) {
-	angular.forEach(mdpIconsRegistry, function(icon, index) {
-		$templateCache.put(icon.url, icon.svg);
-	});
-}]);
+    /** @ngInject */
+    function runBlock($templateCache, mdpIconsRegistry) {
+        angular.forEach(mdpIconsRegistry, function(icon, index) {
+            $templateCache.put(icon.url, icon.svg);
+        });
+    }
+
+})();
