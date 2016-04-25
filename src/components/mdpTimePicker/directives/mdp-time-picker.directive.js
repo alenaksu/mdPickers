@@ -83,7 +83,7 @@
                 if (angular.isDefined(modelValue) && !angular.isDefined(viewValue)) {
                     updateTime(modelValue);
                 }
-                return !(viewValue === undefined || viewValue === null || viewValue === '');
+                return !(attrs.required && (viewValue === undefined || viewValue === null || viewValue === ''));
             };
 
             ngModel.$parsers.unshift(function(value) {

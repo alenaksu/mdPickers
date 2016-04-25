@@ -274,6 +274,64 @@
 
 })();
 
+(function() {
+    'use strict';
+
+    angular
+        .module('mdPickers')
+        .provider("$mdpDatePicker", $mdpDatePicker);
+
+    /** @ngInject */
+    function $mdpDatePicker() {
+        var LABEL_OK = 'OK',
+            LABEL_CANCEL = 'Cancel',
+            DISPLAY_FORMAT = 'ddd, MMM DD';
+
+        this.setDisplayFormat = function(format) {
+            DISPLAY_FORMAT = format;
+        };
+
+        this.setOKButtonLabel = function(label) {
+            LABEL_OK = label;
+        };
+
+        this.setCancelButtonLabel = function(label) {
+            LABEL_CANCEL = label;
+        };
+
+        /** @ngInject */
+        this.$get = ["$mdDialog", function($mdDialog) {
+            var datePicker = function(currentDate, options) {
+                if (!angular.isDate(currentDate)) currentDate = Date.now();
+                if (!angular.isObject(options)) options = {};
+
+                options.displayFormat = DISPLAY_FORMAT;
+                options.labels = {
+                    cancel: LABEL_CANCEL,
+                    ok: LABEL_OK
+                };
+
+                return $mdDialog.show({
+                    controller: 'DatePickerCtrl',
+                    controllerAs: 'datepicker',
+                    clickOutsideToClose: true,
+                    templateUrl: 'mdpDatePicker/templates/mdp-date-picker.html',
+                    targetEvent: options.targetEvent,
+                    locals: {
+                        currentDate: currentDate,
+                        options: options
+                    },
+                    skipHide: true
+                });
+            };
+
+            return datePicker;
+        }];
+        this.$get.$inject = ["$mdDialog"];
+    }
+
+})();
+
 /* global moment, angular */
 
 (function() {
@@ -516,8 +574,9 @@
                 if (angular.isDefined(modelValue) && !angular.isDefined(viewValue)) {
                     updateDate(modelValue);
                 }
-                return mdpDatePickerService.requiredValidator(viewValue);
+                return mdpDatePickerService.requiredValidator(viewValue, attrs.required);
             };
+
 
             ngModel.$parsers.unshift(function(value) {
                 var parsed = moment(value, scope.dateFormat, true);
@@ -597,64 +656,6 @@
 
     angular
         .module('mdPickers')
-        .provider("$mdpDatePicker", $mdpDatePicker);
-
-    /** @ngInject */
-    function $mdpDatePicker() {
-        var LABEL_OK = 'OK',
-            LABEL_CANCEL = 'Cancel',
-            DISPLAY_FORMAT = 'ddd, MMM DD';
-
-        this.setDisplayFormat = function(format) {
-            DISPLAY_FORMAT = format;
-        };
-
-        this.setOKButtonLabel = function(label) {
-            LABEL_OK = label;
-        };
-
-        this.setCancelButtonLabel = function(label) {
-            LABEL_CANCEL = label;
-        };
-
-        /** @ngInject */
-        this.$get = ["$mdDialog", function($mdDialog) {
-            var datePicker = function(currentDate, options) {
-                if (!angular.isDate(currentDate)) currentDate = Date.now();
-                if (!angular.isObject(options)) options = {};
-
-                options.displayFormat = DISPLAY_FORMAT;
-                options.labels = {
-                    cancel: LABEL_CANCEL,
-                    ok: LABEL_OK
-                };
-
-                return $mdDialog.show({
-                    controller: 'DatePickerCtrl',
-                    controllerAs: 'datepicker',
-                    clickOutsideToClose: true,
-                    templateUrl: 'mdpDatePicker/templates/mdp-date-picker.html',
-                    targetEvent: options.targetEvent,
-                    locals: {
-                        currentDate: currentDate,
-                        options: options
-                    },
-                    skipHide: true
-                });
-            };
-
-            return datePicker;
-        }];
-        this.$get.$inject = ["$mdDialog"];
-    }
-
-})();
-
-(function() {
-    'use strict';
-
-    angular
-        .module('mdPickers')
         .factory('mdpDatePickerService', mdpDatePickerService);
 
     /** @ngInject */
@@ -703,8 +704,8 @@
                 !filter(date);
         }
 
-        function requiredValidator(value) {
-            return !(value === undefined || value === null || value === '');
+        function requiredValidator(value, isRequired) {
+            return !(isRequired && (value === undefined || value === null || value === ''));
         }
 
     }
@@ -883,6 +884,57 @@
             $mdDialog.hide(vm.time.toDate());
         }
     }
+})();
+
+(function() {
+    'use strict';
+
+    angular
+        .module('mdPickers')
+        .provider('$mdpTimePicker', $mdpTimePicker);
+
+    function $mdpTimePicker() {
+        var LABEL_OK = 'OK',
+            LABEL_CANCEL = 'Cancel';
+
+        this.setOKButtonLabel = function(label) {
+            LABEL_OK = label;
+        };
+
+        this.setCancelButtonLabel = function(label) {
+            LABEL_CANCEL = label;
+        };
+
+        /** @ngInject */
+        this.$get = ["$mdDialog", function($mdDialog) {
+            var timePicker = function(time, options) {
+                if (!angular.isDate(time)) time = Date.now();
+                if (!angular.isObject(options)) options = {};
+
+                options.labels = {
+                    cancel: LABEL_CANCEL,
+                    ok: LABEL_OK
+                };
+
+                return $mdDialog.show({
+                    controller: 'TimePickerCtrl',
+                    controllerAs: 'timepicker',
+                    clickOutsideToClose: true,
+                    templateUrl: 'mdpTimePicker/templates/mdp-time-picker.html',
+                    targetEvent: options.targetEvent,
+                    locals: {
+                        time: time,
+                        options: options
+                    },
+                    skipHide: true
+                });
+            };
+
+            return timePicker;
+        }];
+        this.$get.$inject = ["$mdDialog"];
+    }
+
 })();
 
 (function() {
@@ -1106,7 +1158,7 @@
                 if (angular.isDefined(modelValue) && !angular.isDefined(viewValue)) {
                     updateTime(modelValue);
                 }
-                return !(viewValue === undefined || viewValue === null || viewValue === '');
+                return !(attrs.required && (viewValue === undefined || viewValue === null || viewValue === ''));
             };
 
             ngModel.$parsers.unshift(function(value) {
@@ -1180,57 +1232,6 @@
                 inputElement.off('reset input blur', onInputElementEvents);
             });
         }
-    }
-
-})();
-
-(function() {
-    'use strict';
-
-    angular
-        .module('mdPickers')
-        .provider('$mdpTimePicker', $mdpTimePicker);
-
-    function $mdpTimePicker() {
-        var LABEL_OK = 'OK',
-            LABEL_CANCEL = 'Cancel';
-
-        this.setOKButtonLabel = function(label) {
-            LABEL_OK = label;
-        };
-
-        this.setCancelButtonLabel = function(label) {
-            LABEL_CANCEL = label;
-        };
-
-        /** @ngInject */
-        this.$get = ["$mdDialog", function($mdDialog) {
-            var timePicker = function(time, options) {
-                if (!angular.isDate(time)) time = Date.now();
-                if (!angular.isObject(options)) options = {};
-
-                options.labels = {
-                    cancel: LABEL_CANCEL,
-                    ok: LABEL_OK
-                };
-
-                return $mdDialog.show({
-                    controller: 'TimePickerCtrl',
-                    controllerAs: 'timepicker',
-                    clickOutsideToClose: true,
-                    templateUrl: 'mdpTimePicker/templates/mdp-time-picker.html',
-                    targetEvent: options.targetEvent,
-                    locals: {
-                        time: time,
-                        options: options
-                    },
-                    skipHide: true
-                });
-            };
-
-            return timePicker;
-        }];
-        this.$get.$inject = ["$mdDialog"];
     }
 
 })();

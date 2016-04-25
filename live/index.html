@@ -39,18 +39,21 @@
                     <h2>Date picker</h2>
                     <div>
                         <h4 class="md-subhead">Standard date picker</h4>
-                        <mdp-date-picker mdp-placeholder="Date" name="currentDate" ng-model="currentDate">
+                        <mdp-date-picker ng-required="ctrl.isRequired" mdp-placeholder="Date" name="currentDate" ng-model="currentDate">
                             <div md-auto-hide="false" ng-messages="demoForm.currentDate.$error">
                                 <div ng-message="required">This is required</div>
                             </div>
                         </mdp-date-picker>
-                        <md-button ng-click="ctrl.clearDate()" class="md-primary md-raised">
-                            Clear Value
-                        </md-button>
+                        <div layout="row" layout-align="start center">
+                            <md-button ng-click="ctrl.clearDate()" class="md-primary md-raised">
+                                Clear Value
+                            </md-button>
+                            <md-checkbox style="margin-bottom: 0px;" ng-model="ctrl.isRequired">Required</md-checkbox>
+                        </div>
                     </div>
                     <div>
                         <h4 class="md-subhead">Standard date picker (disabled)</h4>
-                        <mdp-date-picker name="disabledDateFormat" mdp-disabled mdp-placeholder="Date" ng-model="currentDate2">
+                        <mdp-date-picker required name="disabledDateFormat" mdp-disabled mdp-placeholder="Date" ng-model="currentDate2">
                             <div md-auto-hide="false" ng-messages="demoForm.disabledDateFormat.$error">
                                 <div ng-message="required">This is required</div>
                             </div>
@@ -173,6 +176,8 @@
                         $scope.currentDate2 = moment().toDate();
                         $scope.currentTime2 = moment().toDate();
                     }, 3000);
+
+                    this.isRequired = false;
 
                     this.clearDate = function () {
                         $scope.currentDate = '';

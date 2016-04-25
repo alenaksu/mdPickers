@@ -51,8 +51,8 @@
                 !filter(date);
         }
 
-        function requiredValidator(value) {
-            return !(value === undefined || value === null || value === '');
+        function requiredValidator(value, isRequired) {
+            return !(isRequired && (value === undefined || value === null || value === ''));
         }
 
     }

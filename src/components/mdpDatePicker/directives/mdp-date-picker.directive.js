@@ -106,8 +106,9 @@
                 if (angular.isDefined(modelValue) && !angular.isDefined(viewValue)) {
                     updateDate(modelValue);
                 }
-                return mdpDatePickerService.requiredValidator(viewValue);
+                return mdpDatePickerService.requiredValidator(viewValue, attrs.required);
             };
+
 
             ngModel.$parsers.unshift(function(value) {
                 var parsed = moment(value, scope.dateFormat, true);
