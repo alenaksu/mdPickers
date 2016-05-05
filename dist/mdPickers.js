@@ -64,6 +64,7 @@ module.directive("ngMessage", ["$mdUtil", function($mdUtil) {
 function DatePickerCtrl($scope, $mdDialog, $mdMedia, $timeout, currentDate, options) {
     var self = this;
 
+    $scope.options = options;
     this.date = moment(currentDate);
     this.minDate = options.minDate && moment(options.minDate).isValid() ? moment(options.minDate) : null;
     this.maxDate = options.maxDate && moment(options.maxDate).isValid() ? moment(options.maxDate) : null;
@@ -208,8 +209,8 @@ module.provider("$mdpDatePicker", function() {
                                     '<mdp-calendar ng-if="!datepicker.selectingYear" class="mdp-animation-zoom" date="datepicker.date" min-date="datepicker.minDate" date-filter="datepicker.dateFilter" max-date="datepicker.maxDate"></mdp-calendar>' +
                                     '<md-dialog-actions layout="row">' +
                                     	'<span flex></span>' +
-                                        '<md-button ng-click="datepicker.cancel()" aria-label="' + options.cancelLabel + '">' + options.cancelLabel + '</md-button>' +
-                                        '<md-button ng-click="datepicker.confirm()" class="md-primary" aria-label="' + options.okLabel + '">' + options.okLabel + '</md-button>' +
+                                        '<md-button ng-click="datepicker.cancel()" aria-label="{{ options.cancelLabel }}">{{ options.cancelLabel }}</md-button>' +
+                                        '<md-button ng-click="datepicker.confirm()" class="md-primary" aria-label="{{ options.okLabel }}">{{ options.okLabel }}</md-button>' +
                                     '</md-dialog-actions>' +
                                 '</div>' +
                             '</md-dialog-content>' +
@@ -217,7 +218,7 @@ module.provider("$mdpDatePicker", function() {
                 targetEvent: options.targetEvent,
                 locals: {
                     currentDate: currentDate,
-                    options: options
+                    options: options,
                 },
                 skipHide: true
             });
@@ -580,7 +581,9 @@ module.directive("mdpDatePicker", ["$mdpDatePicker", "$timeout", function($mdpDa
 }]);
 /* global moment, angular */
 
-function TimePickerCtrl($scope, $mdDialog, time, autoSwitch, $mdMedia) {
+function TimePickerCtrl($scope, $mdDialog, time, autoSwitch, $mdMedia, options) {
+    $scope.options = options;
+
 	var self = this;
     this.VIEW_HOURS = 1;
     this.VIEW_MINUTES = 2;
@@ -783,15 +786,13 @@ module.provider("$mdpTimePicker", function() {
             if(!angular.isDate(time)) time = Date.now();
             if (!angular.isObject(options)) options = {};
 
-            console.log(options);
             options = angular.extend(defaultOptions, options);
-            console.log(options);
 
             options.am = moment.localeData().meridiem(11);
             options.pm = moment.localeData().meridiem(13);
 
             return $mdDialog.show({
-                controller:  ['$scope', '$mdDialog', 'time', 'autoSwitch', '$mdMedia', TimePickerCtrl],
+                controller:  ['$scope', '$mdDialog', 'time', 'autoSwitch', '$mdMedia', 'options', TimePickerCtrl],
                 controllerAs: 'timepicker',
                 clickOutsideToClose: true,
                 template: '<md-dialog aria-label="" class="mdp-timepicker" ng-class="{ \'portrait\': !$mdMedia(\'gt-xs\') }">' +
@@ -802,8 +803,8 @@ module.provider("$mdpTimePicker", function() {
                                         '<span ng-class="{ \'active\': timepicker.currentView == timepicker.VIEW_MINUTES }" ng-click="timepicker.currentView = timepicker.VIEW_MINUTES">{{ timepicker.time.format("mm") }}</span>' +
                                     '</div>' +
                                     '<div layout="column" class="mdp-timepicker-selected-ampm">' +
-                                        '<span ng-click="timepicker.setAM()" ng-class="{ \'active\': timepicker.time.hours() < 12 }">' + options.am + '</span>' +
-                                        '<span ng-click="timepicker.setPM()" ng-class="{ \'active\': timepicker.time.hours() >= 12 }">' + options.pm + '</span>' +
+                                        '<span ng-click="timepicker.setAM()" ng-class="{ \'active\': timepicker.time.hours() < 12 }">{{ options.am }}</span>' +
+                                        '<span ng-click="timepicker.setPM()" ng-class="{ \'active\': timepicker.time.hours() >= 12 }">{{ options.pm }}</span>' +
                                     '</div>' +
                                 '</md-toolbar>' +
                                 '<div>' +
@@ -814,8 +815,8 @@ module.provider("$mdpTimePicker", function() {
 
                                     '<md-dialog-actions layout="row">' +
 	                                	'<span flex></span>' +
-                                        '<md-button ng-click="timepicker.cancel()" aria-label="' + options.cancelLabel + '">' + options.cancelLabel + '</md-button>' +
-                                        '<md-button ng-click="timepicker.confirm()" class="md-primary" aria-label="' + options.okLabel + '">' + options.okLabel + '</md-button>' +
+                                        '<md-button ng-click="timepicker.cancel()" aria-label="{{ options.cancelLabel }}">{{ options.cancelLabel }}</md-button>' +
+                                        '<md-button ng-click="timepicker.confirm()" class="md-primary" aria-label="{{ options.okLabel }}">{{ options.okLabel }}</md-button>' +
                                     '</md-dialog-actions>' +
                                 '</div>' +
                             '</md-dialog-content>' +
@@ -823,7 +824,8 @@ module.provider("$mdpTimePicker", function() {
                 targetEvent: options.targetEvent,
                 locals: {
                     time: time,
-                    autoSwitch: options.autoSwitch
+                    autoSwitch: options.autoSwitch,
+                    options: options
                 },
                 skipHide: true
             });

@@ -3,6 +3,7 @@
 function DatePickerCtrl($scope, $mdDialog, $mdMedia, $timeout, currentDate, options) {
     var self = this;
 
+    $scope.options = options;
     this.date = moment(currentDate);
     this.minDate = options.minDate && moment(options.minDate).isValid() ? moment(options.minDate) : null;
     this.maxDate = options.maxDate && moment(options.maxDate).isValid() ? moment(options.maxDate) : null;
@@ -147,8 +148,8 @@ module.provider("$mdpDatePicker", function() {
                                     '<mdp-calendar ng-if="!datepicker.selectingYear" class="mdp-animation-zoom" date="datepicker.date" min-date="datepicker.minDate" date-filter="datepicker.dateFilter" max-date="datepicker.maxDate"></mdp-calendar>' +
                                     '<md-dialog-actions layout="row">' +
                                     	'<span flex></span>' +
-                                        '<md-button ng-click="datepicker.cancel()" aria-label="' + options.cancelLabel + '">' + options.cancelLabel + '</md-button>' +
-                                        '<md-button ng-click="datepicker.confirm()" class="md-primary" aria-label="' + options.okLabel + '">' + options.okLabel + '</md-button>' +
+                                        '<md-button ng-click="datepicker.cancel()" aria-label="{{ options.cancelLabel }}">{{ options.cancelLabel }}</md-button>' +
+                                        '<md-button ng-click="datepicker.confirm()" class="md-primary" aria-label="{{ options.okLabel }}">{{ options.okLabel }}</md-button>' +
                                     '</md-dialog-actions>' +
                                 '</div>' +
                             '</md-dialog-content>' +
@@ -156,7 +157,7 @@ module.provider("$mdpDatePicker", function() {
                 targetEvent: options.targetEvent,
                 locals: {
                     currentDate: currentDate,
-                    options: options
+                    options: options,
                 },
                 skipHide: true
             });
