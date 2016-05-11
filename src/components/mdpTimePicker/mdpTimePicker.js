@@ -298,7 +298,7 @@ module.directive("mdpTimePicker", ["$mdpTimePicker", "$timeout", function($mdpTi
             };
             
             ngModel.$validators.required = function(modelValue, viewValue) {
-                return !ngModel.$isEmpty(modelValue);    
+                return angular.isUndefined(attrs.required) || !ngModel.$isEmpty(modelValue);    
             };
             
             ngModel.$parsers.unshift(function(value) {
