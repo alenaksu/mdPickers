@@ -1,4 +1,14 @@
-### 0.7.2
+### 0.7.4
+
+Minor bugfixes
+
+### 0.7.3
+
+Several bugfixes
+
+#### Features
+
+* Added `mdp-disabled` 
 
 #### Breaking changes
 
