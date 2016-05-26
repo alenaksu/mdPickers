@@ -28,7 +28,7 @@ gulp.task('assets', function() {
 gulp.task('build-app', function() {  
     return gulp.src(['src/mdPickers.js', 'src/core/**/*.js', 'src/components/**/*.js'])
         .pipe(concat('mdPickers.js'))
-        .pipe(wrap('(function() {\n"use strict";\n<%= contents %>\n})();'))
+        .pipe(wrap('(function(angular, moment) {\n"use strict";\n<%= contents %>\n})(angular, moment);'))
         .pipe(sourcemaps.init())
         .pipe(gulp.dest(outputFolder))
         .pipe(rename({suffix: '.min'}))
