@@ -316,6 +316,10 @@ function filterValidator(value, format, filter) {
             !filter(date);
 }
 
+function requiredValidator(value, ngModel) {
+    return value
+}
+
 module.directive("mdpDatePicker", ["$mdpDatePicker", "$timeout", function($mdpDatePicker, $timeout) {
     return  {
         restrict: 'E',
