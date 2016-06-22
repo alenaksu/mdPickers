@@ -316,14 +316,6 @@ function filterValidator(value, format, filter) {
             !filter(date);
 }
 
-function requiredValidator(value, ngModel) {
-    return value
-}
-
-function requiredValidator(value, attrs) {
-    return !(value === undefined || value == null || value == '');
-}
-
 module.directive("mdpDatePicker", ["$mdpDatePicker", "$timeout", function($mdpDatePicker, $timeout) {
     return  {
         restrict: 'E',
@@ -399,10 +391,6 @@ module.directive("mdpDatePicker", ["$mdpDatePicker", "$timeout", function($mdpDa
                 
                 ngModel.$validators.filter = function(modelValue, viewValue) {
                     return filterValidator(viewValue, scope.dateFormat, scope.dateFilter);
-                };
-
-                ngModel.$validators.required = function(modelValue, viewValue) {
-                    return requiredValidator(modelValue, attrs);
                 };
                 
                 ngModel.$validators.required = function(modelValue, viewValue) {
@@ -502,10 +490,6 @@ module.directive("mdpDatePicker", ["$mdpDatePicker", "$timeout", function($mdpDa
             
             ngModel.$validators.filter = function(modelValue, viewValue) {
                 return filterValidator(viewValue, scope.format, scope.dateFilter);
-            };
-            
-            ngModel.$validators.required = function(modelValue, viewValue) {
-                return requiredValidator(modelValue);
             };
 
             function showPicker(ev) {
