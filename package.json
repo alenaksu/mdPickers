@@ -1,6 +1,6 @@
 {
   "name": "mdPickers",
-  "version": "0.7.5",
+  "version": "0.7.6",
   "description": "Material Design date/time pickers for Angular Material",
   "main": "index",
   "scripts": {
