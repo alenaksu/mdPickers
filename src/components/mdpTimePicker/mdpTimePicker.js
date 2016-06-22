@@ -119,12 +119,14 @@ function ClockCtrl($scope) {
                 if (!self.ampm) self.steps.push(0);
                 self.selected = self.time.hours() || 0;
                 if(self.ampm && self.selected > 12) self.selected -= 12;
+
                 break;
             case TYPE_MINUTES:
                 for(var i = 5; i <= 55; i+=5)
                     self.steps.push(i);
                 self.steps.push(0);
                 self.selected = self.time.minutes() || 0;
+
                 break;
         }
     };
@@ -214,7 +216,7 @@ module.provider("$mdpTimePicker", function() {
                                         '<span ng-class="{ \'active\': timepicker.currentView == timepicker.VIEW_HOURS }" ng-click="timepicker.currentView = timepicker.VIEW_HOURS">{{ timepicker.time.format(timepicker.hoursFormat) }}</span>:' + 
                                         '<span ng-class="{ \'active\': timepicker.currentView == timepicker.VIEW_MINUTES }" ng-click="timepicker.currentView = timepicker.VIEW_MINUTES">{{ timepicker.time.format(timepicker.minutesFormat) }}</span>' +
                                     '</div>' +
-                                    '<div layout="column" ng-if="timepicker.ampm" class="mdp-timepicker-selected-ampm">' + 
+                                    '<div layout="column" ng-show="timepicker.ampm" class="mdp-timepicker-selected-ampm">' + 
                                         '<span ng-click="timepicker.setAM()" ng-class="{ \'active\': timepicker.time.hours() < 12 }">AM</span>' +
                                         '<span ng-click="timepicker.setPM()" ng-class="{ \'active\': timepicker.time.hours() >= 12 }">PM</span>' +
                                     '</div>' + 
