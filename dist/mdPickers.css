@@ -264,6 +264,25 @@ mdp-calendar {
 .mdp-calendar-days .mdp-day-placeholder {
   margin: 0;
 }
+.mdp-datetime-picker .mdp-clock {
+  width: 130px;
+  height: 130px;
+  padding: 13px;
+}
+.mdp-datetime-picker .mdp-clock .md-button:not(.mdp-clock-selected) {
+  min-height: 16px;
+  width: 20px;
+  height: 20px;
+  font-size: 12px;
+  line-height: 20px;
+}
+.mdp-datetime-picker .mdp-timepicker-selected-ampm {
+  padding-top: 5px;
+  text-align: right;
+}
+.mdp-datetime-picker .mdp-timepicker-selected-ampm span {
+  padding-right: 5px;
+}
 .mdp-clock {
   width: 200px;
   height: 200px;
