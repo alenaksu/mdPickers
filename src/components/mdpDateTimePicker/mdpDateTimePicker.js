@@ -103,7 +103,7 @@ module.directive('mdpDateTimePikcer', ["$mdpDateTimePicker", "$timeout", functio
       "datetimeFormat": "@mdpFormat"
     },
     link: function(scope, element, attrs, ngModel, $transclude) {
-      scope.datetimeFormat = scope.datetimeFormat || "YYYY-MM-DD HH:mm:ss";
+      scope.datetimeFormat = scope.datetimeFormat || "YYYY-MM-DD HH:mm";
 
       ngModel.$validators.format = function(modelValue, viewValue) {
           return formatValidator(viewValue, scope.datetimeFormat);
