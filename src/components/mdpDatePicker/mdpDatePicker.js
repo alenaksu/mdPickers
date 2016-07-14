@@ -364,7 +364,7 @@ module.directive("mdpDatePicker", ["$mdpDatePicker", "$timeout", function($mdpDa
                 
                 var messages = angular.element(inputContainer[0].querySelector("[ng-messages]"));
                 
-                scope.type = scope.dateFormat ? "text" : "date"
+                scope.type = scope.dateFormat ? "text" : "date";
                 scope.dateFormat = scope.dateFormat || "YYYY-MM-DD";
                 scope.model = ngModel;
                 
@@ -398,7 +398,8 @@ module.directive("mdpDatePicker", ["$mdpDatePicker", "$timeout", function($mdpDa
                 };
                 
                 ngModel.$validators.required = function(modelValue, viewValue) {
-                    return angular.isUndefined(attrs.required) || !ngModel.$isEmpty(modelValue) || !ngModel.$isEmpty(viewValue);
+                    return angular.isUndefined(attrs.required) || attrs.required === false
+                        || !ngModel.$isEmpty(modelValue) || !ngModel.$isEmpty(viewValue);
                 };
                 
                 ngModel.$parsers.unshift(function(value) {
