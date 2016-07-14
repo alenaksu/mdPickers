@@ -324,11 +324,26 @@ module.directive("mdpDatePicker", ["$mdpDatePicker", "$timeout", function($mdpDa
         template: function(element, attrs) {
             var noFloat = angular.isDefined(attrs.mdpNoFloat),
                 placeholder = angular.isDefined(attrs.mdpPlaceholder) ? attrs.mdpPlaceholder : "",
-                openOnClick = angular.isDefined(attrs.mdpOpenOnClick) ? true : false;
+                openOnClick = angular.isDefined(attrs.mdpOpenOnClick) ? true : false,
+                icon = angular.isDefined(attrs.icon) ? attrs.icon : "mdp-event",
+                iconProvider = angular.isDefined(attrs.iconProvider) ? attrs.iconProvider : "mdi",
+                iconTemplate;
+
+            switch (iconProvider) {
+               case "mdi":
+                  iconTemplate = '<md-icon md-svg-icon="' + icon + '"></md-icon>';
+                  break;
+               case "fa":
+                  iconTemplate = '<i class="fa ' + icon + '"></i>'
+                  break;
+               default:
+                  console.warn('Unknown iconprovider: ' + iconProvider + '. The default icon is used');
+                  iconTemplate = '<md-icon md-svg-icon="mdp-event"></md-icon>'
+            }
             
             return '<div layout layout-align="start start">' +
                     '<md-button class="md-icon-button" ng-click="showPicker($event)">' +
-                        '<md-icon md-svg-icon="mdp-event"></md-icon>' +
+                         iconTemplate +
                     '</md-button>' +
                     '<md-input-container' + (noFloat ? ' md-no-float' : '') + ' md-is-error="isError()">' +
                         '<input type="{{ ::type }}" aria-label="' + placeholder + '" placeholder="' + placeholder + '"' + (openOnClick ? ' ng-click="showPicker($event)" ' : '') + ' />' +
