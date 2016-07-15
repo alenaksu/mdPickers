@@ -481,19 +481,19 @@ module.directive("mdpDatePicker", ["$mdpDatePicker", "$timeout", function($mdpDa
             scope.dateFormat = scope.dateFormat || "YYYY-MM-DD";
             
             ngModel.$validators.format = function(modelValue, viewValue) {
-                return formatValidator(viewValue, scope.format);
+                return formatValidator(viewValue, scope.dateFormat);
             };
             
             ngModel.$validators.minDate = function(modelValue, viewValue) {
-                return minDateValidator(viewValue, scope.format, scope.minDate);
+                return minDateValidator(viewValue, scope.dateFormat, scope.minDate);
             };
             
             ngModel.$validators.maxDate = function(modelValue, viewValue) {
-                return maxDateValidator(viewValue, scope.format, scope.maxDate);
+                return maxDateValidator(viewValue, scope.dateFormat, scope.maxDate);
             };
             
             ngModel.$validators.filter = function(modelValue, viewValue) {
-                return filterValidator(viewValue, scope.format, scope.dateFilter);
+                return filterValidator(viewValue, scope.dateFormat, scope.dateFilter);
             };
             
             function showPicker(ev) {
@@ -503,7 +503,7 @@ module.directive("mdpDatePicker", ["$mdpDatePicker", "$timeout", function($mdpDa
             	    dateFilter: scope.dateFilter,
             	    targetEvent: ev
         	    }).then(function(time) {
-                    ngModel.$setViewValue(moment(time).format(scope.format));
+                    ngModel.$setViewValue(moment(time).format(scope.dateFormat));
                     ngModel.$render();
                 });
             };
