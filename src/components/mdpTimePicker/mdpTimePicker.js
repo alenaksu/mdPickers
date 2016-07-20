@@ -361,8 +361,55 @@ module.directive("mdpTimePicker", ["$mdpTimePicker", "$timeout", function($mdpTi
             scope.$on("$destroy", function() {
                 inputElement.off("reset input blur", onInputElementEvents);
             })
+
+            if(scope.timeFormat == "HH:mm") {
+                inputElement.on("keypress", format24HourTimeAsTyped);
+            }
+
+
+            function format24HourTimeAsTyped(event) {
+                var p = this.value;
+                var unicode = event.keyCode ? event.keyCode : event.charCode;
+
+                //Allow BackSpace, Del, left arrow
+                if(unicode == 8 || unicode == 127 || unicode == 37){
+                  return true;
+                }
+
+                if (isNumber(unicode) && p.length < 5 ){
+                    //replaces 3 to 03, 4 to 04..
+                    p = p.replace(/^([3-9])/, "0$1");
+                    //restrict typing 24, 25, 26, 27, 28, 29 in hours
+                    if(p == "2" && (unicode >= 52 && unicode <= 57)) {
+                        return false;
+                    }
+                    if (p.length == 2) {
+                        p = p + ":";
+                    }
+                    //restrict typing 6, 7, 8, 9 in minutes first position
+                    if(p.length == 3 && (unicode >= 54 && unicode <= 57)){
+                    return false;
+                    }
+                    this.value=p;
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+
+            function isNumber(unicode) {
+                var char = String.fromCharCode(unicode);
+
+                if ((("0123456789").indexOf(char) > -1)) {
+                    // accept input
+                    return true;
+                }  else {
+                    return false;
+                }
+            }
         }
     };
+
 }]);
 
 module.directive("mdpTimePicker", ["$mdpTimePicker", "$timeout", function($mdpTimePicker, $timeout) {
@@ -392,4 +439,5 @@ module.directive("mdpTimePicker", ["$mdpTimePicker", "$timeout", function($mdpTi
             });
         }
     }
+
 }]);
