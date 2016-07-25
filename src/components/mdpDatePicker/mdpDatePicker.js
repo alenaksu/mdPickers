@@ -468,7 +468,8 @@ module.directive("mdpDatePicker", ["$mdpDatePicker", "$timeout", function($mdpDa
 
 
                 function formatDateAsTyped(event) {
-                    var inputDate = this.value;
+                    var localInputElement = this;
+                    var inputDate = localInputElement.value;
                     var unicode = event.keyCode ? event.keyCode : event.charCode;
 
                     //Allow BackSpace, Del, left arrow, right arrow in firefox. IE, chrome, safari supports these keys
@@ -477,35 +478,36 @@ module.directive("mdpDatePicker", ["$mdpDatePicker", "$timeout", function($mdpDa
                     }
 
                     if (isNumber(unicode) && inputDate.length < 10) {
-                            //replaces 2 to 02, 3 to 03.. for month field..
-                            inputDate = inputDate.replace(/^([2-9])/, "0$1");
-                            //restrict typing 13, 14, 15, 16, 17, 18, 19 for month field
-                            if(inputDate == "1" && (unicode >= 51 && unicode <= 57)) {
-                            return false;
-                            }
-                            //replaces 4 to 04, 5 to 05.. for date field..
-                            inputDate = inputDate.replace(/^([0-9])([0-9])(\/)([4-9])/, "$1$2$30$4");
-                            //restrict typing 2,3,4,5,6,7,8,9 in date field second position
-                            if(inputDate.length == 4 && inputDate.charAt(3) == '3' && (unicode >= 50 && unicode <= 57)){
-                            return false;
-                            }
-                            if (inputDate.length == 2 || inputDate.length == 5) {
-                                inputDate = inputDate + "/";
-                            }
-                            this.value = inputDate;
-                            return true;
-                        } else {
+                        //replaces 2 to 02, 3 to 03.. for month field
+                        inputDate = inputDate.replace(/^([2-9])/, "0$1");
+                        //restrict typing 13, 14, 15, 16, 17, 18, 19 for month field
+                        if(inputDate == "1" && (unicode >= 51 && unicode <= 57)) {
                             return false;
                         }
+                        //replaces 4 to 04, 5 to 05.. for date field
+                        inputDate = inputDate.replace(/^([0-9])([0-9])(\/)([4-9])/, "$1$2$30$4");
+                        //restrict typing 2,3,4,5,6,7,8,9 in date field second position
+                        if(inputDate.length == 4 && inputDate.charAt(3) == '3' && (unicode >= 50 && unicode <= 57)){
+                            return false;
+                        }
+                        if (inputDate.length == 2 || inputDate.length == 5) {
+                            inputDate = inputDate + "/";
+                        }
+                        localInputElement.value = inputDate;
+                        return true;
+                        }
+                    else {
+                        return false;
                     }
+                }
 
                 function isNumber(unicode) {
                     var char = String.fromCharCode(unicode);
 
                     if ((("0123456789").indexOf(char) > -1)) {
-                        // accept input
                         return true;
-                    }  else {
+                    }
+                    else {
                         return false;
                     }
                 }

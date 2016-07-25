@@ -368,7 +368,8 @@ module.directive("mdpTimePicker", ["$mdpTimePicker", "$timeout", function($mdpTi
 
 
             function format24HourTimeAsTyped(event) {
-                var p = this.value;
+                var localInputElement = this;
+                var p = localInputElement.value;
                 var unicode = event.keyCode ? event.keyCode : event.charCode;
 
                 //Allow BackSpace, Del, left arrow, right arrow in firefox. IE, chrome, safari supports these keys
@@ -390,7 +391,7 @@ module.directive("mdpTimePicker", ["$mdpTimePicker", "$timeout", function($mdpTi
                     if(p.length == 3 && (unicode >= 54 && unicode <= 57)){
                     return false;
                     }
-                    this.value=p;
+                    localInputElement.value=p;
                     return true;
                 } else {
                     return false;
@@ -401,7 +402,6 @@ module.directive("mdpTimePicker", ["$mdpTimePicker", "$timeout", function($mdpTi
                 var char = String.fromCharCode(unicode);
 
                 if ((("0123456789").indexOf(char) > -1)) {
-                    // accept input
                     return true;
                 }  else {
                     return false;
