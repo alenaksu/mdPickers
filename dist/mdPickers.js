@@ -533,8 +533,8 @@ module.directive("mdpDatePicker", ["$mdpDatePicker", "$timeout", function($mdpDa
                     var inputDate = localInputElement.value;
                     var unicode = event.keyCode ? event.keyCode : event.charCode;
 
-                    //Allow BackSpace, Del, left arrow, right arrow in firefox. IE, chrome, safari supports these keys
-                    if (event.keyCode == 8 || event.keyCode == 46 || (event.keyCode == 37 && !event.charCode) || event.keyCode == 39) {
+                    //Allow BackSpace, Tab, F5, Del, left arrow, right arrow in firefox. IE, chrome, safari supports these keys
+                    if (event.keyCode == 8 || event.keyCode == 9 || event.keyCode == 116 || event.keyCode == 46 || (event.keyCode == 37 && !event.charCode) || event.keyCode == 39) {
                         return true;
                     }
 
@@ -1001,8 +1001,8 @@ module.directive("mdpTimePicker", ["$mdpTimePicker", "$timeout", function($mdpTi
                 var p = localInputElement.value;
                 var unicode = event.keyCode ? event.keyCode : event.charCode;
 
-                //Allow BackSpace, Del, left arrow, right arrow in firefox. IE, chrome, safari supports these keys
-                if(event.keyCode == 8 || event.keyCode == 46 || (event.keyCode == 37 && !event.charCode) || event.keyCode == 39){
+                //Allow BackSpace, Tab, F5, Del, left arrow, right arrow in firefox. IE, chrome, safari supports these keys
+                if (event.keyCode == 8 || event.keyCode == 9 || event.keyCode == 116 || event.keyCode == 46 || (event.keyCode == 37 && !event.charCode) || event.keyCode == 39) {
                   return true;
                 }
 
