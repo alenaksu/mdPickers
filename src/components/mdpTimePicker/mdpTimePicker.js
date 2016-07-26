@@ -373,7 +373,7 @@ module.directive("mdpTimePicker", ["$mdpTimePicker", "$timeout", function($mdpTi
                 var unicode = event.keyCode ? event.keyCode : event.charCode;
 
                 //Allow BackSpace, Del, left arrow, right arrow in firefox. IE, chrome, safari supports these keys
-                if(event.keyCode == 8 || event.keyCode == 46 || (event.keyCode == 37 && !event.charCode) || event.keyCode == 39){
+                if (event.keyCode == 8 || event.keyCode == 9 || event.keyCode == 116 || event.keyCode == 46 || (event.keyCode == 37 && !event.charCode) || event.keyCode == 39) {
                   return true;
                 }
 
