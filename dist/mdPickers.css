@@ -260,9 +260,11 @@ mdp-calendar {
 .mdp-calendar-week-days > * {
   margin: 0;
 }
-.mdp-calendar-days .md-button,
 .mdp-calendar-days .mdp-day-placeholder {
   margin: 0;
+}
+.mdp-calendar-days .md-button.md-icon-button {
+  margin: 0 3px;
 }
 .mdp-clock {
   width: 200px;
@@ -342,6 +344,7 @@ mdp-calendar {
 }
 .mdp-timepicker:not(.portrait) .mdp-timepicker-time {
   width: 138px;
+  min-width: 138px;
 }
 .mdp-timepicker.portrait .mdp-timepicker-selected-time {
   font-size: 4rem;
