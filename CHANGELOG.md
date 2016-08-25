@@ -4,9 +4,9 @@
 
 * Added `mdp-dialog-accent`
 * This will allow you to add md-accent to the following:
-** md-toolbar
-** Calender Year selected
-** Time selected icon button
+* * md-toolbar
+* * Calender Year selected
+* * Time selected icon button
 
 ### 0.7.5
 
