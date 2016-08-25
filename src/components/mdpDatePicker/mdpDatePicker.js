@@ -350,7 +350,7 @@ module.directive("mdpDatePicker", ["$mdpDatePicker", "$timeout", function ($mdpD
             "noFloat": "=mdpNoFloat",
             "openOnClick": "=mdpOpenOnClick",
             "disabled": "=?mdpDisabled",
-            "dialogAccent": "=?"
+            "dialogAccent": "=?mdpDialogAccent"
         },
         link: {
             pre: function (scope, element, attrs, ngModel, $transclude) {
@@ -480,7 +480,7 @@ module.directive("mdpDatePicker", ["$mdpDatePicker", "$timeout", function ($mdpD
             "maxDate": "@max",
             "dateFilter": "=mdpDateFilter",
             "dateFormat": "@mdpFormat",
-            "dialogAccent": "=?"
+            "dialogAccent": "=?mdpDialogAccent"
         },
         link: function (scope, element, attrs, ngModel, $transclude) {
             scope.dateFormat = scope.dateFormat || "YYYY-MM-DD";

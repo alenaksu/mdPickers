@@ -267,7 +267,7 @@ module.directive("mdpTimePicker", ["$mdpTimePicker", "$timeout", function ($mdpT
             "placeholder": "@mdpPlaceholder",
             "autoSwitch": "=?mdpAutoSwitch",
             "disabled": "=?mdpDisabled",
-            "dialogAccent": "=?"
+            "dialogAccent": "=?mdpDialogAccent"
         },
         link: function (scope, element, attrs, ngModel, $transclude) {
             var inputElement = angular.element(element[0].querySelector('input')),
@@ -380,7 +380,7 @@ module.directive("mdpTimePicker", ["$mdpTimePicker", "$timeout", function ($mdpT
         scope: {
             "timeFormat": "@mdpFormat",
             "autoSwitch": "=?mdpAutoSwitch",
-            "dialogAccent": "=?"
+            "dialogAccent": "=?mdpDialogAccent"
         },
         link: function (scope, element, attrs, ngModel, $transclude) {
             scope.format = scope.format || "HH:mm";
