@@ -62,7 +62,7 @@ module.provider('$mdpDateTimePicker', function(){
                                 '<div layout="column">' +
                                   '<div class="mdp-timepicker-selected-ampm">' +
                                     '<span ng-click="datepicker.setAM()" ng-class="{ \'active\': datepicker.date.hours() < 12 }">AM</span>' +
-                                    '<span ng-click="datepicker.setPM()" ng-class="{ \'active\': datepicker.date.hours() >= 12 }">BM</span>' +
+                                    '<span ng-click="datepicker.setPM()" ng-class="{ \'active\': datepicker.date.hours() >= 12 }">PM</span>' +
                                   '</div>' +
                                   '<mdp-clock class="mdp-animation-zoom" auto-switch="true" time="datepicker.date" type="hours" ></mdp-clock>' +
                                   '<mdp-clock class="mdp-animation-zoom" auto-switch="true" time="datepicker.date" type="minutes" ></mdp-clock>' +
