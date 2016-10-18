@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html >
+<html>
   <head>
     <meta charset="UTF-8">
     <title>mdPickers - 对angular材料的日期/时间选择器</title>
@@ -55,7 +55,7 @@ initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
             </div>
             <div>
               <h4 class="md-subhead">使用 $mdpDatePicker服务</h4>
-              <md-button class="md-raised md-warn" ng-click="ctrl.showDatePicker($event)" aria-label="show picker">节目选择器</md-button>
+              <md-button class="md-raised md-warn" ng-click="ctrl.showDatePicker($event)" aria-label="显示选择器">节目选择器</md-button>
               <p>
                 {{ currentDate | date:'shortDate' }}
               </p>
@@ -83,7 +83,7 @@ initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
             <input type="time" ng-model="test" mdp-time-picker />
             <div>
               <h4 class="md-subhead">使用 $mdpTimePicker服务</h4>
-              <md-button class="md-raised md-warn" ng-click="ctrl.showTimePicker($event)" aria-label="show picker">节目选择器</md-button>
+              <md-button class="md-raised md-warn" ng-click="ctrl.showTimePicker($event)" aria-label="显示选择器">节目选择器</md-button>
               <p>
                 {{ currentTime | date:'HH:mm' }}
               </p>
