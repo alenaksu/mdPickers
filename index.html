@@ -21,7 +21,7 @@ initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
     </div>
   </md-toolbar>
   <md-content flex layout="column" layout-align="center center" layout-padding>
-    <h3><a href="https://github.com/2947721120/mdPickers">https://github.com/2947721120/mdPickers</a></h3>
+    <h3><a href="https://github.com/2947721120/mdPickers">Github上看代码</a></h3>
     <div layout="row" ng-form="demoForm">
           <div layout-padding>
             <h2>日期选择器</h2>
@@ -31,7 +31,7 @@ initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
             </div>
             <div>
               <h4 class="md-subhead">自定义格式+错误信息</h4>
-              <mdp-date-picker mdp-open-on-click required name="dateFormat" mdp-placeholder="选择日期(dd/mm/yyyy)" mdp-format="DD/MM/YYYY" ng-model="currentDate">
+              <mdp-date-picker mdp-open-on-click required name="dateFormat" mdp-placeholder="选择日期(dd/mm/yyyy)(日/月/年)" mdp-format="DD/MM/YYYY" ng-model="currentDate">
                 <div ng-messages="demoForm.dateFormat.$error">
                   <div ng-message="required">这是必需</div>
                   <div ng-message="format">无效的格式</div>
@@ -55,7 +55,7 @@ initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
             </div>
             <div>
               <h4 class="md-subhead">使用 $mdpDatePicker服务</h4>
-              <md-button class="md-raised md-warn" ng-click="ctrl.showDatePicker($event)" aria-label="显示选择器">节目选择器</md-button>
+              <md-button class="md-raised md-warn" ng-click="ctrl.showDatePicker($event)" aria-label="显示选择器">选择器</md-button>
               <p>
                 {{ currentDate | date:'shortDate' }}
               </p>
@@ -98,7 +98,7 @@ initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
 <script src='https://cdnjs.c2cbc.com/ajax/libs/moment.js/2.10.3/moment.min.js'></script>
 <script src='https://cdn.c2cmalls.com/angular/1.4.8/angular-animate.min.js'></script>
 <script src='https://cdn.c2cmalls.com/angular/1.4.8/angular-aria.min.js'></script>
-<script src='http://cdn.c2cmalls.com/mdpickers/0.7.2/dist/mdPickers.js'></script>
+<script src='//cdn.c2cmalls.com/mdpickers/0.7.2/dist/mdPickers.js'></script>
 <script src='https://cdn.c2cmalls.com/angular/1.4.8/angular-messages.min.js'></script>
 <script src='https://cdnjs.c2cbc.com/ajax/libs/fullcalendar/2.7.0/lang/zh-cn.js'></script>
         <script src="//cdn.c2cmalls.com/mdpickers/js/index.js"></script>
