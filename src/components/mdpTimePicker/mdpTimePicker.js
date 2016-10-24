@@ -27,6 +27,13 @@ function TimePickerCtrl($scope, $mdDialog, time, autoSwitch, $mdMedia) {
             self.time.hour(self.time.hour() + 12);
 	};
     
+    this.now = function() {
+        var now = moment();
+        this.time.hour(now.hour());
+        this.time.minute(now.minute());
+        this.time.second(now.second());
+    };
+	
     this.cancel = function() {
         $mdDialog.cancel();
     };
@@ -110,21 +117,44 @@ function ClockCtrl($scope) {
             case TYPE_HOURS:
                 for(var i = 1; i <= 12; i++)
                     self.steps.push(i);
-                self.selected = self.time.hours() || 0;
-                if(self.selected > 12) self.selected -= 12;
                     
                 break;
             case TYPE_MINUTES:
                 for(var i = 5; i <= 55; i+=5)
                     self.steps.push(i);
                 self.steps.push(0);
+                
+                break;
+        }
+        refresh();
+    };
+    
+    this.init();
+    
+    /**
+     * Respond to changes in the selected date/time.
+     */
+    $scope.$watch(function() { return  self.time.unix() }, function(newVal, oldVal) {
+        refresh();
+    });
+    
+    /**
+     * Refresh the value shown in the current clock
+     */
+    function refresh() {
+        self.type = self.type || "hours";
+        switch(self.type) {
+            case TYPE_HOURS:
+                self.selected = self.time.hours() || 0;
+                if(self.selected > 12) self.selected -= 12;
+                    
+                break;
+            case TYPE_MINUTES:
                 self.selected = self.time.minutes() || 0;
                 
                 break;
         }
-    };
-    
-    this.init();
+    } 
 }
 
 module.directive("mdpClock", ["$animate", "$timeout", function($animate, $timeout) {
@@ -182,6 +212,7 @@ module.directive("mdpClock", ["$animate", "$timeout", function($animate, $timeou
 
 module.provider("$mdpTimePicker", function() {
     var LABEL_OK = "OK",
+        LABEL_NOW = "Now",
         LABEL_CANCEL = "Cancel";
         
     this.setOKButtonLabel = function(label) {
@@ -221,6 +252,7 @@ module.provider("$mdpTimePicker", function() {
                                     
                                     '<md-dialog-actions layout="row">' +
 	                                	'<span flex></span>' +
+                                        '<md-button ng-click="timepicker.now()" aria-label="' + LABEL_NOW + '">' + LABEL_NOW + '</md-button>' +
                                         '<md-button ng-click="timepicker.cancel()" aria-label="' + LABEL_CANCEL + '">' + LABEL_CANCEL + '</md-button>' +
                                         '<md-button ng-click="timepicker.confirm()" class="md-primary" aria-label="' + LABEL_OK + '">' + LABEL_OK + '</md-button>' +
                                     '</md-dialog-actions>' +
