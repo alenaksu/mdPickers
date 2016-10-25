@@ -319,7 +319,9 @@ module.directive("mdpTimePicker", ["$mdpTimePicker", "$timeout", function($mdpTi
             
             // update input element value
             function updateInputElement(value) {
-                inputElement[0].value = value;
+                if (inputElement[0].value !== value) {
+                    inputElement[0].value = value;
+                }
                 inputContainerCtrl.setHasValue(!ngModel.$isEmpty(value));
             }
             
