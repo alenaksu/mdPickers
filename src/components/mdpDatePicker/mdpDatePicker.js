@@ -67,6 +67,16 @@ function DatePickerCtrl($scope, $mdDialog, $mdMedia, $timeout, currentDate, opti
     this.showCalendar = function() {
         self.selectingYear = false;
     };
+    
+    /**
+     * Set the date component to today
+     */
+    this.today = function() {
+        var now = moment();
+        this.date.year(now.year());
+        this.date.month(now.month());
+        this.date.date(now.date());
+    };
 
     this.cancel = function() {
         $mdDialog.cancel();
@@ -97,6 +107,7 @@ function DatePickerCtrl($scope, $mdDialog, $mdMedia, $timeout, currentDate, opti
 module.provider("$mdpDatePicker", function() {
     var LABEL_OK = "OK",
         LABEL_CANCEL = "Cancel",
+        LABEL_TODAY = "Today",
         DISPLAY_FORMAT = "ddd, MMM DD";
         
     this.setDisplayFormat = function(format) {
@@ -141,6 +152,7 @@ module.provider("$mdpDatePicker", function() {
                                     '<mdp-calendar ng-if="!datepicker.selectingYear" class="mdp-animation-zoom" date="datepicker.date" min-date="datepicker.minDate" date-filter="datepicker.dateFilter" max-date="datepicker.maxDate"></mdp-calendar>' +
                                     '<md-dialog-actions layout="row">' +
                                     	'<span flex></span>' +
+                                    	'<md-button ng-click="datepicker.today()" aria-label="' + LABEL_TODAY + '">' + LABEL_TODAY + '</md-button>' +
                                         '<md-button ng-click="datepicker.cancel()" aria-label="' + LABEL_CANCEL + '">' + LABEL_CANCEL + '</md-button>' +
                                         '<md-button ng-click="datepicker.confirm()" class="md-primary" aria-label="' + LABEL_OK + '">' + LABEL_OK + '</md-button>' +
                                     '</md-dialog-actions>' +
