@@ -81,7 +81,7 @@ module.provider('$mdpDateTimePicker', function(){
               currentDate: currentDate,
               options: options
           },
-          skipHide: true
+          multiple: true
       });
 
     }
