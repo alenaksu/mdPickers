@@ -238,6 +238,7 @@ function CalendarCtrl($scope) {
     this.daysInMonth = [];
     
     this.getDaysInMonth = function() {
+        self.date = $scope.$parent.datepicker.date;
         var days = self.date.daysInMonth(),
             firstDay = moment(self.date).date(1).day() - this.dow;
             
