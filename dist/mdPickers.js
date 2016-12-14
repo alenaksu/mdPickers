@@ -64,53 +64,55 @@ module.directive("ngMessage", ["$mdUtil", function($mdUtil) {
 function DatePickerCtrl($scope, $mdDialog, $mdMedia, $timeout, currentDate, options) {
     var self = this;
 
-    this.date = moment(currentDate);
-    this.minDate = options.minDate && moment(options.minDate).isValid() ? moment(options.minDate) : null;
-    this.maxDate = options.maxDate && moment(options.maxDate).isValid() ? moment(options.maxDate) : null;
-    this.displayFormat = options.displayFormat || "ddd, MMM DD";
-    this.dateFilter = angular.isFunction(options.dateFilter) ? options.dateFilter : null;
-    this.selectingYear = false;
-    
-    // validate min and max date
-	if (this.minDate && this.maxDate) {
-		if (this.maxDate.isBefore(this.minDate)) {
-			this.maxDate = moment(this.minDate).add(1, 'days');
-		}
-	}
-	
-	if (this.date) {
-		// check min date
-    	if (this.minDate && this.date.isBefore(this.minDate)) {
-			this.date = moment(this.minDate);
-    	}
-    	
-    	// check max date
-    	if (this.maxDate && this.date.isAfter(this.maxDate)) {
-			this.date = moment(this.maxDate);
-    	}
-	}
-	
-	this.yearItems = {
-        currentIndex_: 0,
-        PAGE_SIZE: 5,
-        START: (self.minDate ? self.minDate.year() : 1900),
-        END: (self.maxDate ? self.maxDate.year() : 0),
-        getItemAtIndex: function(index) {
-        	if(this.currentIndex_ < index)
-                this.currentIndex_ = index;
-        	
-        	return this.START + index;
-        },
-        getLength: function() {
-            return Math.min(
-                this.currentIndex_ + Math.floor(this.PAGE_SIZE / 2),
-                Math.abs(this.START - this.END) + 1
-            );
-        }
-    };
+    this.$onInit = function() {
+        this.date = moment(currentDate);
+        this.minDate = options.minDate && moment(options.minDate).isValid() ? moment(options.minDate) : null;
+        this.maxDate = options.maxDate && moment(options.maxDate).isValid() ? moment(options.maxDate) : null;
+        this.displayFormat = options.displayFormat || "ddd, MMM DD";
+        this.dateFilter = angular.isFunction(options.dateFilter) ? options.dateFilter : null;
+        this.selectingYear = false;
 
-    $scope.$mdMedia = $mdMedia;
-    $scope.year = this.date.year();
+        // validate min and max date
+        if (this.minDate && this.maxDate) {
+            if (this.maxDate.isBefore(this.minDate)) {
+                this.maxDate = moment(this.minDate).add(1, 'days');
+            }
+        }
+
+        if (this.date) {
+            // check min date
+            if (this.minDate && this.date.isBefore(this.minDate)) {
+                this.date = moment(this.minDate);
+            }
+
+            // check max date
+            if (this.maxDate && this.date.isAfter(this.maxDate)) {
+                this.date = moment(this.maxDate);
+            }
+        }
+
+        this.yearItems = {
+            currentIndex_: 0,
+            PAGE_SIZE: 5,
+            START: (self.minDate ? self.minDate.year() : 1900),
+            END: (self.maxDate ? self.maxDate.year() : 0),
+            getItemAtIndex: function(index) {
+                if(this.currentIndex_ < index)
+                    this.currentIndex_ = index;
+
+                return this.START + index;
+            },
+            getLength: function() {
+                return Math.min(
+                    this.currentIndex_ + Math.floor(this.PAGE_SIZE / 2),
+                    Math.abs(this.START - this.END) + 1
+                );
+            }
+        };
+
+        $scope.$mdMedia = $mdMedia;
+        $scope.year = this.date.year();
+    };
 
 	this.selectYear = function(year) {
         self.date.year(year);
