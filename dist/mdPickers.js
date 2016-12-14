@@ -223,20 +223,23 @@ module.provider("$mdpDatePicker", function() {
 
 function CalendarCtrl($scope) {
 	var self = this;
-	this.dow = moment.localeData().firstDayOfWeek();
-	
-    this.weekDays = [].concat(
-        moment.weekdaysMin().slice(
-            this.dow
-        ),
-        moment.weekdaysMin().slice(
-            0, 
-            this.dow
-        )
-    );
-    
-    this.daysInMonth = [];
-    
+
+    this.$onInit = function () {
+        self.daysInMonth = [];
+        self.dow = moment.localeData().firstDayOfWeek();
+        self.weekDays = [].concat(
+            moment.weekdaysMin().slice(self.dow),
+            moment.weekdaysMin().slice(0, self.dow)
+        );
+        $scope.$watch(function () {
+            return self.date.unix()
+        }, function (newValue, oldValue) {
+            if (newValue && newValue !== oldValue)
+                self.updateDaysInMonth();
+        });
+        self.updateDaysInMonth();
+    };
+
     this.getDaysInMonth = function() {
         var days = self.date.daysInMonth(),
             firstDay = moment(self.date).date(1).day() - this.dow;
@@ -280,13 +283,11 @@ function CalendarCtrl($scope) {
     this.updateDaysInMonth = function() {
         self.daysInMonth = self.getDaysInMonth();
     };
-    
+
     $scope.$watch(function() { return  self.date.unix() }, function(newValue, oldValue) {
         if(newValue && newValue !== oldValue)
             self.updateDaysInMonth();
-    })
-    
-    self.updateDaysInMonth();
+    });
 }
 
 module.directive("mdpCalendar", ["$animate", function($animate) {
@@ -616,21 +617,34 @@ function TimePickerCtrl($scope, $mdDialog, time, autoSwitch, $mdMedia) {
 }
 
 function ClockCtrl($scope) {
+    var self = this;
     var TYPE_HOURS = "hours";
     var TYPE_MINUTES = "minutes";
-    var self = this;
-    
-    this.STEP_DEG = 360 / 12;
-    this.steps = [];
-    
-    this.CLOCK_TYPES = {
-        "hours": {
-            range: 12,
-        },
-        "minutes": {
-            range: 60,
+
+    this.$onInit = function () {
+        self.STEP_DEG = 360 / 12;
+        self.steps = [];
+        self.CLOCK_TYPES = {
+            "hours": { range: 12, },
+            "minutes": { range: 60, }
+        };
+        self.type = self.type || "hours";
+        switch (self.type) {
+            case TYPE_HOURS:
+                for (var i = 1; i <= 12; i++)
+                    self.steps.push(i);
+                self.selected = self.time.hours() || 0;
+                if (self.selected > 12) self.selected -= 12;
+
+                break;
+            case TYPE_MINUTES:
+                for (var i = 5; i <= 55; i += 5)
+                    self.steps.push(i);
+                self.steps.push(0);
+                self.selected = self.time.minutes() || 0;
+                break;
         }
-    }
+    };
     
     this.getPointerStyle = function() {
         var divider = 1;
@@ -682,28 +696,6 @@ function ClockCtrl($scope) {
         }
         
     };
-    
-    this.init = function() {
-        self.type = self.type || "hours";
-        switch(self.type) {
-            case TYPE_HOURS:
-                for(var i = 1; i <= 12; i++)
-                    self.steps.push(i);
-                self.selected = self.time.hours() || 0;
-                if(self.selected > 12) self.selected -= 12;
-                    
-                break;
-            case TYPE_MINUTES:
-                for(var i = 5; i <= 55; i+=5)
-                    self.steps.push(i);
-                self.steps.push(0);
-                self.selected = self.time.minutes() || 0;
-                
-                break;
-        }
-    };
-    
-    this.init();
 }
 
 module.directive("mdpClock", ["$animate", "$timeout", function($animate, $timeout) {
