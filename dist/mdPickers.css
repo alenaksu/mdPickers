@@ -264,6 +264,10 @@ mdp-calendar {
 .mdp-calendar-days .mdp-day-placeholder {
   margin: 0;
 }
+.md-panel-outer-wrapper {
+  width: 0 !important;
+  height: 0 !important;
+}
 .mdp-clock {
   width: 200px;
   height: 200px;
