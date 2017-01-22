@@ -67,6 +67,7 @@ function DatePickerCtrl($scope, $mdDialog, $mdMedia, $timeout, currentDate, opti
     this.date = moment(currentDate);
     this.minDate = options.minDate && moment(options.minDate).isValid() ? moment(options.minDate) : null;
     this.maxDate = options.maxDate && moment(options.maxDate).isValid() ? moment(options.maxDate) : null;
+    this.firstDow = options.firstDow;
     this.displayFormat = options.displayFormat || "ddd, MMM DD";
     this.dateFilter = angular.isFunction(options.dateFilter) ? options.dateFilter : null;
     this.selectingYear = false;
@@ -199,7 +200,7 @@ module.provider("$mdpDatePicker", function() {
                                             '</div>' +
                                         '</md-virtual-repeat-container>' +
                                     '</div>' +
-                                    '<mdp-calendar ng-if="!datepicker.selectingYear" class="mdp-animation-zoom" date="datepicker.date" min-date="datepicker.minDate" date-filter="datepicker.dateFilter" max-date="datepicker.maxDate"></mdp-calendar>' +
+                                    '<mdp-calendar ng-if="!datepicker.selectingYear" class="mdp-animation-zoom" date="datepicker.date" min-date="datepicker.minDate" first-dow="datepicker.firstDow" date-filter="datepicker.dateFilter" max-date="datepicker.maxDate"></mdp-calendar>' +
                                     '<md-dialog-actions layout="row">' +
                                     	'<span flex></span>' +
                                         '<md-button ng-click="datepicker.cancel()" aria-label="' + LABEL_CANCEL + '">' + LABEL_CANCEL + '</md-button>' +
@@ -223,7 +224,7 @@ module.provider("$mdpDatePicker", function() {
 
 function CalendarCtrl($scope) {
 	var self = this;
-	this.dow = moment.localeData().firstDayOfWeek();
+	this.dow = this.firstDow || moment.localeData().firstDayOfWeek();
 
     this.weekDays = [].concat(
         moment.weekdaysMin().slice(
@@ -294,6 +295,7 @@ module.directive("mdpCalendar", ["$animate", function($animate) {
         restrict: 'E',
         bindToController: {
             "date": "=",
+            "firstDow": "=",
             "minDate": "=",
             "maxDate": "=",
             "dateFilter": "="
@@ -410,6 +412,7 @@ module.directive("mdpDatePicker", ["$mdpDatePicker", "$timeout", function($mdpDa
         scope: {
             "minDate": "=mdpMinDate",
             "maxDate": "=mdpMaxDate",
+            "firstDow": "=mdpFirstDow",
             "dateFilter": "=mdpDateFilter",
             "dateFormat": "@mdpFormat",
             "acceptableDateFormat": "@mdpAcceptableFormat",
@@ -516,6 +519,7 @@ module.directive("mdpDatePicker", ["$mdpDatePicker", "$timeout", function($mdpDa
                     $mdpDatePicker(ngModel.$modelValue, {
                 	    minDate: scope.minDate,
                 	    maxDate: scope.maxDate,
+                	    firstDow: scope.firstDow,
                 	    dateFilter: scope.dateFilter,
                 	    targetEvent: ev
             	    }).then(updateDate);
@@ -544,6 +548,7 @@ module.directive("mdpDatePicker", ["$mdpDatePicker", "$timeout", function($mdpDa
         scope: {
             "minDate": "@min",
             "maxDate": "@max",
+            "firstDow": "@mdpFirstDow",
             "dateFilter": "=mdpDateFilter",
             "dateFormat": "@mdpFormat",
         },
@@ -570,6 +575,7 @@ module.directive("mdpDatePicker", ["$mdpDatePicker", "$timeout", function($mdpDa
                 $mdpDatePicker(ngModel.$modelValue, {
             	    minDate: scope.minDate,
             	    maxDate: scope.maxDate,
+            	    firstDow: scope.firstDow,
             	    dateFilter: scope.dateFilter,
             	    targetEvent: ev
         	    }).then(function(time) {
