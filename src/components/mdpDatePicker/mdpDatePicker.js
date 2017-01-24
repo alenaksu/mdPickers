@@ -286,7 +286,10 @@ module.directive("mdpCalendar", ["$animate", function($animate) {
 }]);
 
 function formatValidator(value, formatString) {
-    var formats = formatString.split(',');
+  if ( !value ) {
+    return true;
+  }
+  var formats = formatString.split(',');
     for( var i = 0; i < formats.length; i++ ) {
       if ( moment(value, formats[i], true).isValid() ) {
         return !value || angular.isDate(value) || moment(value, formats[i], true).isValid();
