@@ -1,3 +1,41 @@
+### 0.7.6
+
+New Features in date picker
+
+#### Support for multiple input formats for keyboard inputs
+
+- new directive attribute `mdp-acceptable-format` added
+- example
+
+```
+<mdp-date-picker
+    mdp-open-on-click required
+    name="dateFormat"
+    mdp-placeholder="My date(dd/mm/yyyy)"
+    mdp-format="DD/MM/YYYY"
+    ng-model="currentDate"
+    mdp-acceptable-format="DD/MM/YY,DD/MM/YYYY">
+        <div ng-messages="demoForm.dateFormat.$error">
+          <div ng-message="required">This is required</div>
+          <div ng-message="format">Invalid format</div>
+        </div>
+</mdp-date-picker>
+```
+
+#### Functionality to change the first day of week in calendar
+
+- new directive attribute `mdp-first-dow` added
+- example
+
+```
+<!-- set the week starts with Monday -->
+<mdp-date-picker
+    mdp-placeholder="Date"
+    ng-model="currentDate"
+    mdp-first-dow="1">
+</mdp-date-picker>
+```
+
 ### 0.7.5
 
 Minor bugfixes
