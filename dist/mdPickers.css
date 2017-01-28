@@ -72,6 +72,211 @@
   -webkit-animation-name: mdp-animation-bounce;
           animation-name: mdp-animation-bounce;
 }
+.mdp-datepicker {
+  max-height: initial;
+  min-width: 234px;
+}
+.mdp-datepicker * {
+  outline: 0;
+}
+.mdp-datepicker .md-actions {
+  width: 100%;
+  padding: 0px 5px;
+}
+.mdp-calendar-week-days {
+  font-size: 0.75rem;
+  opacity: 0.6;
+}
+.mdp-calendar-week-days > * {
+  width: 32px;
+  height: 32px;
+  line-height: 32px;
+  margin: 0 5px;
+  padding: 0;
+  min-width: 0px;
+  min-height: 0px;
+  box-shadow: none !important;
+  background-color: transparent;
+}
+.mdp-calendar-days {
+  font-size: 1rem;
+  max-width: 100%;
+}
+.mdp-calendar-days .md-button,
+.mdp-calendar-days .mdp-day-placeholder {
+  width: 32px;
+  height: 32px;
+  margin: 0 5px;
+}
+.mdp-calendar-days .md-button {
+  cursor: pointer;
+  border-radius: 50%;
+  font-size: 12px;
+  width: 32px;
+  height: 32px;
+  line-height: 32px;
+  padding: 0;
+  min-width: 0px;
+  min-height: 0px;
+  box-shadow: none !important;
+  background-color: transparent;
+}
+.mdp-calendar-days .md-button[disabled]:not(.md-accent) {
+  background-color: transparent !important;
+}
+.mdp-calendar-monthyear {
+  font-size: 0.8125rem;
+  font-weight: bold;
+  line-height: 32px;
+  min-height: 32px;
+}
+.mdp-datepicker-date,
+.mdp-datepicker-day,
+.mdp-datepicker-dow,
+.mdp-datepicker-month {
+  font-size: 1.8rem;
+  opacity: 0.6;
+}
+.mdp-datepicker-date:not(.active),
+.mdp-datepicker-day:not(.active),
+.mdp-datepicker-dow:not(.active),
+.mdp-datepicker-month:not(.active) {
+  cursor: pointer;
+}
+.mdp-datepicker-date.active,
+.mdp-datepicker-day.active,
+.mdp-datepicker-dow.active,
+.mdp-datepicker-month.active,
+.mdp-datepicker-date:hover,
+.mdp-datepicker-day:hover,
+.mdp-datepicker-dow:hover,
+.mdp-datepicker-month:hover {
+  opacity: 1;
+}
+.mdp-datepicker-year {
+  font-size: 0.9rem;
+  opacity: 0.6;
+  padding: 0;
+  margin: 0;
+}
+.mdp-datepicker-year:not(.active) {
+  cursor: pointer;
+}
+.mdp-datepicker-year.active,
+.mdp-datepicker-year:hover {
+  opacity: 1;
+}
+.mdp-datepicker-select-year {
+  height: 232px;
+}
+.mdp-datepicker-select-year .repeated-year {
+  text-align: center;
+}
+.mdp-datepicker-select-year .repeated-year .md-button {
+  width: 100%;
+  margin: 0;
+  border-radius: 0;
+  padding: 0;
+  font-size: 1.0rem;
+  line-height: 42px;
+}
+.mdp-datepicker-select-year .repeated-year .md-button.current {
+  font-size: 1.8rem;
+  line-height: 42px;
+}
+.mdp-datepicker-select-year .md-virtual-repeat-container,
+.mdp-datepicker-select-year .md-virtual-repeat-offsetter,
+.mdp-datepicker-select-year .md-virtual-repeat-scroller {
+  height: 100%;
+  width: 100%;
+}
+mdp-date-picker > md-input-container.md-has-icon {
+  padding-left: 40px;
+}
+mdp-date-picker .md-button.md-icon-button {
+  margin: 18px 0 0 0;
+}
+.mdp-datepicker:not(.portrait) .mdp-datepicker-select-year {
+  width: 309px;
+}
+.mdp-datepicker:not(.portrait) .mdp-calendar {
+  margin-right: 5px;
+  width: 294px;
+  margin-left: 10px;
+}
+.mdp-datepicker:not(.portrait) .mdp-datepicker-date-wrapper {
+  width: 150px;
+}
+.mdp-datepicker:not(.portrait) .mdp-datepicker-dow {
+  width: 100%;
+  display: block;
+}
+.mdp-datepicker:not(.portrait) .mdp-calendar-week-days > *,
+.mdp-datepicker:not(.portrait) .mdp-calendar-days > * {
+  width: 42px;
+}
+.mdp-datepicker .mdp-datepicker-date-wrapper {
+  padding: 16px 35px 16px 16px;
+}
+.mdp-datepicker md-dialog-content,
+.mdp-datepicker > div {
+  overflow: hidden;
+  padding: 0px;
+}
+.mdp-datepicker md-dialog-content .mdp-calendar,
+.mdp-datepicker > div .mdp-calendar {
+  width: 294px;
+  overflow-x: hidden;
+}
+.mdp-datepicker.portrait {
+  max-width: 234px;
+}
+.mdp-datepicker.portrait .mdp-calendar {
+  text-align: center;
+  width: 100%;
+}
+.mdp-datepicker.portrait .mdp-datepicker-select-year {
+  height: 252px;
+}
+.mdp-datepicker.portrait md-dialog-content > *,
+.mdp-datepicker.portrait > div > * {
+  width: 100%;
+}
+.mdp-datepicker.portrait .mdp-calendar-week-days,
+.mdp-datepicker.portrait .mdp-calendar-days,
+.mdp-datepicker.portrait .md-actions {
+  padding: 0 5px;
+}
+.mdp-datepicker.portrait .md-actions {
+  margin-top: 20px;
+}
+.mdp-datepicker.portrait .mdp-calendar-week-days > *,
+.mdp-datepicker.portrait .mdp-calendar-days > * {
+  width: 32px;
+}
+mdp-calendar {
+  display: block;
+}
+.mdp-calendar-week-days {
+  width: 100%;
+}
+.mdp-calendar-week-days > * {
+  margin: 0;
+}
+.mdp-calendar-days .md-button,
+.mdp-calendar-days .mdp-day-placeholder {
+  margin: 0;
+}
+.md-panel-outer-wrapper {
+  width: 0 !important;
+  height: 0 !important;
+}
+input::-webkit-calendar-picker-indicator {
+  display: none;
+}
+input[type="date"]::-webkit-input-placeholder {
+  visibility: hidden !important;
+}
 .mdp-clock {
   width: 200px;
   height: 200px;
@@ -225,206 +430,4 @@ mdp-time-picker .md-button.md-icon-button {
 .mdp-clock-deg360 {
   top: 0%;
   left: 50%;
-}
-.mdp-datepicker {
-  max-height: initial;
-  min-width: 234px;
-}
-.mdp-datepicker * {
-  outline: 0;
-}
-.mdp-datepicker .md-actions {
-  width: 100%;
-  padding: 0px 5px;
-}
-.mdp-calendar-week-days {
-  font-size: 0.75rem;
-  opacity: 0.6;
-}
-.mdp-calendar-week-days > * {
-  width: 32px;
-  height: 32px;
-  line-height: 32px;
-  margin: 0 5px;
-  padding: 0;
-  min-width: 0px;
-  min-height: 0px;
-  box-shadow: none !important;
-  background-color: transparent;
-}
-.mdp-calendar-days {
-  font-size: 1rem;
-  max-width: 100%;
-}
-.mdp-calendar-days .md-button,
-.mdp-calendar-days .mdp-day-placeholder {
-  width: 32px;
-  height: 32px;
-  margin: 0 5px;
-}
-.mdp-calendar-days .md-button {
-  cursor: pointer;
-  border-radius: 50%;
-  font-size: 12px;
-  width: 32px;
-  height: 32px;
-  line-height: 32px;
-  padding: 0;
-  min-width: 0px;
-  min-height: 0px;
-  box-shadow: none !important;
-  background-color: transparent;
-}
-.mdp-calendar-days .md-button[disabled]:not(.md-accent) {
-  background-color: transparent !important;
-}
-.mdp-calendar-monthyear {
-  font-size: 0.8125rem;
-  font-weight: bold;
-  line-height: 32px;
-  min-height: 32px;
-}
-.mdp-datepicker-date,
-.mdp-datepicker-day,
-.mdp-datepicker-dow,
-.mdp-datepicker-month {
-  font-size: 1.8rem;
-  opacity: 0.6;
-}
-.mdp-datepicker-date:not(.active),
-.mdp-datepicker-day:not(.active),
-.mdp-datepicker-dow:not(.active),
-.mdp-datepicker-month:not(.active) {
-  cursor: pointer;
-}
-.mdp-datepicker-date.active,
-.mdp-datepicker-day.active,
-.mdp-datepicker-dow.active,
-.mdp-datepicker-month.active,
-.mdp-datepicker-date:hover,
-.mdp-datepicker-day:hover,
-.mdp-datepicker-dow:hover,
-.mdp-datepicker-month:hover {
-  opacity: 1;
-}
-.mdp-datepicker-year {
-  font-size: 0.9rem;
-  opacity: 0.6;
-  padding: 0;
-  margin: 0;
-}
-.mdp-datepicker-year:not(.active) {
-  cursor: pointer;
-}
-.mdp-datepicker-year.active,
-.mdp-datepicker-year:hover {
-  opacity: 1;
-}
-.mdp-datepicker-select-year {
-  height: 232px;
-}
-.mdp-datepicker-select-year .repeated-year {
-  text-align: center;
-}
-.mdp-datepicker-select-year .repeated-year .md-button {
-  width: 100%;
-  margin: 0;
-  border-radius: 0;
-  padding: 0;
-  font-size: 1.0rem;
-  line-height: 42px;
-}
-.mdp-datepicker-select-year .repeated-year .md-button.current {
-  font-size: 1.8rem;
-  line-height: 42px;
-}
-.mdp-datepicker-select-year .md-virtual-repeat-container,
-.mdp-datepicker-select-year .md-virtual-repeat-offsetter,
-.mdp-datepicker-select-year .md-virtual-repeat-scroller {
-  height: 100%;
-  width: 100%;
-}
-mdp-date-picker > md-input-container.md-has-icon {
-  padding-left: 40px;
-}
-mdp-date-picker .md-button.md-icon-button {
-  margin: 18px 0 0 0;
-}
-.mdp-datepicker:not(.portrait) .mdp-datepicker-select-year {
-  width: 309px;
-}
-.mdp-datepicker:not(.portrait) .mdp-calendar {
-  margin-right: 5px;
-  width: 294px;
-  margin-left: 10px;
-}
-.mdp-datepicker:not(.portrait) .mdp-datepicker-date-wrapper {
-  width: 150px;
-}
-.mdp-datepicker:not(.portrait) .mdp-datepicker-dow {
-  width: 100%;
-  display: block;
-}
-.mdp-datepicker:not(.portrait) .mdp-calendar-week-days > *,
-.mdp-datepicker:not(.portrait) .mdp-calendar-days > * {
-  width: 42px;
-}
-.mdp-datepicker .mdp-datepicker-date-wrapper {
-  padding: 16px 35px 16px 16px;
-}
-.mdp-datepicker md-dialog-content {
-  overflow: hidden;
-  padding: 0px;
-}
-.mdp-datepicker md-dialog-content .mdp-calendar {
-  width: 294px;
-  overflow-x: hidden;
-}
-.mdp-datepicker.portrait {
-  max-width: 234px;
-}
-.mdp-datepicker.portrait .mdp-calendar {
-  text-align: center;
-  width: 100%;
-}
-.mdp-datepicker.portrait .mdp-datepicker-select-year {
-  height: 252px;
-}
-.mdp-datepicker.portrait md-dialog-content > * {
-  width: 100%;
-}
-.mdp-datepicker.portrait .mdp-calendar-week-days,
-.mdp-datepicker.portrait .mdp-calendar-days,
-.mdp-datepicker.portrait .md-actions {
-  padding: 0 5px;
-}
-.mdp-datepicker.portrait .md-actions {
-  margin-top: 20px;
-}
-.mdp-datepicker.portrait .mdp-calendar-week-days > *,
-.mdp-datepicker.portrait .mdp-calendar-days > * {
-  width: 32px;
-}
-mdp-calendar {
-  display: block;
-}
-.mdp-calendar-week-days {
-  width: 100%;
-}
-.mdp-calendar-week-days > * {
-  margin: 0;
-}
-.mdp-calendar-days .md-button,
-.mdp-calendar-days .mdp-day-placeholder {
-  margin: 0;
-}
-.md-panel-outer-wrapper {
-  width: 0 !important;
-  height: 0 !important;
-}
-input::-webkit-calendar-picker-indicator {
-  display: none;
-}
-input[type="date"]::-webkit-input-placeholder {
-  visibility: hidden !important;
 }

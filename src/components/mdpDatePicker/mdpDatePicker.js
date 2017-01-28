@@ -1,6 +1,6 @@
 /* global moment, angular */
 
-function DatePickerCtrl($rootScope, $scope, $mdPanel, $mdMedia, $timeout, currentDate, options, mdPanelRef) {
+function DatePickerCtrl($rootScope, $scope, $mdPanel, $mdMedia, $timeout, currentDate, options, mdPanelRef, $window) {
     var self = this;
 
     this._mdPanelRef = mdPanelRef;
@@ -10,6 +10,13 @@ function DatePickerCtrl($rootScope, $scope, $mdPanel, $mdMedia, $timeout, curren
     this.displayFormat = options.displayFormat || "ddd, MMM DD";
     this.dateFilter = angular.isFunction(options.dateFilter) ? options.dateFilter : null;
     this.selectingYear = false;
+
+    this.onWindowResize = function() {
+        angular.element($window).off('resize', this.onWindowResize);
+        self.cancel();
+    };
+
+    angular.element($window).on('resize', this.onWindowResize);
 
     $rootScope.$on('$stateChangeStart', function(){
         self.cancel();
@@ -187,7 +194,17 @@ module.provider("$mdpDatePicker", function() {
 
             var position = _mdPanel.newPanelPosition()
                 .relativeTo(options.targetEvent.currentTarget)
-                .addPanelPosition(_mdPanel.xPosition.CENTER, _mdPanel.yPosition.BELOW);
+                .addPanelPosition(_mdPanel.xPosition.CENTER, _mdPanel.yPosition.BELOW)
+                .addPanelPosition(_mdPanel.xPosition.ALIGN_START, _mdPanel.yPosition.BELOW)
+                .addPanelPosition(_mdPanel.xPosition.ALIGN_END, _mdPanel.yPosition.BELOW)
+                .addPanelPosition(_mdPanel.xPosition.OFFSET_START, _mdPanel.yPosition.BELOW)
+                .addPanelPosition(_mdPanel.xPosition.OFFSET_END, _mdPanel.yPosition.BELOW)
+
+                .addPanelPosition(_mdPanel.xPosition.CENTER, _mdPanel.yPosition.ABOVE)
+                .addPanelPosition(_mdPanel.xPosition.ALIGN_START, _mdPanel.yPosition.ABOVE)
+                .addPanelPosition(_mdPanel.xPosition.ALIGN_END, _mdPanel.yPosition.ABOVE)
+                .addPanelPosition(_mdPanel.xPosition.OFFSET_START, _mdPanel.yPosition.ABOVE)
+                .addPanelPosition(_mdPanel.xPosition.OFFSET_END, _mdPanel.yPosition.ABOVE);
 
              var panelAnimation = $mdPanel.newPanelAnimation()
                 .openFrom(options.targetEvent.currentTarget)
@@ -197,7 +214,7 @@ module.provider("$mdpDatePicker", function() {
             var config = {
                 id: 'mdpDatePicker',
                 attachTo: angular.element(document.body),
-                controller:  ['$rootScope', '$scope', '$mdPanel', '$mdMedia', '$timeout', 'currentDate', 'options','mdPanelRef', DatePickerCtrl],
+                controller:  ['$rootScope', '$scope', '$mdPanel', '$mdMedia', '$timeout', 'currentDate', 'options','mdPanelRef', '$window', DatePickerCtrl],
                 controllerAs: 'datepicker',
                 template:   '<md-card class="mdp-datepicker" ng-class="{ \'portrait\': !$mdMedia(\'gt-xs\') }">' + 
                                 '<div layout="row" layout-wrap>' + 
