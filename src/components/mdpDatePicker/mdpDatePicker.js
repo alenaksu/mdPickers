@@ -1,14 +1,31 @@
 /* global moment, angular */
 
-function DatePickerCtrl($scope, $mdDialog, $mdMedia, $timeout, currentDate, options) {
+function DatePickerCtrl($rootScope, $scope, $mdPanel, $mdMedia, $timeout, currentDate, options, mdPanelRef, $window) {
     var self = this;
 
+    this._mdPanelRef = mdPanelRef;
     this.date = moment(currentDate);
     this.minDate = options.minDate && moment(options.minDate).isValid() ? moment(options.minDate) : null;
     this.maxDate = options.maxDate && moment(options.maxDate).isValid() ? moment(options.maxDate) : null;
     this.displayFormat = options.displayFormat || "ddd, MMM DD";
     this.dateFilter = angular.isFunction(options.dateFilter) ? options.dateFilter : null;
     this.selectingYear = false;
+
+    this.onWindowResize = function() {
+        angular.element($window).off('resize', this.onWindowResize);
+        self.cancel();
+    };
+
+    angular.element($window).on('resize', this.onWindowResize);
+
+    $rootScope.$on('$stateChangeStart', function(){
+        self.cancel();
+    });
+
+    $rootScope.$on('$locationChangeSuccess', function(){
+        self.cancel();
+    });
+    
     
     // validate min and max date
 	if (this.minDate && this.maxDate) {
@@ -68,22 +85,61 @@ function DatePickerCtrl($scope, $mdDialog, $mdMedia, $timeout, currentDate, opti
         self.selectingYear = false;
     };
 
-    this.cancel = function() {
-        $mdDialog.cancel();
+    this.cleanUpTrackedPanels = function(panelRef) {
+        if (panelRef._$mdPanel._trackedPanels.mdpDatePicker) {
+            delete panelRef._$mdPanel._trackedPanels.mdpDatePicker;
+        }
     };
 
+    this.cancel = function() {
+        var panelRef = this._mdPanelRef,
+            self = this;
+
+        panelRef && panelRef.close().then(function() {
+            try {
+                angular.element(panelRef.config.openFrom.currentTarget).focus();
+                self.cleanUpTrackedPanels(panelRef);
+            } catch(e){
+                console.log('Reference not found ' + e);
+            } finally {
+                panelRef.destroy();
+            }
+            
+        });
+    };
+
+/*    this.doubleClickConfirm = function(scope) {
+
+    };
+*/
     this.confirm = function() {
-    	var date = this.date;
+    	var date = self.date,
+            panelRef = self._mdPanelRef;
+            
     	
-    	if (this.minDate && this.date.isBefore(this.minDate)) {
+    	if (self.minDate && self.date.isBefore(self.minDate)) {
     		date = moment(this.minDate);
     	}
     	
-    	if (this.maxDate && this.date.isAfter(this.maxDate)) {
-    		date = moment(this.maxDate);
+    	if (self.maxDate && self.date.isAfter(self.maxDate)) {
+    		date = moment(self.maxDate);
     	}  	
     	
-        $mdDialog.hide(date.toDate());
+        panelRef && panelRef.close().then(function() {
+            try {
+                angular.element(panelRef.config.openFrom.currentTarget).focus()
+                panelRef.config.locals.onClose(date.toDate());
+                self.cleanUpTrackedPanels(panelRef);
+            } catch(e){ 
+                console.log('No close function found.');
+            } finally {
+                
+                panelRef.destroy();    
+            }
+            
+        });
+
+
     };
     
     this.animate = function() {
@@ -110,55 +166,119 @@ module.provider("$mdpDatePicker", function() {
     this.setCancelButtonLabel = function(label) {
         LABEL_CANCEL = label;
     };
-    
-    this.$get = ["$mdDialog", function($mdDialog) {
-        var datePicker = function(currentDate, options) {
+
+    this.$get = ["$mdPanel", function($mdPanel) {
+        var _mdPanel = $mdPanel;
+        
+        var datePicker = function(currentDate, options, cb) {
+            var trackedPanels = $mdPanel._trackedPanels,
+                removePanel = function(){
+                   trackedPanels.mdpDatePicker.destroy();
+                    delete trackedPanels.mdpDatePicker;
+                    return;
+                },
+                openPanel = function(){
+                    _mdPanel.open(config);
+                },
+                sameInitiator = function(event1, event2) {
+                    var previousParent = event1.currentTarget.parentElement,
+                        currentParent = event2.currentTarget.parentElement;
+                    
+                    return previousParent == currentParent;
+                };
+
             if (!angular.isDate(currentDate)) currentDate = Date.now();
-            if (!angular.isObject(options)) options = {};
+            if (!angular.isObject(options)) options = {targetEvent: null};
             
             options.displayFormat = DISPLAY_FORMAT;
-    
-            return $mdDialog.show({
-                controller:  ['$scope', '$mdDialog', '$mdMedia', '$timeout', 'currentDate', 'options', DatePickerCtrl],
+
+            var position = _mdPanel.newPanelPosition()
+                .relativeTo(options.targetEvent.currentTarget)
+                .addPanelPosition(_mdPanel.xPosition.CENTER, _mdPanel.yPosition.BELOW)
+                .addPanelPosition(_mdPanel.xPosition.ALIGN_START, _mdPanel.yPosition.BELOW)
+                .addPanelPosition(_mdPanel.xPosition.ALIGN_END, _mdPanel.yPosition.BELOW)
+                .addPanelPosition(_mdPanel.xPosition.OFFSET_START, _mdPanel.yPosition.BELOW)
+                .addPanelPosition(_mdPanel.xPosition.OFFSET_END, _mdPanel.yPosition.BELOW)
+
+                .addPanelPosition(_mdPanel.xPosition.CENTER, _mdPanel.yPosition.ABOVE)
+                .addPanelPosition(_mdPanel.xPosition.ALIGN_START, _mdPanel.yPosition.ABOVE)
+                .addPanelPosition(_mdPanel.xPosition.ALIGN_END, _mdPanel.yPosition.ABOVE)
+                .addPanelPosition(_mdPanel.xPosition.OFFSET_START, _mdPanel.yPosition.ABOVE)
+                .addPanelPosition(_mdPanel.xPosition.OFFSET_END, _mdPanel.yPosition.ABOVE);
+
+             var panelAnimation = $mdPanel.newPanelAnimation()
+                .openFrom(options.targetEvent.currentTarget)
+                .closeTo(options.targetEvent.currentTarget)
+                .withAnimation($mdPanel.animation.SCALE);
+
+            var config = {
+                id: 'mdpDatePicker',
+                attachTo: angular.element(document.body),
+                controller:  ['$rootScope', '$scope', '$mdPanel', '$mdMedia', '$timeout', 'currentDate', 'options','mdPanelRef', '$window', DatePickerCtrl],
                 controllerAs: 'datepicker',
-                clickOutsideToClose: true,
-                template: '<md-dialog aria-label="" class="mdp-datepicker" ng-class="{ \'portrait\': !$mdMedia(\'gt-xs\') }">' +
-                            '<md-dialog-content layout="row" layout-wrap>' +
-                                '<div layout="column" layout-align="start center">' +
-                                    '<md-toolbar layout-align="start start" flex class="mdp-datepicker-date-wrapper md-hue-1 md-primary" layout="column">' +
-                                        '<span class="mdp-datepicker-year" ng-click="datepicker.showYear()" ng-class="{ \'active\': datepicker.selectingYear }">{{ datepicker.date.format(\'YYYY\') }}</span>' +
-                                        '<span class="mdp-datepicker-date" ng-click="datepicker.showCalendar()" ng-class="{ \'active\': !datepicker.selectingYear }">{{ datepicker.date.format(datepicker.displayFormat) }}</span> ' +
-                                    '</md-toolbar>' + 
-                                '</div>' +  
-                                '<div>' + 
-                                    '<div class="mdp-datepicker-select-year mdp-animation-zoom" layout="column" layout-align="center start" ng-if="datepicker.selectingYear">' +
-                                        '<md-virtual-repeat-container md-auto-shrink md-top-index="datepicker.yearTopIndex">' +
-                                            '<div flex md-virtual-repeat="item in datepicker.yearItems" md-on-demand class="repeated-year">' +
-                                                '<span class="md-button" ng-click="datepicker.selectYear(item)" md-ink-ripple ng-class="{ \'md-primary current\': item == year }">{{ item }}</span>' +
-                                            '</div>' +
-                                        '</md-virtual-repeat-container>' +
-                                    '</div>' +
-                                    '<mdp-calendar ng-if="!datepicker.selectingYear" class="mdp-animation-zoom" date="datepicker.date" min-date="datepicker.minDate" date-filter="datepicker.dateFilter" max-date="datepicker.maxDate"></mdp-calendar>' +
-                                    '<md-dialog-actions layout="row">' +
-                                    	'<span flex></span>' +
-                                        '<md-button ng-click="datepicker.cancel()" aria-label="' + LABEL_CANCEL + '">' + LABEL_CANCEL + '</md-button>' +
-                                        '<md-button ng-click="datepicker.confirm()" class="md-primary" aria-label="' + LABEL_OK + '">' + LABEL_OK + '</md-button>' +
-                                    '</md-dialog-actions>' +
+                template:   '<md-card class="mdp-datepicker" ng-class="{ \'portrait\': !$mdMedia(\'gt-xs\') }">' + 
+                                '<div layout="row" layout-wrap>' + 
+                                    '<div layout="column" layout-align="start center">' +
+                                        '<md-toolbar layout-align="start start" flex class="mdp-datepicker-date-wrapper md-hue-1 md-primary" layout="column">' +
+                                            '<span class="mdp-datepicker-year" ng-click="datepicker.showYear()" ng-class="{ \'active\': datepicker.selectingYear }">{{ datepicker.date.format(\'YYYY\') }}</span>' +
+                                            '<span class="mdp-datepicker-date" ng-click="datepicker.showCalendar()" ng-class="{ \'active\': !datepicker.selectingYear }">{{ datepicker.date.format(datepicker.displayFormat) }}</span> ' +
+                                        '</md-toolbar>' + 
+                                    '</div>' +  
+                                    '<div>' + 
+                                        '<div class="mdp-datepicker-select-year mdp-animation-zoom" layout="column" layout-align="center start" ng-if="datepicker.selectingYear">' +
+                                            '<md-virtual-repeat-container md-auto-shrink md-top-index="datepicker.yearTopIndex">' +
+                                                '<div flex md-virtual-repeat="item in datepicker.yearItems" md-on-demand class="repeated-year">' +
+                                                    '<span class="md-button" ng-click="datepicker.selectYear(item)" md-ink-ripple ng-class="{ \'md-primary current\': item == year }">{{ item }}</span>' +
+                                                '</div>' +
+                                            '</md-virtual-repeat-container>' +
+                                        '</div>' +
+                                        '<mdp-calendar ng-if="!datepicker.selectingYear" double-click="datepicker.confirm" class="mdp-animation-zoom" date="datepicker.date" min-date="datepicker.minDate" date-filter="datepicker.dateFilter" max-date="datepicker.maxDate"></mdp-calendar>' +
+                                        '<md-dialog-actions layout="row">' +
+                                            '<span flex></span>' +
+                                            '<md-button ng-click="datepicker.cancel()" aria-label="' + LABEL_CANCEL + '">' + LABEL_CANCEL + '</md-button>' +
+                                            '<md-button ng-click="datepicker.confirm()" class="md-primary" aria-label="' + LABEL_OK + '">' + LABEL_OK + '</md-button>' +
+                                        '</md-dialog-actions>' +
+                                    '</div>' + 
                                 '</div>' +
-                            '</md-dialog-content>' +
-                        '</md-dialog>',
-                targetEvent: options.targetEvent,
+                            '</md-card>',
+                panelClass: 'mdp-class-baby', 
+                openFrom: options.targetEvent,
+                position: position,
+                animation: panelAnimation,
                 locals: {
                     currentDate: currentDate,
-                    options: options
+                    options: options,
+                    onClose: cb
                 },
-                skipHide: true
-            });
-        };
+
+                clickOutsideToClose: false,
+                escapeToClose: true,
+                focusOnOpen: false,
+                trapFocus: false,
+                zIndex: 2
+            };
+
+            if (trackedPanels.mdpDatePicker) {
+                // we already have one open, check to see if user has clicked on same source as currently opened panel. If so, close, don't open new.
+                if (sameInitiator(trackedPanels.mdpDatePicker.config.openFrom, options.targetEvent)) {
+                    return trackedPanels.mdpDatePicker.close().then(removePanel);
+                }
+
+                // we already have one open, close it and open new.
+                return trackedPanels.mdpDatePicker.close().then(removePanel).then(openPanel);
+            }
+            
+
+            return openPanel();
     
+        };
+
         return datePicker;
+    
     }];
 });
+    
+    
 
 function CalendarCtrl($scope) {
 	var self = this;
@@ -208,6 +328,14 @@ function CalendarCtrl($scope) {
         self.date.date(dom);
     };
 
+    this.selectDateDblClick = function(dom) {
+        self.date.date(dom);
+        if (this.doubleClick){
+            this.doubleClick();
+            
+        }
+    };
+
     this.nextMonth = function() {
         self.date.add(1, 'months');
     };
@@ -235,7 +363,8 @@ module.directive("mdpCalendar", ["$animate", function($animate) {
             "date": "=",
             "minDate": "=",
             "maxDate": "=",
-            "dateFilter": "="
+            "dateFilter": "=",
+            "doubleClick": "="
         },
         template: '<div class="mdp-calendar">' +
                     '<div layout="row" layout-align="space-between center">' +
@@ -248,7 +377,7 @@ module.directive("mdpCalendar", ["$animate", function($animate) {
                     '</div>' +
                     '<div layout="row" layout-align="start center" layout-wrap class="mdp-calendar-days" ng-class="{ \'mdp-animate-next\': calendar.animating }" ng-show="!calendar.animating" md-swipe-left="calendar.nextMonth()" md-swipe-right="calendar.prevMonth()">' +
                         '<div layout layout-align="center center" ng-repeat-start="day in calendar.daysInMonth track by $index" ng-class="{ \'mdp-day-placeholder\': !day }">' +
-                            '<md-button class="md-icon-button md-raised" aria-label="Select day" ng-if="day" ng-class="{ \'md-accent\': calendar.date.date() == day.value }" ng-click="calendar.selectDate(day.value)" ng-disabled="!day.enabled">{{ day.value }}</md-button>' +
+                            '<md-button class="md-icon-button md-raised" aria-label="Select day" ng-if="day" ng-class="{ \'md-accent\': calendar.date.date() == day.value }" ng-click="calendar.selectDate(day.value)" ng-dblclick="calendar.selectDateDblClick(day.value)" ng-disabled="!day.enabled">{{ day.value }}</md-button>' +
                         '</div>' +
                         '<div flex="100" ng-if="($index + 1) % 7 == 0" ng-repeat-end></div>' +
                     '</div>' +
@@ -448,7 +577,9 @@ module.directive("mdpDatePicker", ["$mdpDatePicker", "$timeout", function($mdpDa
                 	    maxDate: scope.maxDate,
                 	    dateFilter: scope.dateFilter,
                 	    targetEvent: ev
-            	    }).then(updateDate);
+            	    }, updateDate);
+
+                    angular.element(ev.currentTarget.parentElement).find('input').focus()
                 };
                 
                 function onInputElementEvents(event) {

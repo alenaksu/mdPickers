@@ -218,11 +218,13 @@ mdp-date-picker .md-button.md-icon-button {
 .mdp-datepicker .mdp-datepicker-date-wrapper {
   padding: 16px 35px 16px 16px;
 }
-.mdp-datepicker md-dialog-content {
+.mdp-datepicker md-dialog-content,
+.mdp-datepicker > div {
   overflow: hidden;
   padding: 0px;
 }
-.mdp-datepicker md-dialog-content .mdp-calendar {
+.mdp-datepicker md-dialog-content .mdp-calendar,
+.mdp-datepicker > div .mdp-calendar {
   width: 294px;
   overflow-x: hidden;
 }
@@ -236,7 +238,8 @@ mdp-date-picker .md-button.md-icon-button {
 .mdp-datepicker.portrait .mdp-datepicker-select-year {
   height: 252px;
 }
-.mdp-datepicker.portrait md-dialog-content > * {
+.mdp-datepicker.portrait md-dialog-content > *,
+.mdp-datepicker.portrait > div > * {
   width: 100%;
 }
 .mdp-datepicker.portrait .mdp-calendar-week-days,
@@ -263,6 +266,16 @@ mdp-calendar {
 .mdp-calendar-days .md-button,
 .mdp-calendar-days .mdp-day-placeholder {
   margin: 0;
+}
+.md-panel-outer-wrapper {
+  width: 0 !important;
+  height: 0 !important;
+}
+input::-webkit-calendar-picker-indicator {
+  display: none;
+}
+input[type="date"]::-webkit-input-placeholder {
+  visibility: hidden !important;
 }
 .mdp-clock {
   width: 200px;
