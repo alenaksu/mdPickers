@@ -172,7 +172,8 @@ mdp-date-picker {
         padding: 16px 35px 16px 16px;
     }
     
-    md-dialog-content {
+    md-dialog-content,
+    & > div {
         overflow: hidden;
         padding: 0px;
         .mdp-calendar {
@@ -193,7 +194,8 @@ mdp-date-picker {
             height: 252px;
         }
     
-        md-dialog-content {
+        md-dialog-content,
+        & > div {
             & > * {
                 width: 100%;
             }
@@ -236,4 +238,17 @@ mdp-calendar {
     .mdp-day-placeholder {
         margin: 0;
     }
+}
+
+.md-panel-outer-wrapper {
+    width: 0 !important;
+    height: 0 !important;
+}
+
+input::-webkit-calendar-picker-indicator{
+    display: none;
+}
+
+input[type="date"]::-webkit-input-placeholder{ 
+    visibility: hidden !important;
 }
