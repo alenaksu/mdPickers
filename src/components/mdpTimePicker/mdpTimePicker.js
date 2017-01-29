@@ -1,12 +1,30 @@
 /* global moment, angular */
 
-function TimePickerCtrl($scope, $mdDialog, time, autoSwitch, $mdMedia) {
+function TimePickerCtrl($rootScope, $scope, $mdDialog, time, autoSwitch, $mdMedia, mdPanelRef, $window) {
 	var self = this;
+
+    this._mdPanelRef = mdPanelRef;
     this.VIEW_HOURS = 1;
     this.VIEW_MINUTES = 2;
     this.currentView = this.VIEW_HOURS;
     this.time = moment(time);
     this.autoSwitch = !!autoSwitch;
+
+    this.onWindowResize = function() {
+        angular.element($window).off('resize', this.onWindowResize);
+        self.cancel();
+    };
+
+    angular.element($window).on('resize', this.onWindowResize);
+
+    $rootScope.$on('$stateChangeStart', function(){
+        self.cancel();
+    });
+
+    $rootScope.$on('$locationChangeSuccess', function(){
+        self.cancel();
+    });
+    
     
     this.clockHours = parseInt(this.time.format("h"));
     this.clockMinutes = parseInt(this.time.minutes());
@@ -26,13 +44,47 @@ function TimePickerCtrl($scope, $mdDialog, time, autoSwitch, $mdMedia) {
         if(self.time.hours() < 12)
             self.time.hour(self.time.hour() + 12);
 	};
+
+    this.cleanUpTrackedPanels = function(panelRef) {
+        if (panelRef._$mdPanel._trackedPanels.mdpTimePicker) {
+            delete panelRef._$mdPanel._trackedPanels.mdpTimePicker;
+        }
+    };
     
     this.cancel = function() {
-        $mdDialog.cancel();
+        var panelRef = this._mdPanelRef,
+            self = this;
+
+        panelRef && panelRef.close().then(function() {
+            try {
+                angular.element(panelRef.config.openFrom.currentTarget).focus();
+                self.cleanUpTrackedPanels(panelRef);
+            } catch(e){
+                console.log('Reference not found ' + e);
+            } finally {
+                panelRef.destroy();
+            }
+            
+        });
     };
 
     this.confirm = function() {
-        $mdDialog.hide(this.time.toDate());
+        var time = self.time,
+            panelRef = self._mdPanelRef;
+        
+        panelRef && panelRef.close().then(function() {
+            try {
+                angular.element(panelRef.config.openFrom.currentTarget).focus();
+                panelRef.config.locals.onClose(time.toDate());
+                self.cleanUpTrackedPanels(panelRef);
+            } catch(e){ 
+                console.log('No close function found.');
+            } finally {
+                
+                panelRef.destroy();    
+            }
+            
+        });
     };
 }
 
@@ -192,48 +244,110 @@ module.provider("$mdpTimePicker", function() {
         LABEL_CANCEL = label;
     };
     
-    this.$get = ["$mdDialog", function($mdDialog) {
-        var timePicker = function(time, options) {
+    this.$get = ["$mdPanel", function($mdPanel) {
+
+        var _mdPanel = $mdPanel,
+
+        timePicker = function(time, options, cb) {
+            var trackedPanels = $mdPanel._trackedPanels,
+                removePanel = function(){
+                   trackedPanels.mdpTimePicker.destroy();
+                    delete trackedPanels.mdpTimePicker;
+                    return;
+                },
+                openPanel = function(){
+                    _mdPanel.open(config);
+                },
+                sameInitiator = function(event1, event2) {
+                    var previousParent = event1.currentTarget.parentElement,
+                        currentParent = event2.currentTarget.parentElement;
+                    
+                    return previousParent == currentParent;
+                };
+
             if(!angular.isDate(time)) time = Date.now();
             if (!angular.isObject(options)) options = {};
+
+            var position = _mdPanel.newPanelPosition()
+                    .relativeTo(options.targetEvent.currentTarget)
+                    .addPanelPosition(_mdPanel.xPosition.CENTER, _mdPanel.yPosition.BELOW)
+                    .addPanelPosition(_mdPanel.xPosition.ALIGN_START, _mdPanel.yPosition.BELOW)
+                    .addPanelPosition(_mdPanel.xPosition.ALIGN_END, _mdPanel.yPosition.BELOW)
+                    .addPanelPosition(_mdPanel.xPosition.OFFSET_START, _mdPanel.yPosition.BELOW)
+                    .addPanelPosition(_mdPanel.xPosition.OFFSET_END, _mdPanel.yPosition.BELOW)
+
+                    .addPanelPosition(_mdPanel.xPosition.CENTER, _mdPanel.yPosition.ABOVE)
+                    .addPanelPosition(_mdPanel.xPosition.ALIGN_START, _mdPanel.yPosition.ABOVE)
+                    .addPanelPosition(_mdPanel.xPosition.ALIGN_END, _mdPanel.yPosition.ABOVE)
+                    .addPanelPosition(_mdPanel.xPosition.OFFSET_START, _mdPanel.yPosition.ABOVE)
+                    .addPanelPosition(_mdPanel.xPosition.OFFSET_END, _mdPanel.yPosition.ABOVE),
+
+                panelAnimation = $mdPanel.newPanelAnimation()
+                    .openFrom(options.targetEvent.currentTarget)
+                    .closeTo(options.targetEvent.currentTarget)
+                    .withAnimation($mdPanel.animation.SCALE),
     
-            return $mdDialog.show({
-                controller:  ['$scope', '$mdDialog', 'time', 'autoSwitch', '$mdMedia', TimePickerCtrl],
-                controllerAs: 'timepicker',
-                clickOutsideToClose: true,
-                template: '<md-dialog aria-label="" class="mdp-timepicker" ng-class="{ \'portrait\': !$mdMedia(\'gt-xs\') }">' +
-                            '<md-dialog-content layout-gt-xs="row" layout-wrap>' +
-                                '<md-toolbar layout-gt-xs="column" layout-xs="row" layout-align="center center" flex class="mdp-timepicker-time md-hue-1 md-primary">' +
-                                    '<div class="mdp-timepicker-selected-time">' +
-                                        '<span ng-class="{ \'active\': timepicker.currentView == timepicker.VIEW_HOURS }" ng-click="timepicker.currentView = timepicker.VIEW_HOURS">{{ timepicker.time.format("h") }}</span>:' + 
-                                        '<span ng-class="{ \'active\': timepicker.currentView == timepicker.VIEW_MINUTES }" ng-click="timepicker.currentView = timepicker.VIEW_MINUTES">{{ timepicker.time.format("mm") }}</span>' +
+                config = {
+                    id: 'mdpTimePicker',
+                    attachTo: angular.element(document.body),
+                    controller:  ['$rootScope', '$scope', '$mdPanel', 'time', 'autoSwitch', '$mdMedia', 'mdPanelRef', '$window', TimePickerCtrl],
+                    controllerAs: 'timepicker',
+                    template: '<md-card aria-label="" class="mdp-timepicker" ng-class="{ \'portrait\': !$mdMedia(\'gt-xs\') }">' +
+                                '<div layout-gt-xs="row" layout-wrap>' +
+                                    '<md-toolbar layout-gt-xs="column" layout-xs="row" layout-align="center center" flex class="mdp-timepicker-time md-hue-1 md-primary">' +
+                                        '<div class="mdp-timepicker-selected-time">' +
+                                            '<span ng-class="{ \'active\': timepicker.currentView == timepicker.VIEW_HOURS }" ng-click="timepicker.currentView = timepicker.VIEW_HOURS">{{ timepicker.time.format("h") }}</span>:' + 
+                                            '<span ng-class="{ \'active\': timepicker.currentView == timepicker.VIEW_MINUTES }" ng-click="timepicker.currentView = timepicker.VIEW_MINUTES">{{ timepicker.time.format("mm") }}</span>' +
+                                        '</div>' +
+                                        '<div layout="column" class="mdp-timepicker-selected-ampm">' + 
+                                            '<span ng-click="timepicker.setAM()" ng-class="{ \'active\': timepicker.time.hours() < 12 }">AM</span>' +
+                                            '<span ng-click="timepicker.setPM()" ng-class="{ \'active\': timepicker.time.hours() >= 12 }">PM</span>' +
+                                        '</div>' + 
+                                    '</md-toolbar>' +
+                                    '<div>' +
+                                        '<div class="mdp-clock-switch-container" ng-switch="timepicker.currentView" layout layout-align="center center">' +
+    	                                    '<mdp-clock class="mdp-animation-zoom" auto-switch="timepicker.autoSwitch" time="timepicker.time" type="hours" ng-switch-when="1"></mdp-clock>' +
+    	                                    '<mdp-clock class="mdp-animation-zoom" auto-switch="timepicker.autoSwitch" time="timepicker.time" type="minutes" ng-switch-when="2"></mdp-clock>' +
+                                        '</div>' +
+                                        
+                                        '<md-dialog-actions layout="row">' +
+    	                                	'<span flex></span>' +
+                                            '<md-button ng-click="timepicker.cancel()" aria-label="' + LABEL_CANCEL + '">' + LABEL_CANCEL + '</md-button>' +
+                                            '<md-button ng-click="timepicker.confirm()" class="md-primary" aria-label="' + LABEL_OK + '">' + LABEL_OK + '</md-button>' +
+                                        '</md-dialog-actions>' +
                                     '</div>' +
-                                    '<div layout="column" class="mdp-timepicker-selected-ampm">' + 
-                                        '<span ng-click="timepicker.setAM()" ng-class="{ \'active\': timepicker.time.hours() < 12 }">AM</span>' +
-                                        '<span ng-click="timepicker.setPM()" ng-class="{ \'active\': timepicker.time.hours() >= 12 }">PM</span>' +
-                                    '</div>' + 
-                                '</md-toolbar>' +
-                                '<div>' +
-                                    '<div class="mdp-clock-switch-container" ng-switch="timepicker.currentView" layout layout-align="center center">' +
-	                                    '<mdp-clock class="mdp-animation-zoom" auto-switch="timepicker.autoSwitch" time="timepicker.time" type="hours" ng-switch-when="1"></mdp-clock>' +
-	                                    '<mdp-clock class="mdp-animation-zoom" auto-switch="timepicker.autoSwitch" time="timepicker.time" type="minutes" ng-switch-when="2"></mdp-clock>' +
-                                    '</div>' +
-                                    
-                                    '<md-dialog-actions layout="row">' +
-	                                	'<span flex></span>' +
-                                        '<md-button ng-click="timepicker.cancel()" aria-label="' + LABEL_CANCEL + '">' + LABEL_CANCEL + '</md-button>' +
-                                        '<md-button ng-click="timepicker.confirm()" class="md-primary" aria-label="' + LABEL_OK + '">' + LABEL_OK + '</md-button>' +
-                                    '</md-dialog-actions>' +
                                 '</div>' +
-                            '</md-dialog-content>' +
-                        '</md-dialog>',
-                targetEvent: options.targetEvent,
-                locals: {
-                    time: time,
-                    autoSwitch: options.autoSwitch
-                },
-                skipHide: true
-            });
+                            '</md-card>',
+                    openFrom: options.targetEvent,
+                    position: position,
+                    animation: panelAnimation,
+                    locals: {
+                        time: time,
+                        autoSwitch: options.autoSwitch,
+                        onClose: cb
+                    },
+                    skipHide: true,
+                    clickOutsideToClose: false,
+                    escapeToClose: true,
+                    focusOnOpen: false,
+                    trapFocus: false,
+                    zIndex: 2
+                };
+
+            if (trackedPanels.mdpTimePicker) {
+                // we already have one open, check to see if user has clicked on same source as currently opened panel. If so, close, don't open new.
+                if (sameInitiator(trackedPanels.mdpTimePicker.config.openFrom, options.targetEvent)) {
+                    return trackedPanels.mdpTimePicker.close().then(removePanel);
+                }
+
+                // we already have one open, close it and open new.
+                return trackedPanels.mdpTimePicker.close().then(removePanel).then(openPanel);
+            }
+            
+
+            return openPanel();
+
+
         };
     
         return timePicker;
@@ -346,9 +460,10 @@ module.directive("mdpTimePicker", ["$mdpTimePicker", "$timeout", function($mdpTi
                 $mdpTimePicker(ngModel.$modelValue, {
                     targetEvent: ev,
                     autoSwitch: scope.autoSwitch
-                }).then(function(time) {
-                    updateTime(time, true);
-                });
+                }, updateTime);
+
+                // TODO: add conditional for focusOpOpen flag.
+                angular.element(ev.currentTarget.parentElement).find('input').focus();
             };
             
             function onInputElementEvents(event) {
