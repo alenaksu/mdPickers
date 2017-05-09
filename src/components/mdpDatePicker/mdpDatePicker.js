@@ -95,8 +95,8 @@ function DatePickerCtrl($scope, $mdDialog, $mdMedia, $timeout, currentDate, opti
 }
 
 module.provider("$mdpDatePicker", function() {
-    var LABEL_OK = "OK",
-        LABEL_CANCEL = "Cancel",
+    var LABEL_OK = "Aceptar",
+        LABEL_CANCEL = "Cancelar",
         DISPLAY_FORMAT = "ddd, MMM DD";
         
     this.setDisplayFormat = function(format) {
