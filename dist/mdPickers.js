@@ -768,7 +768,8 @@ module.directive("mdpClock", ["$animate", "$timeout", function($animate, $timeou
 
 module.provider("$mdpTimePicker", function() {
     var LABEL_OK = "OK",
-        LABEL_CANCEL = "Cancel";
+        LABEL_CANCEL = "Cancel",
+        PARENT_GETTER = function() { return undefined };
         
     this.setOKButtonLabel = function(label) {
         LABEL_OK = label;
@@ -776,6 +777,10 @@ module.provider("$mdpTimePicker", function() {
     
     this.setCancelButtonLabel = function(label) {
         LABEL_CANCEL = label;
+    };
+
+    this.setDialogParentGetter = function(fn) {
+        PARENT_GETTER = fn;
     };
     
     this.$get = ["$mdDialog", function($mdDialog) {
@@ -819,7 +824,8 @@ module.provider("$mdpTimePicker", function() {
                     autoSwitch: options.autoSwitch,
                     ampm: options.ampm
                 },
-                multiple: true
+                multiple: true,
+                parent: PARENT_GETTER()
             });
         };
     
