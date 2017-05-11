@@ -238,7 +238,7 @@ module.provider("$mdpTimePicker", function() {
                     autoSwitch: options.autoSwitch,
                     ampm: options.ampm
                 },
-                skipHide: true
+                multiple: true
             });
         };
     

@@ -213,7 +213,7 @@ module.provider("$mdpDatePicker", function() {
                     currentDate: currentDate,
                     options: options
                 },
-                skipHide: true
+                multiple: true
             });
         };
     
@@ -437,6 +437,7 @@ module.directive("mdpDatePicker", ["$mdpDatePicker", "$timeout", function($mdpDa
                 // update input element if model has changed
                 ngModel.$formatters.unshift(function(value) {
                     var date = angular.isDate(value) && moment(value);
+                    ngModel.$setValidity('required', date && date.isValid());
                     if(date && date.isValid()) 
                         updateInputElement(date.format(scope.dateFormat));
                     else
@@ -818,7 +819,7 @@ module.provider("$mdpTimePicker", function() {
                     autoSwitch: options.autoSwitch,
                     ampm: options.ampm
                 },
-                skipHide: true
+                multiple: true
             });
         };
     
