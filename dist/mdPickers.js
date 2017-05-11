@@ -158,7 +158,8 @@ function DatePickerCtrl($scope, $mdDialog, $mdMedia, $timeout, currentDate, opti
 module.provider("$mdpDatePicker", function() {
     var LABEL_OK = "OK",
         LABEL_CANCEL = "Cancel",
-        DISPLAY_FORMAT = "ddd, MMM DD";
+        DISPLAY_FORMAT = "ddd, MMM DD",
+        PARENT_GETTER = function() { return undefined };
         
     this.setDisplayFormat = function(format) {
         DISPLAY_FORMAT = format;    
@@ -170,6 +171,10 @@ module.provider("$mdpDatePicker", function() {
     
     this.setCancelButtonLabel = function(label) {
         LABEL_CANCEL = label;
+    };
+
+    this.setDialogParentGetter = function(fn) {
+        PARENT_GETTER = fn;
     };
     
     this.$get = ["$mdDialog", function($mdDialog) {
@@ -213,7 +218,8 @@ module.provider("$mdpDatePicker", function() {
                     currentDate: currentDate,
                     options: options
                 },
-                multiple: true
+                multiple: true,
+                parent: PARENT_GETTER()
             });
         };
     
