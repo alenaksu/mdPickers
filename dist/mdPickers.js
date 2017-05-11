@@ -848,6 +848,8 @@ module.directive("mdpTimePicker", ["$mdpTimePicker", "$timeout", function($mdpTi
         },
         scope: {
             "timeFormat": "@mdpFormat",
+            "okLabel": "@mdpOkLabel",
+            "cancelLabel": "@mdpCancelLabel",
             "placeholder": "@mdpPlaceholder",
             "autoSwitch": "=?mdpAutoSwitch",
             "disabled": "=?mdpDisabled",

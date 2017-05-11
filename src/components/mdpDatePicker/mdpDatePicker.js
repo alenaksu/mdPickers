@@ -121,6 +121,9 @@ module.provider("$mdpDatePicker", function() {
 
             options.displayFormat = DISPLAY_FORMAT;
 
+            var labelOk = options.labelOk || LABEL_OK;
+            var labelCancel = options.labelCancel || LABEL_CANCEL;
+
             return $mdDialog.show({
                 controller:  ['$scope', '$mdDialog', '$mdMedia', '$timeout', 'currentDate', 'options', DatePickerCtrl],
                 controllerAs: 'datepicker',
@@ -147,8 +150,8 @@ module.provider("$mdpDatePicker", function() {
                                     '<mdp-calendar ng-if="!datepicker.selectingYear" class="mdp-animation-zoom" date="datepicker.date" min-date="datepicker.minDate" date-filter="datepicker.dateFilter" max-date="datepicker.maxDate"></mdp-calendar>' +
                                     '<md-dialog-actions layout="row">' +
                                     	'<span flex></span>' +
-                                        '<md-button ng-click="datepicker.cancel()" aria-label="' + LABEL_CANCEL + '">' + LABEL_CANCEL + '</md-button>' +
-                                        '<md-button ng-click="datepicker.confirm()" class="md-primary" aria-label="' + LABEL_OK + '">' + LABEL_OK + '</md-button>' +
+                                        '<md-button ng-click="datepicker.cancel()" aria-label="' + labelCancel + '">' + labelCancel + '</md-button>' +
+                                        '<md-button ng-click="datepicker.confirm()" class="md-primary" aria-label="' + labelOk + '">' + labelOk + '</md-button>' +
                                     '</md-dialog-actions>' +
                                 '</div>' +
                             '</md-dialog-content>' +
@@ -360,6 +363,8 @@ module.directive("mdpDatePicker", ["$mdpDatePicker", "$timeout", function($mdpDa
         scope: {
             "minDate": "=mdpMinDate",
             "maxDate": "=mdpMaxDate",
+            "okLabel": "@?mdpOkLabel",
+            "cancelLabel": "@?mdpCancelLabel",
             "dateFilter": "=mdpDateFilter",
             "dateFormat": "@mdpFormat",
             "placeholder": "@mdpPlaceholder",
@@ -469,9 +474,10 @@ module.directive("mdpDatePicker", ["$mdpDatePicker", "$timeout", function($mdpDa
                 scope.showPicker = function(ev) {
                     $mdpDatePicker(ngModel.$modelValue, {
                 	    minDate: scope.minDate,
-
                 	    maxDate: scope.maxDate,
                 	    dateFilter: scope.dateFilter,
+                        okLabel: scope.okLabel,
+                        cancelLabel: scope.cancelLabel,
                 	    targetEvent: ev
             	    }).then(updateDate);
                 };
@@ -498,6 +504,8 @@ module.directive("mdpDatePicker", ["$mdpDatePicker", "$timeout", function($mdpDa
         scope: {
             "minDate": "@min",
             "maxDate": "@max",
+            "okLabel": "@?mdpOkLabel",
+            "cancelLabel": "@?mdpCancelLabel",
             "dateFilter": "=mdpDateFilter",
             "dateFormat": "@mdpFormat",
         },
@@ -523,9 +531,10 @@ module.directive("mdpDatePicker", ["$mdpDatePicker", "$timeout", function($mdpDa
             function showPicker(ev) {
                 $mdpDatePicker(ngModel.$modelValue, {
             	    minDate: scope.minDate,
-
             	    maxDate: scope.maxDate,
             	    dateFilter: scope.dateFilter,
+                    okLabel: scope.okLabel,
+                    cancelLabel: scope.cancelLabel,
             	    targetEvent: ev
         	    }).then(function(time) {
                     ngModel.$setViewValue(moment(time).format(scope.format));

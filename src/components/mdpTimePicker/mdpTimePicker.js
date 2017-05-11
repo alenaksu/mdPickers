@@ -205,6 +205,9 @@ module.provider("$mdpTimePicker", function() {
             if(!angular.isDate(time)) time = Date.now();
             if (!angular.isObject(options)) options = {};
 
+            var labelOk = options.labelOk || LABEL_OK;
+            var labelCancel = options.labelCancel || LABEL_CANCEL;
+
             return $mdDialog.show({
                 controller:  ['$scope', '$mdDialog', 'time', 'autoSwitch', 'ampm', '$mdMedia', TimePickerCtrl],
                 controllerAs: 'timepicker',
@@ -232,8 +235,8 @@ module.provider("$mdpTimePicker", function() {
 
                                     '<md-dialog-actions layout="row">' +
 	                                	'<span flex></span>' +
-                                        '<md-button ng-click="timepicker.cancel()" aria-label="' + LABEL_CANCEL + '">' + LABEL_CANCEL + '</md-button>' +
-                                        '<md-button ng-click="timepicker.confirm()" class="md-primary" aria-label="' + LABEL_OK + '">' + LABEL_OK + '</md-button>' +
+                                        '<md-button ng-click="timepicker.cancel()" aria-label="' + labelCancel + '">' + labelCancel + '</md-button>' +
+                                        '<md-button ng-click="timepicker.confirm()" class="md-primary" aria-label="' + labelOk + '">' + labelOk + '</md-button>' +
                                     '</md-dialog-actions>' +
                                 '</div>' +
                             '</md-dialog-content>' +
@@ -273,6 +276,8 @@ module.directive("mdpTimePicker", ["$mdpTimePicker", "$timeout", function($mdpTi
         },
         scope: {
             "timeFormat": "@mdpFormat",
+            "okLabel": "@?mdpOkLabel",
+            "cancelLabel": "@?mdpCancelLabel",
             "placeholder": "@mdpPlaceholder",
             "autoSwitch": "=?mdpAutoSwitch",
             "disabled": "=?mdpDisabled",
@@ -363,6 +368,8 @@ module.directive("mdpTimePicker", ["$mdpTimePicker", "$timeout", function($mdpTi
             scope.showPicker = function(ev) {
                 $mdpTimePicker(ngModel.$modelValue, {
                     targetEvent: ev,
+                    okLabel: scope.okLabel,
+                    cancelLabel: scope.cancelLabel,
                     autoSwitch: scope.autoSwitch,
                     ampm: scope.ampm
                 }).then(function(time) {
@@ -390,6 +397,8 @@ module.directive("mdpTimePicker", ["$mdpTimePicker", "$timeout", function($mdpTi
         require: 'ngModel',
         scope: {
             "timeFormat": "@mdpFormat",
+            "okLabel": "@?mdpOkLabel",
+            "cancelLabel": "@?mdpCancelLabel",
             "autoSwitch": "=?mdpAutoSwitch",
             "ampm": "=?mdpAmpm"
         },
@@ -399,6 +408,8 @@ module.directive("mdpTimePicker", ["$mdpTimePicker", "$timeout", function($mdpTi
                 $mdpTimePicker(ngModel.$modelValue, {
                     targetEvent: ev,
                     autoSwitch: scope.autoSwitch,
+                    okLabel: scope.okLabel,
+                    cancelLabel: scope.cancelLabel,
                     ampm: scope.ampm
                 }).then(function(time) {
                     ngModel.$setViewValue(moment(time).format(scope.format));
