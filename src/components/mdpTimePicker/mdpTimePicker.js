@@ -1,7 +1,7 @@
 /* global moment, angular */
 
 function TimePickerCtrl($scope, $mdDialog, time, autoSwitch, ampm, $mdMedia) {
-	var self = this;
+    var self = this;
     this.VIEW_HOURS = 1;
     this.VIEW_MINUTES = 2;
     this.currentView = this.VIEW_HOURS;
@@ -19,17 +19,17 @@ function TimePickerCtrl($scope, $mdDialog, time, autoSwitch, ampm, $mdMedia) {
 
     this.switchView = function() {
         self.currentView = self.currentView == self.VIEW_HOURS ? self.VIEW_MINUTES : self.VIEW_HOURS;
-	};
+    };
 
-	this.setAM = function() {
+    this.setAM = function() {
         if(self.time.hours() >= 12)
             self.time.hour(self.time.hour() - 12);
-	};
+    };
 
     this.setPM = function() {
         if(self.time.hours() < 12)
             self.time.hour(self.time.hour() + 12);
-	};
+    };
 
     this.cancel = function() {
         $mdDialog.cancel();
@@ -229,12 +229,12 @@ module.provider("$mdpTimePicker", function() {
                                 '</md-toolbar>' +
                                 '<div>' +
                                     '<div class="mdp-clock-switch-container" ng-switch="timepicker.currentView" layout layout-align="center center">' +
-	                                    '<mdp-clock class="mdp-animation-zoom" ampm="timepicker.ampm" auto-switch="timepicker.autoSwitch" time="timepicker.time" type="hours" ng-switch-when="1"></mdp-clock>' +
-	                                    '<mdp-clock class="mdp-animation-zoom" ampm="timepicker.ampm" auto-switch="timepicker.autoSwitch" time="timepicker.time" type="minutes" ng-switch-when="2"></mdp-clock>' +
+                                        '<mdp-clock class="mdp-animation-zoom" ampm="timepicker.ampm" auto-switch="timepicker.autoSwitch" time="timepicker.time" type="hours" ng-switch-when="1"></mdp-clock>' +
+                                        '<mdp-clock class="mdp-animation-zoom" ampm="timepicker.ampm" auto-switch="timepicker.autoSwitch" time="timepicker.time" type="minutes" ng-switch-when="2"></mdp-clock>' +
                                     '</div>' +
 
                                     '<md-dialog-actions layout="row">' +
-	                                	'<span flex></span>' +
+                                        '<span flex></span>' +
                                         '<md-button ng-click="timepicker.cancel()" aria-label="' + labelCancel + '">' + labelCancel + '</md-button>' +
                                         '<md-button ng-click="timepicker.confirm()" class="md-primary" aria-label="' + labelOk + '">' + labelOk + '</md-button>' +
                                     '</md-dialog-actions>' +
