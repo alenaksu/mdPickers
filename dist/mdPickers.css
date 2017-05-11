@@ -4,7 +4,6 @@
           transform: translate3d(50%, 0, 1px);
 }
 .mdp-animate-next-remove {
-  -webkit-transition: all 0.5s cubic-bezier(0.35, 0, 0.25, 1);
   transition: all 0.5s cubic-bezier(0.35, 0, 0.25, 1);
   opacity: 0;
   -webkit-transform: translate3d(50%, 0, 1px);
@@ -21,7 +20,6 @@
           transform: translate3d(-50%, 0, 1px);
 }
 .mdp-animate-prev-remove {
-  -webkit-transition: all 0.3s cubic-bezier(0.35, 0, 0.25, 1);
   transition: all 0.3s cubic-bezier(0.35, 0, 0.25, 1);
   opacity: 0;
   -webkit-transform: translate3d(-50%, 0, 1px);
@@ -65,7 +63,6 @@
   }
 }
 .mdp-animation-zoom.ng-enter {
-  -webkit-transition: all 0.3s cubic-bezier(0.35, 0, 0.25, 1);
   transition: all 0.3s cubic-bezier(0.35, 0, 0.25, 1);
   -webkit-animation-duration: 0.3s;
           animation-duration: 0.3s;

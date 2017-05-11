@@ -496,7 +496,7 @@ module.directive("mdpDatePicker", ["$mdpDatePicker", "$timeout", function($mdpDa
             ngModel.$validators.filter = function(modelValue, viewValue) {
                 return filterValidator(viewValue, scope.format, scope.dateFilter);
             };
-            
+
             function showPicker(ev) {
                 $mdpDatePicker(ngModel.$modelValue, {
             	    minDate: scope.minDate, 
