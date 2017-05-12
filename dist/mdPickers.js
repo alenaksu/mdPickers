@@ -188,8 +188,8 @@ module.provider("$mdpDatePicker", function() {
 
             options.displayFormat = DISPLAY_FORMAT;
 
-            var labelOk = options.labelOk || LABEL_OK;
-            var labelCancel = options.labelCancel || LABEL_CANCEL;
+            var labelOk = options.okLabel || LABEL_OK;
+            var labelCancel = options.cancelLabel || LABEL_CANCEL;
 
             return $mdDialog.show({
                 controller:  ['$scope', '$mdDialog', '$mdMedia', '$timeout', 'currentDate', 'options', DatePickerCtrl],
@@ -575,7 +575,7 @@ module.directive("mdpDatePicker", ["$mdpDatePicker", "$timeout", function($mdpDa
             "okLabel": "@?mdpOkLabel",
             "cancelLabel": "@?mdpCancelLabel",
             "dateFilter": "=mdpDateFilter",
-            "dateFormat": "@mdpFormat",
+            "dateFormat": "@mdpFormat"
         },
         link: function(scope, element, attrs, ngModel, $transclude) {
             scope.dateFormat = scope.dateFormat || "YYYY-MM-DD";
@@ -830,8 +830,8 @@ module.provider("$mdpTimePicker", function() {
             if(!angular.isDate(time)) time = Date.now();
             if (!angular.isObject(options)) options = {};
 
-            var labelOk = options.labelOk || LABEL_OK;
-            var labelCancel = options.labelCancel || LABEL_CANCEL;
+            var labelOk = options.okLabel || LABEL_OK;
+            var labelCancel = options.cancelLabel || LABEL_CANCEL;
 
             return $mdDialog.show({
                 controller:  ['$scope', '$mdDialog', 'time', 'autoSwitch', 'ampm', '$mdMedia', TimePickerCtrl],
