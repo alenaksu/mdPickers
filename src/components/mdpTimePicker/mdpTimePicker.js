@@ -264,7 +264,7 @@ module.provider("$mdpTimePicker", function() {
 module.directive("mdpTimePicker", ["$mdpTimePicker", "$timeout", function($mdpTimePicker, $timeout) {
     return  {
         restrict: 'E',
-        require: 'ngModel',
+        require: ['ngModel', "^^?form"],
         transclude: true,
         template: function(element, attrs) {
             var noFloat = angular.isDefined(attrs.mdpNoFloat),
@@ -289,7 +289,10 @@ module.directive("mdpTimePicker", ["$mdpTimePicker", "$timeout", function($mdpTi
             "disabled": "=?mdpDisabled",
             "ampm": "=?mdpAmpm"
         },
-        link: function(scope, element, attrs, ngModel, $transclude) {
+        link: function(scope, element, attrs, controllers, $transclude) {
+            var ngModel = controllers[0];
+            var form = controllers[1];
+
             var inputElement = angular.element(element[0].querySelector('input')),
                 inputContainer = angular.element(element[0].querySelector('md-input-container')),
                 inputContainerCtrl = inputContainer.controller("mdInputContainer");
@@ -304,6 +307,10 @@ module.directive("mdpTimePicker", ["$mdpTimePicker", "$timeout", function($mdpTi
             scope.type = scope.timeFormat ? "text" : "time"
             scope.timeFormat = scope.timeFormat || "HH:mm";
             scope.autoSwitch = scope.autoSwitch || false;
+
+            scope.isError = function() {
+                return !!ngModel.$invalid && (!ngModel.$pristine || form.$submitted);
+            };
 
             scope.$watch(function() { return ngModel.$error }, function(newValue, oldValue) {
                 inputContainerCtrl.setInvalid(!ngModel.$pristine && !!Object.keys(ngModel.$error).length);

@@ -350,7 +350,7 @@ function requiredValidator(value, ngModel) {
 module.directive("mdpDatePicker", ["$mdpDatePicker", "$timeout", function($mdpDatePicker, $timeout) {
     return  {
         restrict: 'E',
-        require: 'ngModel',
+        require: ['ngModel', "^^?form"],
         transclude: true,
         template: function(element, attrs) {
             var noFloat = angular.isDefined(attrs.mdpNoFloat),
@@ -379,10 +379,13 @@ module.directive("mdpDatePicker", ["$mdpDatePicker", "$timeout", function($mdpDa
             "disabled": "=?mdpDisabled"
         },
         link: {
-            pre: function(scope, element, attrs, ngModel, $transclude) {
+            pre: function(scope, element, attrs, constollers, $transclude) {
 
             },
-            post: function(scope, element, attrs, ngModel, $transclude) {
+            post: function(scope, element, attrs, controllers, $transclude) {
+                var ngModel = controllers[0];
+                var form = controllers[1];
+
                 var inputElement = angular.element(element[0].querySelector('input')),
                     inputContainer = angular.element(element[0].querySelector('md-input-container')),
                     inputContainerCtrl = inputContainer.controller("mdInputContainer");
@@ -399,7 +402,7 @@ module.directive("mdpDatePicker", ["$mdpDatePicker", "$timeout", function($mdpDa
                 scope.model = ngModel;
 
                 scope.isError = function() {
-                    return !ngModel.$pristine && !!ngModel.$invalid;
+                    return !!ngModel.$invalid && (!ngModel.$pristine || form.$submitted);
                 };
 
                 // update input element if model has changed
