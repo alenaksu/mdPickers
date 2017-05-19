@@ -391,8 +391,7 @@ module.directive("mdpDatePicker", ["$mdpDatePicker", "$timeout", function($mdpDa
                     inputContainerCtrl = inputContainer.controller("mdInputContainer");
 
                 $transclude(function(clone) {
-                   inputContainer.append(clone);
-
+                    inputContainer.append(clone);
                 });
 
                 var messages = angular.element(inputContainer[0].querySelector("[ng-messages]"));
