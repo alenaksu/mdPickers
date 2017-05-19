@@ -412,11 +412,14 @@ module.directive("mdpDatePicker", ["$mdpDatePicker", "$timeout", function($mdpDa
                 ngModel.$formatters.unshift(function(value) {
                     var date = angular.isDate(value) && moment(value);
                     ngModel.$setValidity('required', date && date.isValid());
-                    if(date && date.isValid())
-
-                        updateInputElement(date.format(scope.dateFormat));
-                    else
+                    if(date && date.isValid()) {
+                        var strVal = date.format(scope.dateFormat);
+                        updateInputElement(strVal);
+                        return strVal;
+                    } else {
                         updateInputElement(null);
+                        return null;
+                    }
                 });
 
                 ngModel.$validators.format = function(modelValue, viewValue) {
