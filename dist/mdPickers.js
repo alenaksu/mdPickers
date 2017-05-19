@@ -935,6 +935,7 @@ module.directive("mdpTimePicker", ["$mdpTimePicker", "$timeout", function($mdpTi
             scope.type = scope.timeFormat ? "text" : "time"
             scope.timeFormat = scope.timeFormat || "HH:mm";
             scope.autoSwitch = scope.autoSwitch || false;
+            scope.model = ngModel;
 
             scope.isError = function() {
                 return !!ngModel.$invalid && (!ngModel.$pristine || form.$submitted);
