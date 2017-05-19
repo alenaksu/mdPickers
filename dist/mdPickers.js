@@ -416,7 +416,6 @@ module.directive("mdpDatePicker", ["$mdpDatePicker", "$timeout", function($mdpDa
         transclude: true,
         template: function(element, attrs) {
             var noFloat = angular.isDefined(attrs.mdpNoFloat),
-                placeholder = angular.isDefined(attrs.mdpPlaceholder) ? attrs.mdpPlaceholder : "",
                 openOnClick = angular.isDefined(attrs.mdpOpenOnClick) ? true : false;
 
             return '<div layout layout-align="start start">' +
@@ -424,7 +423,7 @@ module.directive("mdpDatePicker", ["$mdpDatePicker", "$timeout", function($mdpDa
                         '<md-icon md-svg-icon="mdp-event"></md-icon>' +
                     '</md-button>' +
                     '<md-input-container' + (noFloat ? ' md-no-float' : '') + ' md-is-error="isError()">' +
-                        '<input name="{{ inputName }}" ng-model="model.$viewValue" ng-required="required()" type="{{ ::type }}"' + (angular.isDefined(attrs.mdpDisabled) ? ' ng-disabled="disabled"' : '') + ' aria-label="' + placeholder + '" placeholder="' + placeholder + '"' + (openOnClick ? ' ng-click="showPicker($event)" ' : '') + ' />' +
+                        '<input name="{{ inputName }}" ng-model="model.$viewValue" ng-required="required()" type="{{ ::type }}"' + (angular.isDefined(attrs.mdpDisabled) ? ' ng-disabled="disabled"' : '') + ' aria-label="{{placeholder}}" placeholder="{{placeholder}}"' + (openOnClick ? ' ng-click="showPicker($event)" ' : '') + ' />' +
                     '</md-input-container>' +
                 '</div>';
         },
@@ -895,7 +894,6 @@ module.directive("mdpTimePicker", ["$mdpTimePicker", "$timeout", function($mdpTi
         transclude: true,
         template: function(element, attrs) {
             var noFloat = angular.isDefined(attrs.mdpNoFloat),
-                placeholder = angular.isDefined(attrs.mdpPlaceholder) ? attrs.mdpPlaceholder : "",
                 openOnClick = angular.isDefined(attrs.mdpOpenOnClick) ? true : false;
 
             return '<div layout layout-align="start start">' +
@@ -903,7 +901,7 @@ module.directive("mdpTimePicker", ["$mdpTimePicker", "$timeout", function($mdpTi
                         '<md-icon md-svg-icon="mdp-access-time"></md-icon>' +
                     '</md-button>' +
                     '<md-input-container' + (noFloat ? ' md-no-float' : '') + ' md-is-error="isError()">' +
-                        '<input name="{{ inputName }}" ng-model="model.$viewValue" ng-required="required()" type="{{ ::type }}"' + (angular.isDefined(attrs.mdpDisabled) ? ' ng-disabled="disabled"' : '') + ' aria-label="' + placeholder + '" placeholder="' + placeholder + '"' + (openOnClick ? ' ng-click="showPicker($event)" ' : '') + ' />' +
+                        '<input name="{{ inputName }}" ng-model="model.$viewValue" ng-required="required()" type="{{ ::type }}"' + (angular.isDefined(attrs.mdpDisabled) ? ' ng-disabled="disabled"' : '') + ' aria-label="{{placeholder}}" placeholder="{{placeholder}}"' + (openOnClick ? ' ng-click="showPicker($event)" ' : '') + ' />' +
                     '</md-input-container>' +
                 '</div>';
         },
