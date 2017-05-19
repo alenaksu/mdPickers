@@ -424,7 +424,7 @@ module.directive("mdpDatePicker", ["$mdpDatePicker", "$timeout", function($mdpDa
                         '<md-icon md-svg-icon="mdp-event"></md-icon>' +
                     '</md-button>' +
                     '<md-input-container' + (noFloat ? ' md-no-float' : '') + ' md-is-error="isError()">' +
-                        '<input type="{{ ::type }}"' + (angular.isDefined(attrs.mdpDisabled) ? ' ng-disabled="disabled"' : '') + ' aria-label="' + placeholder + '" placeholder="' + placeholder + '"' + (openOnClick ? ' ng-click="showPicker($event)" ' : '') + ' />' +
+                        '<input ng-required="required()" type="{{ ::type }}"' + (angular.isDefined(attrs.mdpDisabled) ? ' ng-disabled="disabled"' : '') + ' aria-label="' + placeholder + '" placeholder="' + placeholder + '"' + (openOnClick ? ' ng-click="showPicker($event)" ' : '') + ' />' +
                     '</md-input-container>' +
                 '</div>';
         },
@@ -465,6 +465,10 @@ module.directive("mdpDatePicker", ["$mdpDatePicker", "$timeout", function($mdpDa
 
                 scope.isError = function() {
                     return !!ngModel.$invalid && (!ngModel.$pristine || form.$submitted);
+                };
+
+                scope.required = function() {
+                    return !!attrs.required || (attrs.hasOwnProperty("ngRequired") && attrs.ngRequired !== false);
                 };
 
                 // update input element if model has changed
@@ -899,7 +903,7 @@ module.directive("mdpTimePicker", ["$mdpTimePicker", "$timeout", function($mdpTi
                         '<md-icon md-svg-icon="mdp-access-time"></md-icon>' +
                     '</md-button>' +
                     '<md-input-container' + (noFloat ? ' md-no-float' : '') + ' md-is-error="isError()">' +
-                        '<input type="{{ ::type }}"' + (angular.isDefined(attrs.mdpDisabled) ? ' ng-disabled="disabled"' : '') + ' aria-label="' + placeholder + '" placeholder="' + placeholder + '"' + (openOnClick ? ' ng-click="showPicker($event)" ' : '') + ' />' +
+                        '<input ng-required="required()" type="{{ ::type }}"' + (angular.isDefined(attrs.mdpDisabled) ? ' ng-disabled="disabled"' : '') + ' aria-label="' + placeholder + '" placeholder="' + placeholder + '"' + (openOnClick ? ' ng-click="showPicker($event)" ' : '') + ' />' +
                     '</md-input-container>' +
                 '</div>';
         },
@@ -922,7 +926,6 @@ module.directive("mdpTimePicker", ["$mdpTimePicker", "$timeout", function($mdpTi
 
             $transclude(function(clone) {
                inputContainer.append(clone);
-
             });
 
             var messages = angular.element(inputContainer[0].querySelector("[ng-messages]"));
@@ -933,6 +936,10 @@ module.directive("mdpTimePicker", ["$mdpTimePicker", "$timeout", function($mdpTi
 
             scope.isError = function() {
                 return !!ngModel.$invalid && (!ngModel.$pristine || form.$submitted);
+            };
+
+            scope.required = function() {
+                return !!attrs.required || (attrs.hasOwnProperty("ngRequired") && attrs.ngRequired !== false);
             };
 
             scope.$watch(function() { return ngModel.$error }, function(newValue, oldValue) {
