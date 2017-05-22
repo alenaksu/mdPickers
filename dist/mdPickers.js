@@ -368,23 +368,29 @@ function formatValidator(value, format) {
 }
 
 function minDateValidator(value, format, minDate) {
-    var minDate = angular.isDate(minDate) ? moment(minDate) : moment(minDate, format, true);
+    // take only the date part, not the time part
+    if (angular.isDate(minDate)) {
+        minDate = moment(minDate).format(format);
+    }
+    minDate = moment(minDate, format, true);
     var date = angular.isDate(value) ? moment(value) :  moment(value, format, true);
 
     return !value ||
             angular.isDate(value) ||
-            !minDate ||
             !minDate.isValid() ||
             date.isSameOrAfter(minDate);
 }
 
 function maxDateValidator(value, format, maxDate) {
-    var minDate = angular.isDate(maxDate) ? moment(maxDate) : moment(maxDate, format, true);
+    // take only the date part, not the time part
+    if (angular.isDate(maxDate)) {
+        maxDate = moment(maxDate).format(format);
+    }
+    maxDate = moment(maxDate, format, true);
     var date = angular.isDate(value) ? moment(value) :  moment(value, format, true);
 
     return !value ||
             angular.isDate(value) ||
-            !maxDate ||
             !maxDate.isValid() ||
             date.isSameOrBefore(maxDate);
 }
