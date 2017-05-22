@@ -405,7 +405,7 @@ module.directive("mdpDatePicker", ["$mdpDatePicker", "$timeout", function($mdpDa
                 };
 
                 scope.required = function() {
-                    return !!attrs.required || (attrs.hasOwnProperty("ngRequired") && attrs.ngRequired !== false);
+                    return !!attrs.required;
                 };
 
                 // update input element if model has changed
@@ -439,7 +439,7 @@ module.directive("mdpDatePicker", ["$mdpDatePicker", "$timeout", function($mdpDa
                 };
 
                 ngModel.$validators.required = function(modelValue, viewValue) {
-                    return angular.isUndefined(attrs.required) || !ngModel.$isEmpty(modelValue) || !ngModel.$isEmpty(viewValue);
+                    return angular.isUndefined(attrs.required) || attrs.required === false || !ngModel.$isEmpty(modelValue) || !ngModel.$isEmpty(viewValue);
                 };
 
                 ngModel.$parsers.unshift(function(value) {

@@ -313,7 +313,7 @@ module.directive("mdpTimePicker", ["$mdpTimePicker", "$timeout", function($mdpTi
             };
 
             scope.required = function() {
-                return !!attrs.required || (attrs.hasOwnProperty("ngRequired") && attrs.ngRequired !== false);
+                return !!attrs.required;
             };
 
             scope.$watch(function() { return ngModel.$error }, function(newValue, oldValue) {
@@ -338,7 +338,7 @@ module.directive("mdpTimePicker", ["$mdpTimePicker", "$timeout", function($mdpTi
             };
 
             ngModel.$validators.required = function(modelValue, viewValue) {
-                return angular.isUndefined(attrs.required) || !ngModel.$isEmpty(modelValue) || !ngModel.$isEmpty(viewValue);
+                return angular.isUndefined(attrs.required) || attrs.required === false || !ngModel.$isEmpty(modelValue) || !ngModel.$isEmpty(viewValue);
             };
 
             ngModel.$parsers.unshift(function(value) {
