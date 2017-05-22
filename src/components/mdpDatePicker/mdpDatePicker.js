@@ -306,7 +306,7 @@ function formatValidator(value, format) {
 }
 
 function minDateValidator(value, format, minDate) {
-    var minDate = moment(minDate, "YYYY-MM-DD", true);
+    var minDate = angular.isDate(minDate) ? moment(minDate) : moment(minDate, format, true);
     var date = angular.isDate(value) ? moment(value) :  moment(value, format, true);
 
     return !value ||
@@ -316,7 +316,7 @@ function minDateValidator(value, format, minDate) {
 }
 
 function maxDateValidator(value, format, maxDate) {
-    var maxDate = moment(maxDate, "YYYY-MM-DD", true);
+    var minDate = angular.isDate(maxDate) ? moment(maxDate) : moment(maxDate, format, true);
     var date = angular.isDate(value) ? moment(value) :  moment(value, format, true);
 
     return !value ||
@@ -497,6 +497,11 @@ module.directive("mdpDatePicker", ["$mdpDatePicker", "$timeout", function($mdpDa
 
                 scope.$on("$destroy", function() {
                     inputElement.off("reset input blur", onInputElementEvents);
+                });
+
+                // revalidate on constraint change
+                scope.$watch("minDate + maxDate", function() {
+                    ngModel.$validate();
                 });
             }
         }
