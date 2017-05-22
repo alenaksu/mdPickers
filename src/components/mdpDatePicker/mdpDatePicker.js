@@ -310,11 +310,8 @@ function minDateValidator(value, format, minDate) {
     var date = angular.isDate(value) ? moment(value) :  moment(value, format, true);
 
     return !value ||
-
             angular.isDate(value) ||
-
             !minDate.isValid() ||
-
             date.isSameOrAfter(minDate);
 }
 
@@ -323,11 +320,8 @@ function maxDateValidator(value, format, maxDate) {
     var date = angular.isDate(value) ? moment(value) :  moment(value, format, true);
 
     return !value ||
-
             angular.isDate(value) ||
-
             !maxDate.isValid() ||
-
             date.isSameOrBefore(maxDate);
 }
 
@@ -335,11 +329,8 @@ function filterValidator(value, format, filter) {
     var date = angular.isDate(value) ? moment(value) :  moment(value, format, true);
 
     return !value ||
-
             angular.isDate(value) ||
-
             !angular.isFunction(filter) ||
-
             !filter(date);
 }
 
