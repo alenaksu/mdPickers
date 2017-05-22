@@ -324,7 +324,7 @@ function minDateValidator(value, format, minDate) {
 }
 
 function maxDateValidator(value, format, maxDate) {
-    return compareDateValidator(value, format, minDate, function(d, md) { return d.isSameOrBefore(md); });
+    return compareDateValidator(value, format, maxDate, function(d, md) { return d.isSameOrBefore(md); });
 }
 
 function filterValidator(value, format, filter) {

@@ -367,32 +367,26 @@ function formatValidator(value, format) {
     return !value || angular.isDate(value) || moment(value, format, true).isValid();
 }
 
-function minDateValidator(value, format, minDate) {
+function compareDateValidator(value, format, otherDate, comparator) {
     // take only the date part, not the time part
-    if (angular.isDate(minDate)) {
-        minDate = moment(minDate).format(format);
+    if (angular.isDate(otherDate)) {
+        otherDate = moment(otherDate).format(format);
     }
-    minDate = moment(minDate, format, true);
+    otherDate = moment(otherDate, format, true);
     var date = angular.isDate(value) ? moment(value) :  moment(value, format, true);
 
     return !value ||
             angular.isDate(value) ||
-            !minDate.isValid() ||
-            date.isSameOrAfter(minDate);
+            !otherDate.isValid() ||
+            comparator(date, otherDate);
+}
+
+function minDateValidator(value, format, minDate) {
+    return compareDateValidator(value, format, minDate, function(d, md) { return d.isSameOrAfter(md); });
 }
 
 function maxDateValidator(value, format, maxDate) {
-    // take only the date part, not the time part
-    if (angular.isDate(maxDate)) {
-        maxDate = moment(maxDate).format(format);
-    }
-    maxDate = moment(maxDate, format, true);
-    var date = angular.isDate(value) ? moment(value) :  moment(value, format, true);
-
-    return !value ||
-            angular.isDate(value) ||
-            !maxDate.isValid() ||
-            date.isSameOrBefore(maxDate);
+    return compareDateValidator(value, format, maxDate, function(d, md) { return d.isSameOrBefore(md); });
 }
 
 function filterValidator(value, format, filter) {
@@ -894,6 +888,28 @@ module.provider("$mdpTimePicker", function() {
     }];
 });
 
+function compareTimeValidator(value, format, otherTime, comparator) {
+    // take only the date part, not the time part
+    if (angular.isDate(otherTime)) {
+        otherTime = moment(otherTime).format(format);
+    }
+    otherTime = moment(otherTime, format, true);
+    var date = angular.isDate(value) ? moment(value) :  moment(value, format, true);
+
+    return !value ||
+            angular.isDate(value) ||
+            !otherTime.isValid() ||
+            comparator(date, otherTime);
+}
+
+function minTimeValidator(value, format, minTime) {
+    return compareTimeValidator(value, format, minTime, function(t, mt) { return t.isSameOrAfter(mt); });
+}
+
+function maxTimeValidator(value, format, maxTime) {
+    return compareTimeValidator(value, format, maxTime, function(t, mt) { return t.isSameOrBefore(mt); });
+}
+
 module.directive("mdpTimePicker", ["$mdpTimePicker", "$timeout", function($mdpTimePicker, $timeout) {
     return  {
         restrict: 'E',
@@ -913,6 +929,8 @@ module.directive("mdpTimePicker", ["$mdpTimePicker", "$timeout", function($mdpTi
                 '</div>';
         },
         scope: {
+            "minTime": "=?mdpMinTime",
+            "maxTime": "=?mdpMaxTime",
             "timeFormat": "@mdpFormat",
             "okLabel": "@?mdpOkLabel",
             "cancelLabel": "@?mdpCancelLabel",
@@ -972,6 +990,14 @@ module.directive("mdpTimePicker", ["$mdpTimePicker", "$timeout", function($mdpTi
 
             ngModel.$validators.required = function(modelValue, viewValue) {
                 return angular.isUndefined(attrs.required) || attrs.required === false || !ngModel.$isEmpty(modelValue) || !ngModel.$isEmpty(viewValue);
+            };
+            
+            ngModel.$validators.minTime = function(modelValue, viewValue) {
+                return minTimeValidator(viewValue, scope.timeFormat, scope.minTime);
+            };
+
+            ngModel.$validators.maxTime = function(modelValue, viewValue) {
+                return maxTimeValidator(viewValue, scope.timeFormat, scope.maxTime);
             };
 
             ngModel.$parsers.unshift(function(value) {

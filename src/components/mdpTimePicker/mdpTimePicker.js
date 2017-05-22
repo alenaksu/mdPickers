@@ -261,6 +261,28 @@ module.provider("$mdpTimePicker", function() {
     }];
 });
 
+function compareTimeValidator(value, format, otherTime, comparator) {
+    // take only the date part, not the time part
+    if (angular.isDate(otherTime)) {
+        otherTime = moment(otherTime).format(format);
+    }
+    otherTime = moment(otherTime, format, true);
+    var date = angular.isDate(value) ? moment(value) :  moment(value, format, true);
+
+    return !value ||
+            angular.isDate(value) ||
+            !otherTime.isValid() ||
+            comparator(date, otherTime);
+}
+
+function minTimeValidator(value, format, minTime) {
+    return compareTimeValidator(value, format, minTime, function(t, mt) { return t.isSameOrAfter(mt); });
+}
+
+function maxTimeValidator(value, format, maxTime) {
+    return compareTimeValidator(value, format, maxTime, function(t, mt) { return t.isSameOrBefore(mt); });
+}
+
 module.directive("mdpTimePicker", ["$mdpTimePicker", "$timeout", function($mdpTimePicker, $timeout) {
     return  {
         restrict: 'E',
@@ -280,6 +302,8 @@ module.directive("mdpTimePicker", ["$mdpTimePicker", "$timeout", function($mdpTi
                 '</div>';
         },
         scope: {
+            "minTime": "=?mdpMinTime",
+            "maxTime": "=?mdpMaxTime",
             "timeFormat": "@mdpFormat",
             "okLabel": "@?mdpOkLabel",
             "cancelLabel": "@?mdpCancelLabel",
@@ -339,6 +363,14 @@ module.directive("mdpTimePicker", ["$mdpTimePicker", "$timeout", function($mdpTi
 
             ngModel.$validators.required = function(modelValue, viewValue) {
                 return angular.isUndefined(attrs.required) || attrs.required === false || !ngModel.$isEmpty(modelValue) || !ngModel.$isEmpty(viewValue);
+            };
+            
+            ngModel.$validators.minTime = function(modelValue, viewValue) {
+                return minTimeValidator(viewValue, scope.timeFormat, scope.minTime);
+            };
+
+            ngModel.$validators.maxTime = function(modelValue, viewValue) {
+                return maxTimeValidator(viewValue, scope.timeFormat, scope.maxTime);
             };
 
             ngModel.$parsers.unshift(function(value) {
