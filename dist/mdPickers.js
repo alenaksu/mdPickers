@@ -1065,7 +1065,12 @@ module.directive("mdpTimePicker", ["$mdpTimePicker", "$timeout", function($mdpTi
 
             scope.$on("$destroy", function() {
                 inputElement.off("reset input blur", onInputElementEvents);
-            })
+            });
+
+            // revalidate on constraint change
+            scope.$watch("minTime + maxTime", function() {
+                ngModel.$validate();
+            });
         }
     };
 }]);
