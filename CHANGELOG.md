@@ -7,23 +7,23 @@
 
 #### Features
 
-* Support for angular 1.6 (thanks to @andrea-vega)
-* Support for 24 hours format (thanks to @Marchrius).
-  This includes an attribute `mdp-ampm` to switch between 24/12 (disabled by default)
-* Option to set the parent element of the dialogs. This is needed for correct theme inheritance in `angular-material` pre 1.1.1 (see https://github.com/angular/material/issues/525#issuecomment-243751640) (thanks to @dpoetzsch)
-* Possibility to specify input name via `mdp-input-name` in order to allow for `ng-messages` (thanks to @dpoetzsch)
-* `mdp-min-date` and `mdp-max-date` also allow passing a `Date` object (thanks to @dpoetzsch)
-* `mdp-time-picker` now takes validation attributes `mdp-min-time` and `mdp-max-time` which are either `Date` objects or strings formatted using `mdp-format` (thanks to @dpoetzsch)
+* Support for angular 1.6 (thanks to [Andrea Vega](https://github.com/andrea-vega)
+* Support for 24 hours format.
+  This includes an attribute `mdp-ampm` to switch between 24/12 (disabled by default) (thanks to [Matteo Gaggiano](https://github.com/Marchrius))
+* Option to set the parent element of the dialogs. This is needed for correct theme inheritance in `angular-material` pre 1.1.1 (see [angular-material issue #525](https://github.com/angular/material/issues/525#issuecomment-243751640)) (thanks to [David Poetzsch-Heffter](https://github.com/dpoetzsch))
+* Possibility to specify input name via `mdp-input-name` in order to allow for `ng-messages` (thanks to [David Poetzsch-Heffter](https://github.com/dpoetzsch))
+* `mdp-min-date` and `mdp-max-date` also allow passing a `Date` object (thanks to [David Poetzsch-Heffter](https://github.com/dpoetzsch))
+* `mdp-time-picker` now takes validation attributes `mdp-min-time` and `mdp-max-time` which are either `Date` objects or strings formatted using `mdp-format` (thanks to [David Poetzsch-Heffter](https://github.com/dpoetzsch))
 
 #### Bugfixes
 
-* Show validation errors when the form is submitted (thanks to @dpoetzsch)
-* Higher `angular-material` versions are now possible (thanks to @dpoetzsch)
-* Showing small `*` on the input placeholders if pickers are flagged as required (similar to standard `angular-material` inputs) (thanks to @dpoetzsch)
-* Updating the `mdp-placeholder` dynamically is supported (thanks to @dpoetzsch)
-* Changing the model changes is reflected in the views (thanks to @dpoetzsch)
-* Fixed support for validation via `ng-required` (thanks to @marcomafessolli)
-* Changing the values of `mdp-min-date` and `mdp-max-date` triggers revalidation (thanks to @dpoetzsch)
+* Show validation errors when the form is submitted (thanks to [David Poetzsch-Heffter](https://github.com/dpoetzsch))
+* Higher `angular-material` versions are now possible (thanks to [David Poetzsch-Heffter](https://github.com/dpoetzsch))
+* Showing small `*` on the input placeholders if pickers are flagged as required (similar to standard `angular-material` inputs) (thanks to [David Poetzsch-Heffter](https://github.com/dpoetzsch))
+* Updating the `mdp-placeholder` dynamically is supported (thanks to [David Poetzsch-Heffter](https://github.com/dpoetzsch))
+* Changing the model changes is reflected in the views (thanks to [David Poetzsch-Heffter](https://github.com/dpoetzsch))
+* Fixed support for validation via `ng-required` (thanks to [Marco Antônio Mafessolli](https://github.com/marcomafessolli))
+* Changing the values of `mdp-min-date` and `mdp-max-date` triggers revalidation (thanks to [David Poetzsch-Heffter](https://github.com/dpoetzsch))
 
 #### Housekeeping
 
