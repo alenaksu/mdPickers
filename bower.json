@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "homepage": "https://github.com/dpoetzsch/md-pickers",
   "authors": [
-    "alenaksu"
+    "alenaksu",
+    "dpoetzsch"
   ],
   "description": "Material Design date/time pickers built with Angular Material and Moment.js",
   "main": [

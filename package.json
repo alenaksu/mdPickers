@@ -18,7 +18,10 @@
     "time",
     "picker"
   ],
-  "author": "alenaksu",
+  "authors": [
+    "alenaksu",
+    "dpoetzsch"
+  ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/dpoetzsch/md-pickers/issues"
