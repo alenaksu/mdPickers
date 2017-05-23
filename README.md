@@ -27,7 +27,13 @@ angular.module( 'YourApp', [ 'mdPickers' ] )
   .controller("YourController", YourController );
 ```
 
-## Building mdPickers
+## Contributing
+
+All contributions are welcome. In order to keep the code nice and clean please follow the [boy scout rule](http://programmer.97things.oreilly.com/wiki/index.php/The_Boy_Scout_Rule).
+
+Note on spaces vs. tabs: This project consistently uses 4 spaces for indentation.
+
+### Building mdPickers
 
 First install or update your local project's __npm__ tools:
 
