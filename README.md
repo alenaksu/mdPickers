@@ -27,6 +27,16 @@ angular.module( 'YourApp', [ 'mdPickers' ] )
   .controller("YourController", YourController );
 ```
 
+## Roadmap
+
+- [x] Fixes for existing functionality
+- [x] Integration of most important [pull requests of the original repository](https://github.com/alenaksu/mdPickers/pulls)
+- [ ] Linting for code quality
+- [ ] Unit tests
+- [ ] Continous Integration
+- [ ] Typescript
+- [ ] Adding a picker for picking date & time as one
+
 ## Contributing
 
 All contributions are welcome. In order to keep the code nice and clean please follow the [boy scout rule](http://programmer.97things.oreilly.com/wiki/index.php/The_Boy_Scout_Rule).
