@@ -51,3 +51,7 @@ Then run the default gulp task:
 # builds all files in the `dist` directory
 gulp
 ```
+
+## License
+
+Please see [LICENSE file](https://github.com/dpoetzsch/md-pickers/blob/master/LICENSE).
