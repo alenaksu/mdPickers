@@ -8,8 +8,8 @@
   ],
   "description": "Material Design date/time pickers built with Angular Material and Moment.js",
   "main": [
-    "dist/mdPickers.min.js",
-    "dist/mdPickers.min.css"
+    "dist/mdPickers.js",
+    "dist/mdPickers.css"
   ],
   "keywords": [
     "angular",
