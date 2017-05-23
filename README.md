@@ -36,6 +36,7 @@ angular.module( 'YourApp', [ 'mdPickers' ] )
 - [ ] Continous Integration
 - [ ] Typescript
 - [ ] Adding a picker for picking date & time as one
+- [ ] [Unfork](https://stackoverflow.com/a/44140289/3594403) this repository if it matures (or merge it back into the original if it gets revived)
 
 ## Contributing
 
