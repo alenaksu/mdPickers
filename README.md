@@ -31,11 +31,12 @@ angular.module( 'YourApp', [ 'mdPickers' ] )
 
 - [x] Fixes for existing functionality
 - [x] Integration of most important [pull requests of the original repository](https://github.com/alenaksu/mdPickers/pulls)
+- [ ] Update documentation and online demo
 - [ ] Linting for code quality
 - [ ] Unit tests
-- [ ] Continous Integration
+- [ ] Continuous Integration
 - [ ] Typescript
-- [ ] Adding a picker for picking date & time as one
+- [ ] Add a picker for picking date & time as one
 - [ ] [Unfork](https://stackoverflow.com/a/44140289/3594403) this repository if it matures (or merge it back into the original if it gets revived)
 
 ## Contributing
