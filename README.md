@@ -36,7 +36,7 @@ angular.module( 'YourApp', [ 'mdPickers' ] )
 - [ ] Unit tests
 - [ ] Continuous Integration
 - [ ] Typescript
-- [ ] Maybe use menus instead of dialogs in order to fix https://github.com/alenaksu/mdPickers/issues/178 and https://github.com/alenaksu/mdPickers/issues/186
+- [ ] Maybe use menus instead of dialogs in order to fix [mdPickers/#178](https://github.com/alenaksu/mdPickers/issues/178) and [mdPickers/#186](https://github.com/alenaksu/mdPickers/issues/186)
 - [ ] Add a picker for picking date & time as one
 - [ ] [Unfork](https://stackoverflow.com/a/44140289/3594403) this repository if it matures (or merge it back into the original if it gets revived)
 
