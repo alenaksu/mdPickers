@@ -1,6 +1,34 @@
-### 0.7.6
+### 1.0.0
 
-* Added attribute `mdp-ampm` to switch between 24/12 (disabled by default)
+#### Breaking changes
+
+* Default: 24 hours time format instead of am/pm. Use `mdp-ampm` to switch.
+* `mdp-min-date` and `mdp-max-date` of `mdp-date-picker` now take either a `Date` object or a string formatted using `mdp-format` (they used to take only a string in `YYYY-MM-DD` format).
+
+#### Features
+
+* Support for angular 1.6 (thanks to @andrea-vega)
+* Support for 24 hours format (thanks to @Marchrius).
+  This includes an attribute `mdp-ampm` to switch between 24/12 (disabled by default)
+* Option to set the parent element of the dialogs. This is needed for correct theme inheritance in `angular-material` pre 1.1.1 (see https://github.com/angular/material/issues/525#issuecomment-243751640) (thanks to @dpoetzsch)
+* Possibility to specify input name via `mdp-input-name` in order to allow for `ng-messages` (thanks to @dpoetzsch)
+* `mdp-min-date` and `mdp-max-date` also allow passing a `Date` object (thanks to @dpoetzsch)
+* `mdp-time-picker` now takes validation attributes `mdp-min-time` and `mdp-max-time` which are either `Date` objects or strings formatted using `mdp-format` (thanks to @dpoetzsch)
+
+#### Bugfixes
+
+* Show validation errors when the form is submitted (thanks to @dpoetzsch)
+* Higher `angular-material` versions are now possible (thanks to @dpoetzsch)
+* Showing small `*` on the input placeholders if pickers are flagged as required (similar to standard `angular-material` inputs) (thanks to @dpoetzsch)
+* Updating the `mdp-placeholder` dynamically is supported (thanks to @dpoetzsch)
+* Changing the model changes is reflected in the views (thanks to @dpoetzsch)
+* Fixed support for validation via `ng-required` (thanks to @marcomafessolli)
+* Changing the values of `mdp-min-date` and `mdp-max-date` triggers revalidation (thanks to @dpoetzsch)
+
+#### Housekeeping
+
+* Converted all tabs to spaces (using 4 spaces everywhere now)
+* Removed trailing whitespace
 
 ### 0.7.5
 
