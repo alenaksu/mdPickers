@@ -7,7 +7,7 @@
 
 #### Features
 
-* Support for angular 1.6 (thanks to [Andrea Vega](https://github.com/andrea-vega)
+* Support for angular 1.6 (thanks to [Andrea Vega](https://github.com/andrea-vega))
 * Support for 24 hours format.
   This includes an attribute `mdp-ampm` to switch between 24/12 (disabled by default) (thanks to [Matteo Gaggiano](https://github.com/Marchrius))
 * Option to set the parent element of the dialogs. This is needed for correct theme inheritance in `angular-material` pre 1.1.1 (see [angular-material issue #525](https://github.com/angular/material/issues/525#issuecomment-243751640)) (thanks to [David Poetzsch-Heffter](https://github.com/dpoetzsch))
