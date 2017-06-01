@@ -327,7 +327,6 @@ module.directive("mdpDatePicker", ["$mdpDatePicker", "$timeout", function($mdpDa
         transclude: true,
         template: function(element, attrs) {
             var noFloat = angular.isDefined(attrs.mdpNoFloat),
-                placeholder = angular.isDefined(attrs.mdpPlaceholder) ? attrs.mdpPlaceholder : "",
                 openOnClick = angular.isDefined(attrs.mdpOpenOnClick) ? true : false;
             
             return '<div layout layout-align="start start">' +
@@ -335,7 +334,7 @@ module.directive("mdpDatePicker", ["$mdpDatePicker", "$timeout", function($mdpDa
                         '<md-icon md-svg-icon="mdp-event"></md-icon>' +
                     '</md-button>' +
                     '<md-input-container' + (noFloat ? ' md-no-float' : '') + ' md-is-error="isError()">' +
-                        '<input type="{{ ::type }}"' + (angular.isDefined(attrs.mdpDisabled) ? ' ng-disabled="disabled"' : '') + ' aria-label="' + placeholder + '" placeholder="' + placeholder + '"' + (openOnClick ? ' ng-click="showPicker($event)" ' : '') + ' />' +
+                        '<input type="{{ ::type }}"' + (angular.isDefined(attrs.mdpDisabled) ? ' ng-disabled="disabled"' : '') + ' aria-label="{{placeholder}}" placeholder="{{placeholder}}"' + (openOnClick ? ' ng-click="showPicker($event)" ' : '') + ' />' +
                     '</md-input-container>' +
                 '</div>';
         },
@@ -344,7 +343,7 @@ module.directive("mdpDatePicker", ["$mdpDatePicker", "$timeout", function($mdpDa
             "maxDate": "=mdpMaxDate",
             "dateFilter": "=mdpDateFilter",
             "dateFormat": "@mdpFormat",
-            "placeholder": "@mdpPlaceholder",
+            "placeholder": "=?mdpPlaceholder",
             "noFloat": "=mdpNoFloat",
             "openOnClick": "=mdpOpenOnClick",
             "disabled": "=?mdpDisabled"
@@ -398,7 +397,8 @@ module.directive("mdpDatePicker", ["$mdpDatePicker", "$timeout", function($mdpDa
                 };
                 
                 ngModel.$validators.required = function(modelValue, viewValue) {
-                    return angular.isUndefined(attrs.required) || !ngModel.$isEmpty(modelValue) || !ngModel.$isEmpty(viewValue);
+                    var isRequired = angular.isDefined(attrs.required) ? attrs.required === true : false;
+                    return !isRequired || !ngModel.$isEmpty(modelValue) || !ngModel.$isEmpty(viewValue);
                 };
                 
                 ngModel.$parsers.unshift(function(value) {
