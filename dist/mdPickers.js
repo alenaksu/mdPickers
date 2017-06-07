@@ -1,6 +1,7 @@
 (function() {
 "use strict";
 /* global moment, angular */
+var moment = require("moment");
 
 var module = angular.module("mdPickers", [
 	"ngMaterial",
