@@ -171,7 +171,7 @@ module.provider("$mdpDatePicker", function() {
             })
             .catch(() => {
                 return null;
-            })
+            });
         };
 
         return datePicker;
