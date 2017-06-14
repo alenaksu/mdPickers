@@ -168,7 +168,10 @@ module.provider("$mdpDatePicker", function() {
                 },
                 multiple: true,
                 parent: PARENT_GETTER()
-            });
+            })
+            .catch(() => {
+                return null;
+            })
         };
 
         return datePicker;
