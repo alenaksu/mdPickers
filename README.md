@@ -21,6 +21,12 @@ Install via Bower:
 bower install md-pickers
 ```
 
+Alternatively, npm:
+
+```bash
+npm install md-pickers
+```
+
 Use in Angular:
 ```javascript
 angular.module( 'YourApp', [ 'mdPickers' ] )
