@@ -1,3 +1,11 @@
+### 1.0.1
+
+* Published to NPM: https://www.npmjs.com/package/md-pickers
+
+#### Bugfixes
+
+* Cancelling a dialog does not leave an unhandled rejected promise flying around (thanks to [Marvin Huber](huberm416))
+
 ### 1.0.0
 
 #### Breaking changes
