@@ -4,7 +4,7 @@
 
 #### Bugfixes
 
-* Cancelling a dialog does not leave an unhandled rejected promise flying around (thanks to [Marvin Huber](huberm416))
+* Cancelling a dialog does not leave an unhandled rejected promise flying around (thanks to [Marvin Huber](https://github.com/huberm416))
 
 ### 1.0.0
 
