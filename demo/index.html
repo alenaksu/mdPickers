@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="demo">
+<head>
+    <meta charset="UTF-8">
+    <title>md-pickers</title>
+
+    <link rel="stylesheet" href="../bower_components/angular-material/angular-material.min.css"/>
+
+    <link rel="stylesheet/less" href="../src/core/style/animation.less"/>
+    <link rel="stylesheet/less" href="../src/components/mdpDatePicker/mdpDatePicker.less"/>
+    <link rel="stylesheet/less" href="../src/components/mdpTimePicker/mdpTimePicker.less"/>
+
+    <script>
+        less = {
+            async: true
+        };
+    </script>
+
+
+    <script src="../bower_components/angular/angular.min.js"></script>
+    <script src="../bower_components/angular-material/angular-material.min.js"></script>
+    <script src="../bower_components/angular-animate/angular-animate.min.js"></script>
+    <script src="../bower_components/angular-aria/angular-aria.min.js"></script>
+    <script src="../bower_components/moment/moment.js"></script>
+    <script src="../bower_components/less/dist/less.min.js"></script>
+
+    <script src="../src/mdPickers.js"></script>
+    <script src="../src/core/icons.js"></script>
+    <script src="../src/core/mdpLocaleProvider.js"></script>
+    <script src="../src/components/mdpDatePicker/mdpDatePicker.js"></script>
+    <script src="../src/components/mdpTimePicker/mdpTimePicker.js"></script>
+    <script src="app.js"></script>
+    <script src="demoController.js"></script>
+</head>
+<body ng-controller="demoController">
+<div ng-flex>
+    <mdp-time-picker mdp-auto-switch="true" ng-model="date1" mdp-placeholder="Date 1"></mdp-time-picker>
+</div>
+</body>
+</html>
