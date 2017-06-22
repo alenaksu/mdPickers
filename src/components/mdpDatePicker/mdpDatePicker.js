@@ -397,7 +397,7 @@ module.directive("mdpDatePicker", ["$mdpDatePicker", "$timeout", function($mdpDa
                 scope.model = ngModel;
 
                 scope.isError = function() {
-                    return !!ngModel.$invalid && (!ngModel.$pristine || form.$submitted);
+                    return !!ngModel.$invalid && (!ngModel.$pristine || (form != null && form.$submitted));
                 };
 
                 scope.required = function() {
