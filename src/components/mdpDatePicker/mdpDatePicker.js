@@ -336,7 +336,7 @@ function filterValidator(value, format, filter) {
     return !value ||
             angular.isDate(value) ||
             !angular.isFunction(filter) ||
-            !filter(date);
+            !filter(date.toDate());
 }
 
 function requiredValidator(value, ngModel) {
