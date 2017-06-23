@@ -320,8 +320,8 @@ module.directive("mdpTimePicker", ["$mdpTimePicker", "$timeout", "$mdpLocale", f
             var ngModel = controllers[0];
             var form = controllers[1];
 
-            var minTime = scope.minTime || $mdpLocale.date.minTime;
-            var maxTime = scope.maxTime || $mdpLocale.date.maxTime;
+            var minTime = scope.minTime || $mdpLocale.time.minTime;
+            var maxTime = scope.maxTime || $mdpLocale.time.maxTime;
 
             var inputElement = angular.element(element[0].querySelector('input')),
                 inputContainer = angular.element(element[0].querySelector('md-input-container')),
