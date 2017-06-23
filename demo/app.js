@@ -19,8 +19,8 @@ angular.module('demo', [
 
 .run(['$location', '$mdpLocale', function($location, $mdpLocale) {
     if (location.search !== '?useDefaults') { // Quick and dirty
-        $mdpLocale.time.minTime = new Date().addDays(-2);
-        $mdpLocale.time.maxTime = new Date().addDays(2);
+        $mdpLocale.time.minTime = "10h00";
+        $mdpLocale.time.maxTime = "22h42";
         $mdpLocale.time.okLabel = "Valider";
         $mdpLocale.time.cancelLabel = "Annuler";
         $mdpLocale.time.timeFormat = "HH[h]mm";
