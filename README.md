@@ -70,6 +70,8 @@ Then run the default gulp task:
 ```bash
 # builds all files in the `dist` directory
 gulp
+# Additionally, you can build the demo
+gulp demo
 ```
 
 To run the demo:
@@ -82,7 +84,7 @@ npm install -g http-server
 http-server
 ```
 
-Then browse `/demo` on the printed address.
+Then browse `/demo` (or `/demo-dist` if you built it) on the printed address.
 
 ## License
 
