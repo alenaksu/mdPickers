@@ -255,7 +255,7 @@ module.provider("$mdpTimePicker", function() {
                 multiple: true,
                 parent: PARENT_GETTER()
             })
-            .catch(() => {
+            .catch(function() {
                 return;
             });
         };
