@@ -86,6 +86,14 @@ http-server
 
 Then browse `/demo` (or `/demo-dist` if you built it) on the printed address.
 
+### Release
+
+- Check that changes work on demo
+- Check that changes work on demo-dist
+- Update version in `bower.json` and `packages.json`
+- Add changes to `CHANGELOG.md`
+- Build `dist` and `demo-dist` folders
+
 ## License
 
 Please see [LICENSE file](https://github.com/dpoetzsch/md-pickers/blob/master/LICENSE).
