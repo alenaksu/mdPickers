@@ -1,3 +1,15 @@
+### 1.1.0
+
+#### Bugfixes
+
+* Fixed error when input are not in a form (cf2b00f)
+* Fixed date object error (7417a93)
+
+#### Features
+
+* Added service to configure settings globally
+* Added demo
+
 ### 1.0.1
 
 * Published to NPM: https://www.npmjs.com/package/md-pickers
