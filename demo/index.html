@@ -6,9 +6,11 @@
 
     <link rel="stylesheet" href="../bower_components/angular-material/angular-material.min.css"/>
 
+    <!-- build:css -->
     <link rel="stylesheet/less" href="../src/core/style/animation.less"/>
     <link rel="stylesheet/less" href="../src/components/mdpDatePicker/mdpDatePicker.less"/>
     <link rel="stylesheet/less" href="../src/components/mdpTimePicker/mdpTimePicker.less"/>
+    <!-- endbuild -->
 
     <script>
         less = {
@@ -24,13 +26,17 @@
     <script src="../bower_components/moment/moment.js"></script>
     <script src="../bower_components/less/dist/less.min.js"></script>
 
+    <!-- build:js -->
     <script src="../src/mdPickers.js"></script>
     <script src="../src/core/icons.js"></script>
     <script src="../src/core/mdpLocale.js"></script>
     <script src="../src/components/mdpDatePicker/mdpDatePicker.js"></script>
     <script src="../src/components/mdpTimePicker/mdpTimePicker.js"></script>
+    <!-- endbuild -->
+    <!-- build:demojs -->
     <script src="app.js"></script>
     <script src="demoController.js"></script>
+    <!-- endbuild -->
 </head>
 <body ng-controller="demoController">
 <div layout="column" flex>
