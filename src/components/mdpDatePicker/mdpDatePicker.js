@@ -382,9 +382,17 @@ module.directive("mdpDatePicker", ["$mdpDatePicker", "$timeout", "$mdpLocale", f
                 var ngModel = controllers[0];
                 var form = controllers[1];
 
-                var minDate = scope.minDate || $mdpLocale.date.minDate;
-                var maxDate = scope.maxDate || $mdpLocale.date.maxDate;
-                var dateFilter = scope.dateFilter || $mdpLocale.date.dateFilter;
+                var opts = {
+                    get minDate() {
+                        return scope.minDate || $mdpLocale.date.minDate;
+                    },
+                    get maxDate() {
+                        return scope.maxDate || $mdpLocale.date.maxDate;
+                    },
+                    get dateFilter() {
+                        return scope.dateFilter || $mdpLocale.date.dateFilter;
+                    }
+                };
 
                 var inputElement = angular.element(element[0].querySelector('input')),
                     inputContainer = angular.element(element[0].querySelector('md-input-container')),
@@ -427,15 +435,15 @@ module.directive("mdpDatePicker", ["$mdpDatePicker", "$timeout", "$mdpLocale", f
                 };
 
                 ngModel.$validators.minDate = function(modelValue, viewValue) {
-                    return minDateValidator(viewValue, scope.dateFormat, minDate);
+                    return minDateValidator(viewValue, scope.dateFormat, opts.minDate);
                 };
 
                 ngModel.$validators.maxDate = function(modelValue, viewValue) {
-                    return maxDateValidator(viewValue, scope.dateFormat, maxDate);
+                    return maxDateValidator(viewValue, scope.dateFormat, opts.maxDate);
                 };
 
                 ngModel.$validators.filter = function(modelValue, viewValue) {
-                    return filterValidator(viewValue, scope.dateFormat, dateFilter);
+                    return filterValidator(viewValue, scope.dateFormat, opts.dateFilter);
                 };
 
                 ngModel.$validators.required = function(modelValue, viewValue) {
@@ -488,9 +496,9 @@ module.directive("mdpDatePicker", ["$mdpDatePicker", "$timeout", "$mdpLocale", f
 
                 scope.showPicker = function(ev) {
                     $mdpDatePicker(ngModel.$modelValue, {
-                        minDate: minDate,
-                        maxDate: maxDate,
-                        dateFilter: dateFilter,
+                        minDate: opts.minDate,
+                        maxDate: opts.maxDate,
+                        dateFilter: opts.dateFilter,
                         okLabel: scope.okLabel,
                         cancelLabel: scope.cancelLabel,
                         targetEvent: ev

@@ -250,7 +250,7 @@ module.provider("$mdpTimePicker", function() {
                 locals: {
                     time: time,
                     autoSwitch: options.autoSwitch,
-                    ampm: options.ampm == null ? $mdpLocale.time.ampm : options.ampm
+                    ampm: angular.isDefined(options.ampm) ? options.ampm : $mdpLocale.time.ampm
                 },
                 multiple: true,
                 parent: PARENT_GETTER()
@@ -320,8 +320,14 @@ module.directive("mdpTimePicker", ["$mdpTimePicker", "$timeout", "$mdpLocale", f
             var ngModel = controllers[0];
             var form = controllers[1];
 
-            var minTime = scope.minTime || $mdpLocale.time.minTime;
-            var maxTime = scope.maxTime || $mdpLocale.time.maxTime;
+            var opts = {
+                get minTime() {
+                    return scope.minTime || $mdpLocale.time.minTime;
+                },
+                get maxTime() {
+                    return scope.maxTime || $mdpLocale.time.maxTime;
+                }
+            };
 
             var inputElement = angular.element(element[0].querySelector('input')),
                 inputContainer = angular.element(element[0].querySelector('md-input-container')),
@@ -372,11 +378,11 @@ module.directive("mdpTimePicker", ["$mdpTimePicker", "$timeout", "$mdpLocale", f
             };
             
             ngModel.$validators.minTime = function(modelValue, viewValue) {
-                return minTimeValidator(viewValue, scope.timeFormat, minTime);
+                return minTimeValidator(viewValue, scope.timeFormat, opts.minTime);
             };
 
             ngModel.$validators.maxTime = function(modelValue, viewValue) {
-                return maxTimeValidator(viewValue, scope.timeFormat, maxTime);
+                return maxTimeValidator(viewValue, scope.timeFormat, opts.maxTime);
             };
 
             ngModel.$parsers.unshift(function(value) {
