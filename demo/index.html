@@ -79,5 +79,98 @@
     </div>
     <span>{{ date2 }}</span>
 </div>
+<div layout="column" flex>
+    <h3>Custom options:</h3>
+    <div layout="row" flex>
+        <md-input-container>
+            <label>Ok Label</label>
+            <input ng-model="custom.okLabel3">
+        </md-input-container>
+        <md-input-container>
+            <label>Cancel Label</label>
+            <input ng-model="custom.cancelLabel3">
+        </md-input-container>
+    </div>
+    <div layout="row" flex>
+        <md-input-container>
+            <label>Date Placeholer</label>
+            <input ng-model="custom.datePlaceholder3">
+        </md-input-container>
+        <md-input-container>
+            <label>Date Format</label>
+            <input ng-model="custom.dateFormat3">
+        </md-input-container>
+        <md-input-container>
+            <label>Min Date</label>
+            <input ng-model="custom.minDateStr3">
+        </md-input-container>
+        <md-input-container>
+            <label>Max Date</label>
+            <input ng-model="custom.maxDateStr3">
+        </md-input-container>
+        <md-input-container>
+            <md-checkbox ng-model="custom.dateFilterEnabled3">
+                Date Filter
+            </md-checkbox>
+        </md-input-container>
+        <md-input-container>
+            <md-checkbox ng-model="custom.dateFilterNo3" ng-disabled="!custom.dateFilterEnabled3">
+                Every {{ custom.dateFilterNo3 ? 'other' : 'third' }} day
+            </md-checkbox>
+        </md-input-container>
+    </div>
+    <div layout="row" flex>
+        <md-input-container>
+            <label>Time Placeholer</label>
+            <input ng-model="custom.timePlaceholder3">
+        </md-input-container>
+        <md-input-container>
+            <label>Time Format</label>
+            <input ng-model="custom.timeFormat3">
+        </md-input-container>
+        <md-input-container>
+            <label>Min Time</label>
+            <input ng-model="custom.minTime3">
+        </md-input-container>
+        <md-input-container>
+            <label>Max Time</label>
+            <input ng-model="custom.maxTime3">
+        </md-input-container>
+        <md-input-container>
+            <md-checkbox ng-model="custom.autoSwitch3">
+                Auto Switch
+            </md-checkbox>
+        </md-input-container>
+        <md-input-container>
+            <md-checkbox ng-model="custom.ampm3">
+                AM/PM
+            </md-checkbox>
+        </md-input-container>
+    </div>
+    <div layout="row" flex>
+        <mdp-date-picker
+                ng-model="custom.date3"
+                mdp-placeholder="{{ custom.datePlaceholder3 }}"
+                mdp-min-date="custom.minDate3"
+                mdp-max-date="custom.maxDate3"
+                mdp-ok-label="{{ custom.okLabel3 }}"
+                mdp-cancel-label="{{ custom.cancelLabel3 }}"
+                mdp-date-filter="custom.dateFilter3"
+                mdp-format="{{ custom.dateFormat3 }}"
+        ></mdp-date-picker>
+        <mdp-time-picker
+                ng-model="custom.date3"
+                mdp-placeholder="{{ custom.timePlaceholder3 }}"
+                mdp-min-time="custom.minTime3"
+                mdp-max-time="custom.maxTime3"
+                mdp-ok-label="{{ custom.okLabel3 }}"
+                mdp-cancel-label="{{ custom.cancelLabel3 }}"
+                mdp-format="{{ custom.timeFormat3 }}"
+                mdp-auto-switch="custom.autoSwitch3"
+                mdp-ampm="custom.ampm3"
+        ></mdp-time-picker>
+    </div>
+    <span>{{ custom.date3 }}</span>
+</div>
 </body>
 </html>
