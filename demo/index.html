@@ -64,6 +64,7 @@
                 mdp-cancel-label="back"
                 mdp-date-filter="dateFilter2"
                 mdp-format="MM-DD-YYYY"
+                mdp-clear-on-cancel="false"
         ></mdp-date-picker>
         <mdp-time-picker
                 ng-model="date2"
@@ -75,6 +76,7 @@
                 mdp-format="HH:mm"
                 mdp-auto-switch="false"
                 mdp-ampm="false"
+                mdp-clear-on-cancel="false"
         ></mdp-time-picker>
     </div>
     <span>{{ date2 }}</span>
@@ -89,6 +91,11 @@
         <md-input-container>
             <label>Cancel Label</label>
             <input ng-model="custom.cancelLabel3">
+        </md-input-container>
+        <md-input-container>
+            <md-checkbox ng-model="custom.clearOnCancel3">
+                Clear on cancel
+            </md-checkbox>
         </md-input-container>
     </div>
     <div layout="row" flex>
@@ -157,6 +164,7 @@
                 mdp-cancel-label="{{ custom.cancelLabel3 }}"
                 mdp-date-filter="custom.dateFilter3"
                 mdp-format="{{ custom.dateFormat3 }}"
+                mdp-clear-on-cancel="custom.clearOnCancel3"
         ></mdp-date-picker>
         <mdp-time-picker
                 ng-model="custom.date3"
@@ -168,6 +176,7 @@
                 mdp-format="{{ custom.timeFormat3 }}"
                 mdp-auto-switch="custom.autoSwitch3"
                 mdp-ampm="custom.ampm3"
+                mdp-clear-on-cancel="custom.clearOnCancel3"
         ></mdp-time-picker>
     </div>
     <span>{{ custom.date3 }}</span>
