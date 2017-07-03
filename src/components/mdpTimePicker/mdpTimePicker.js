@@ -254,9 +254,6 @@ module.provider("$mdpTimePicker", function() {
                 },
                 multiple: true,
                 parent: PARENT_GETTER()
-            })
-            .catch(function() {
-                return;
             });
         };
 
@@ -314,7 +311,8 @@ module.directive("mdpTimePicker", ["$mdpTimePicker", "$timeout", "$mdpLocale", f
             "autoSwitch": "=?mdpAutoSwitch",
             "disabled": "=?mdpDisabled",
             "ampm": "=?mdpAmpm",
-            "inputName": "@?mdpInputName"
+            "inputName": "@?mdpInputName",
+            "clearOnCancel": "=?mdpClearOnCancel"
         },
         link: function(scope, element, attrs, controllers, $transclude) {
             var ngModel = controllers[0];
@@ -326,6 +324,9 @@ module.directive("mdpTimePicker", ["$mdpTimePicker", "$timeout", "$mdpLocale", f
                 },
                 get maxTime() {
                     return scope.maxTime || $mdpLocale.time.maxTime;
+                },
+                get clearOnCancel() {
+                    return angular.isDefined(scope.clearOnCancel) ? scope.clearOnCancel : $mdpLocale.time.clearOnCancel;
                 }
             };
 
@@ -438,6 +439,10 @@ module.directive("mdpTimePicker", ["$mdpTimePicker", "$timeout", "$mdpLocale", f
                     ampm: scope.ampm
                 }).then(function(time) {
                     updateTime(time, true);
+                }, function (error) {
+                    if (opts.clearOnCancel) {
+                        updateTime(null, true);
+                    }
                 });
             };
 

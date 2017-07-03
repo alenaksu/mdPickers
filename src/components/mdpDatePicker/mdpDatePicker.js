@@ -168,9 +168,6 @@ module.provider("$mdpDatePicker", function() {
                 },
                 multiple: true,
                 parent: PARENT_GETTER()
-            })
-            .catch(function() {
-                return null;
             });
         };
 
@@ -372,7 +369,8 @@ module.directive("mdpDatePicker", ["$mdpDatePicker", "$timeout", "$mdpLocale", f
             "noFloat": "=mdpNoFloat",
             "openOnClick": "=mdpOpenOnClick",
             "disabled": "=?mdpDisabled",
-            "inputName": "@?mdpInputName"
+            "inputName": "@?mdpInputName",
+            "clearOnCancel": "=?mdpClearOnCancel"
         },
         link: {
             pre: function(scope, element, attrs, constollers, $transclude) {
@@ -391,6 +389,9 @@ module.directive("mdpDatePicker", ["$mdpDatePicker", "$timeout", "$mdpLocale", f
                     },
                     get dateFilter() {
                         return scope.dateFilter || $mdpLocale.date.dateFilter;
+                    },
+                    get clearOnCancel() {
+                        return angular.isDefined(scope.clearOnCancel) ? scope.clearOnCancel : $mdpLocale.date.clearOnCancel;
                     }
                 };
 
@@ -501,7 +502,13 @@ module.directive("mdpDatePicker", ["$mdpDatePicker", "$timeout", "$mdpLocale", f
                         okLabel: scope.okLabel,
                         cancelLabel: scope.cancelLabel,
                         targetEvent: ev
-                    }).then(updateDate);
+                    }).then(function(time) {
+                        updateDate(time, true);
+                    }, function (error) {
+                        if (opts.clearOnCancel) {
+                            updateDate(null, true);
+                        }
+                    });
                 };
 
                 function onInputElementEvents(event) {
