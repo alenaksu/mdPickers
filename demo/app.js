@@ -28,7 +28,7 @@ angular.module('demo', [
         $mdpLocale.time.openOnClick = true;
         $mdpLocale.time.autoSwitch = true;
         $mdpLocale.time.ampm = true;
-        $mdpLocale.time.clearOnCancel = false;
+        $mdpLocale.time.clearOnCancel = true;
 
 
         $mdpLocale.date.minDate = new Date().addDays(-2);
@@ -42,6 +42,6 @@ angular.module('demo', [
         $mdpLocale.date.displayFormat = "ddd DD MMM";
         $mdpLocale.date.noFloat = true;
         $mdpLocale.date.openOnClick = true;
-        $mdpLocale.date.clearOnCancel = false;
+        $mdpLocale.date.clearOnCancel = true;
     }
 }]);

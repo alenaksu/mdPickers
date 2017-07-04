@@ -24,7 +24,7 @@ angular.module('demo').controller('demoController', ['$scope', function($scope) 
     $scope.custom.maxTime3 = "23:42:00";
     $scope.custom.okLabel3 = "go!";
     $scope.custom.cancelLabel3 = "cancel!";
-    $scope.custom.clearOnCancel3 = false;
+    $scope.custom.clearOnCancel3 = true;
     $scope.custom.dateFormat3 = "DD-MM-YYYY";
     $scope.custom.minDateStr3 = moment(new Date().addDays(-7)).format($scope.custom.dateFormat3);
     $scope.custom.maxDateStr3 = moment(new Date().addDays(7)).format($scope.custom.dateFormat3);

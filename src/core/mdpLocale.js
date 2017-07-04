@@ -14,7 +14,7 @@ module.factory('$mdpLocale', [function () {
             openOnClick: false,
             autoSwitch: false,
             ampm: true,
-            clearOnCancel: true
+            clearOnCancel: false
         },
         date: {
             minDate: null,
@@ -26,7 +26,7 @@ module.factory('$mdpLocale', [function () {
             displayFormat: "ddd, MMM DD",
             noFloat: false,
             openOnClick: false,
-            clearOnCancel: true
+            clearOnCancel: false
         }
     };
 
