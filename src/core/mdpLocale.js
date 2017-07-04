@@ -26,6 +26,7 @@ module.factory('$mdpLocale', [function () {
             displayFormat: "ddd, MMM DD",
             noFloat: false,
             openOnClick: false,
+            clearOnCancel: true
         }
     };
 
