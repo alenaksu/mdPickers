@@ -4,6 +4,8 @@
 
 * Fixed error when input are not in a form (cf2b00f)
 * Fixed date object error (7417a93)
+* Fixed bug that caused date to reset if date picker dialog was cancelled (pull request #18)
+* Fixed issues with date picker and required (pull request #16)
 
 #### Features
 
