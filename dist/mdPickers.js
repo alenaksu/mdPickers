@@ -41,6 +41,38 @@ module.constant("mdpIconsRegistry", [
         svg: '<svg height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/><path d="M0 0h24v24H0z" fill="none"/></svg>'
     }
 ]);
+/**
+ * Created by Robin Thoni on 6/21/17.
+ */
+
+module.factory('$mdpLocale', [function () {
+    var $mdpLocale = {
+        time: {
+            minTime: null,
+            maxTime: null,
+            okLabel: "OK",
+            cancelLabel: "Cancel",
+            timeFormat: "HH:mm",
+            noFloat: false,
+            openOnClick: false,
+            autoSwitch: false,
+            ampm: true
+        },
+        date: {
+            minDate: null,
+            maxDate: null,
+            okLabel: "OK",
+            cancelLabel: "Cancel",
+            dateFilter: null,
+            dateFormat: "YYYY-MM-DD",
+            displayFormat: "ddd, MMM DD",
+            noFloat: false,
+            openOnClick: false
+        }
+    };
+
+    return $mdpLocale;
+}]);
 module.directive("ngMessage", ["$mdUtil", function($mdUtil) {
    return {
         restrict: "EA",
@@ -181,15 +213,15 @@ module.provider("$mdpDatePicker", function() {
         PARENT_GETTER = fn;
     };
 
-    this.$get = ["$mdDialog", function($mdDialog) {
+    this.$get = ["$mdDialog", "$mdpLocale", function($mdDialog, $mdpLocale) {
         var datePicker = function(currentDate, options) {
             if (!angular.isDate(currentDate)) currentDate = Date.now();
             if (!angular.isObject(options)) options = {};
 
-            options.displayFormat = DISPLAY_FORMAT;
+            options.displayFormat = options.displayFormat || $mdpLocale.date.displayFormat || DISPLAY_FORMAT;
 
-            var labelOk = options.okLabel || LABEL_OK;
-            var labelCancel = options.cancelLabel || LABEL_CANCEL;
+            var labelOk = options.okLabel || $mdpLocale.date.okLabel || LABEL_OK;
+            var labelCancel = options.cancelLabel || $mdpLocale.date.cancelLabel || LABEL_CANCEL;
 
             return $mdDialog.show({
                 controller:  ['$scope', '$mdDialog', '$mdMedia', '$timeout', 'currentDate', 'options', DatePickerCtrl],
@@ -230,6 +262,9 @@ module.provider("$mdpDatePicker", function() {
                 },
                 multiple: true,
                 parent: PARENT_GETTER()
+            })
+            .catch(function() {
+                return null;
             });
         };
 
@@ -395,21 +430,21 @@ function filterValidator(value, format, filter) {
     return !value ||
             angular.isDate(value) ||
             !angular.isFunction(filter) ||
-            !filter(date);
+            !filter(date.toDate());
 }
 
 function requiredValidator(value, ngModel) {
     return value
 }
 
-module.directive("mdpDatePicker", ["$mdpDatePicker", "$timeout", function($mdpDatePicker, $timeout) {
+module.directive("mdpDatePicker", ["$mdpDatePicker", "$timeout", "$mdpLocale", function($mdpDatePicker, $timeout, $mdpLocale) {
     return  {
         restrict: 'E',
         require: ['ngModel', "^^?form"],
         transclude: true,
         template: function(element, attrs) {
-            var noFloat = angular.isDefined(attrs.mdpNoFloat),
-                openOnClick = angular.isDefined(attrs.mdpOpenOnClick) ? true : false;
+            var noFloat = angular.isDefined(attrs.mdpNoFloat) || $mdpLocale.date.noFloat,
+                openOnClick = angular.isDefined(attrs.mdpOpenOnClick) || $mdpLocale.date.openOnClick;
 
             return '<div layout layout-align="start start">' +
                     '<md-button' + (angular.isDefined(attrs.mdpDisabled) ? ' ng-disabled="disabled"' : '') + ' class="md-icon-button" ng-click="showPicker($event)">' +
@@ -441,6 +476,10 @@ module.directive("mdpDatePicker", ["$mdpDatePicker", "$timeout", function($mdpDa
                 var ngModel = controllers[0];
                 var form = controllers[1];
 
+                var minDate = scope.minDate || $mdpLocale.date.minDate;
+                var maxDate = scope.maxDate || $mdpLocale.date.maxDate;
+                var dateFilter = scope.dateFilter || $mdpLocale.date.dateFilter;
+
                 var inputElement = angular.element(element[0].querySelector('input')),
                     inputContainer = angular.element(element[0].querySelector('md-input-container')),
                     inputContainerCtrl = inputContainer.controller("mdInputContainer");
@@ -451,12 +490,12 @@ module.directive("mdpDatePicker", ["$mdpDatePicker", "$timeout", function($mdpDa
 
                 var messages = angular.element(inputContainer[0].querySelector("[ng-messages]"));
 
-                scope.type = scope.dateFormat ? "text" : "date"
-                scope.dateFormat = scope.dateFormat || "YYYY-MM-DD";
+                scope.type = scope.dateFormat || $mdpLocale.date.dateFormat ? "text" : "date";
+                scope.dateFormat = scope.dateFormat || $mdpLocale.date.dateFormat || "YYYY-MM-DD";
                 scope.model = ngModel;
 
                 scope.isError = function() {
-                    return !!ngModel.$invalid && (!ngModel.$pristine || form.$submitted);
+                    return !!ngModel.$invalid && (!ngModel.$pristine || (form != null && form.$submitted));
                 };
 
                 scope.required = function() {
@@ -482,15 +521,15 @@ module.directive("mdpDatePicker", ["$mdpDatePicker", "$timeout", function($mdpDa
                 };
 
                 ngModel.$validators.minDate = function(modelValue, viewValue) {
-                    return minDateValidator(viewValue, scope.dateFormat, scope.minDate);
+                    return minDateValidator(viewValue, scope.dateFormat, minDate);
                 };
 
                 ngModel.$validators.maxDate = function(modelValue, viewValue) {
-                    return maxDateValidator(viewValue, scope.dateFormat, scope.maxDate);
+                    return maxDateValidator(viewValue, scope.dateFormat, maxDate);
                 };
 
                 ngModel.$validators.filter = function(modelValue, viewValue) {
-                    return filterValidator(viewValue, scope.dateFormat, scope.dateFilter);
+                    return filterValidator(viewValue, scope.dateFormat, dateFilter);
                 };
 
                 ngModel.$validators.required = function(modelValue, viewValue) {
@@ -543,9 +582,9 @@ module.directive("mdpDatePicker", ["$mdpDatePicker", "$timeout", function($mdpDa
 
                 scope.showPicker = function(ev) {
                     $mdpDatePicker(ngModel.$modelValue, {
-                        minDate: scope.minDate,
-                        maxDate: scope.maxDate,
-                        dateFilter: scope.dateFilter,
+                        minDate: minDate,
+                        maxDate: maxDate,
+                        dateFilter: dateFilter,
                         okLabel: scope.okLabel,
                         cancelLabel: scope.cancelLabel,
                         targetEvent: ev
@@ -832,13 +871,13 @@ module.provider("$mdpTimePicker", function() {
         PARENT_GETTER = fn;
     };
 
-    this.$get = ["$mdDialog", function($mdDialog) {
+    this.$get = ["$mdDialog", "$mdpLocale", function($mdDialog, $mdpLocale) {
         var timePicker = function(time, options) {
             if(!angular.isDate(time)) time = Date.now();
             if (!angular.isObject(options)) options = {};
 
-            var labelOk = options.okLabel || LABEL_OK;
-            var labelCancel = options.cancelLabel || LABEL_CANCEL;
+            var labelOk = options.okLabel || $mdpLocale.time.okLabel || LABEL_OK;
+            var labelCancel = options.cancelLabel || $mdpLocale.time.cancelLabel || LABEL_CANCEL;
 
             return $mdDialog.show({
                 controller:  ['$scope', '$mdDialog', 'time', 'autoSwitch', 'ampm', '$mdMedia', TimePickerCtrl],
@@ -877,10 +916,13 @@ module.provider("$mdpTimePicker", function() {
                 locals: {
                     time: time,
                     autoSwitch: options.autoSwitch,
-                    ampm: options.ampm
+                    ampm: options.ampm == null ? $mdpLocale.time.ampm : options.ampm
                 },
                 multiple: true,
                 parent: PARENT_GETTER()
+            })
+            .catch(function() {
+                return;
             });
         };
 
@@ -910,14 +952,14 @@ function maxTimeValidator(value, format, maxTime) {
     return compareTimeValidator(value, format, maxTime, function(t, mt) { return t.isSameOrBefore(mt); });
 }
 
-module.directive("mdpTimePicker", ["$mdpTimePicker", "$timeout", function($mdpTimePicker, $timeout) {
+module.directive("mdpTimePicker", ["$mdpTimePicker", "$timeout", "$mdpLocale", function($mdpTimePicker, $timeout, $mdpLocale) {
     return  {
         restrict: 'E',
         require: ['ngModel', "^^?form"],
         transclude: true,
         template: function(element, attrs) {
-            var noFloat = angular.isDefined(attrs.mdpNoFloat),
-                openOnClick = angular.isDefined(attrs.mdpOpenOnClick) ? true : false;
+            var noFloat = angular.isDefined(attrs.mdpNoFloat) || $mdpLocale.time.noFloat,
+                openOnClick = angular.isDefined(attrs.mdpOpenOnClick) || $mdpLocale.time.openOnClick;
 
             return '<div layout layout-align="start start">' +
                     '<md-button class="md-icon-button" ng-click="showPicker($event)"' + (angular.isDefined(attrs.mdpDisabled) ? ' ng-disabled="disabled"' : '') + '>' +
@@ -944,6 +986,9 @@ module.directive("mdpTimePicker", ["$mdpTimePicker", "$timeout", function($mdpTi
             var ngModel = controllers[0];
             var form = controllers[1];
 
+            var minTime = scope.minTime || $mdpLocale.time.minTime;
+            var maxTime = scope.maxTime || $mdpLocale.time.maxTime;
+
             var inputElement = angular.element(element[0].querySelector('input')),
                 inputContainer = angular.element(element[0].querySelector('md-input-container')),
                 inputContainerCtrl = inputContainer.controller("mdInputContainer");
@@ -954,13 +999,13 @@ module.directive("mdpTimePicker", ["$mdpTimePicker", "$timeout", function($mdpTi
 
             var messages = angular.element(inputContainer[0].querySelector("[ng-messages]"));
 
-            scope.type = scope.timeFormat ? "text" : "time"
-            scope.timeFormat = scope.timeFormat || "HH:mm";
-            scope.autoSwitch = scope.autoSwitch || false;
+            scope.type = scope.timeFormat || $mdpLocale.time.timeFormat ? "text" : "time";
+            scope.timeFormat = scope.timeFormat || $mdpLocale.time.timeFormat || "HH:mm";
+            scope.autoSwitch = scope.autoSwitch === undefined ? $mdpLocale.time.autoSwitch : scope.autoSwitch;
             scope.model = ngModel;
 
             scope.isError = function() {
-                return !!ngModel.$invalid && (!ngModel.$pristine || form.$submitted);
+                return !!ngModel.$invalid && (!ngModel.$pristine || (form != null && form.$submitted));
             };
 
             scope.required = function() {
@@ -993,11 +1038,11 @@ module.directive("mdpTimePicker", ["$mdpTimePicker", "$timeout", function($mdpTi
             };
             
             ngModel.$validators.minTime = function(modelValue, viewValue) {
-                return minTimeValidator(viewValue, scope.timeFormat, scope.minTime);
+                return minTimeValidator(viewValue, scope.timeFormat, minTime);
             };
 
             ngModel.$validators.maxTime = function(modelValue, viewValue) {
-                return maxTimeValidator(viewValue, scope.timeFormat, scope.maxTime);
+                return maxTimeValidator(viewValue, scope.timeFormat, maxTime);
             };
 
             ngModel.$parsers.unshift(function(value) {

@@ -53,14 +53,16 @@ Note on spaces vs. tabs: This project consistently uses 4 spaces for indentation
 
 ### Building mdPickers
 
-First install or update your local project's __npm__ tools:
+First install or update your local project's __npm__ and __bower__ tools:
 
 ```bash
 # First install all the npm tools:
 npm install
+bower install
 
 # or update
 npm update
+bower update
 ```
 
 Then run the default gulp task:
@@ -68,7 +70,29 @@ Then run the default gulp task:
 ```bash
 # builds all files in the `dist` directory
 gulp
+# Additionally, you can build the demo
+gulp demo
 ```
+
+To run the demo:
+```bash
+# If you don't want/can't install http-server globally
+./node_modules/http-server/bin/http-server
+
+# Install http-server globally
+npm install -g http-server
+http-server
+```
+
+Then browse `/demo` (or `/demo-dist` if you built it) on the printed address.
+
+### Release
+
+- Check that changes work on demo
+- Check that changes work on demo-dist
+- Update version in `bower.json` and `packages.json`
+- Add changes to `CHANGELOG.md`
+- Build `dist` and `demo-dist` folders
 
 ## License
 

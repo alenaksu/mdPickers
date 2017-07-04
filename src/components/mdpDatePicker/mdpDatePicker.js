@@ -119,15 +119,15 @@ module.provider("$mdpDatePicker", function() {
         PARENT_GETTER = fn;
     };
 
-    this.$get = ["$mdDialog", function($mdDialog) {
+    this.$get = ["$mdDialog", "$mdpLocale", function($mdDialog, $mdpLocale) {
         var datePicker = function(currentDate, options) {
             if (!angular.isDate(currentDate)) currentDate = Date.now();
             if (!angular.isObject(options)) options = {};
 
-            options.displayFormat = DISPLAY_FORMAT;
+            options.displayFormat = options.displayFormat || $mdpLocale.date.displayFormat || DISPLAY_FORMAT;
 
-            var labelOk = options.okLabel || LABEL_OK;
-            var labelCancel = options.cancelLabel || LABEL_CANCEL;
+            var labelOk = options.okLabel || $mdpLocale.date.okLabel || LABEL_OK;
+            var labelCancel = options.cancelLabel || $mdpLocale.date.cancelLabel || LABEL_CANCEL;
 
             return $mdDialog.show({
                 controller:  ['$scope', '$mdDialog', '$mdMedia', '$timeout', 'currentDate', 'options', DatePickerCtrl],
@@ -169,7 +169,7 @@ module.provider("$mdpDatePicker", function() {
                 multiple: true,
                 parent: PARENT_GETTER()
             })
-            .catch(() => {
+            .catch(function() {
                 return null;
             });
         };
@@ -336,21 +336,21 @@ function filterValidator(value, format, filter) {
     return !value ||
             angular.isDate(value) ||
             !angular.isFunction(filter) ||
-            !filter(date);
+            !filter(date.toDate());
 }
 
 function requiredValidator(value, ngModel) {
     return value
 }
 
-module.directive("mdpDatePicker", ["$mdpDatePicker", "$timeout", function($mdpDatePicker, $timeout) {
+module.directive("mdpDatePicker", ["$mdpDatePicker", "$timeout", "$mdpLocale", function($mdpDatePicker, $timeout, $mdpLocale) {
     return  {
         restrict: 'E',
         require: ['ngModel', "^^?form"],
         transclude: true,
         template: function(element, attrs) {
-            var noFloat = angular.isDefined(attrs.mdpNoFloat),
-                openOnClick = angular.isDefined(attrs.mdpOpenOnClick) ? true : false;
+            var noFloat = angular.isDefined(attrs.mdpNoFloat) || $mdpLocale.date.noFloat,
+                openOnClick = angular.isDefined(attrs.mdpOpenOnClick) || $mdpLocale.date.openOnClick;
 
             return '<div layout layout-align="start start">' +
                     '<md-button' + (angular.isDefined(attrs.mdpDisabled) ? ' ng-disabled="disabled"' : '') + ' class="md-icon-button" ng-click="showPicker($event)">' +
@@ -382,6 +382,18 @@ module.directive("mdpDatePicker", ["$mdpDatePicker", "$timeout", function($mdpDa
                 var ngModel = controllers[0];
                 var form = controllers[1];
 
+                var opts = {
+                    get minDate() {
+                        return scope.minDate || $mdpLocale.date.minDate;
+                    },
+                    get maxDate() {
+                        return scope.maxDate || $mdpLocale.date.maxDate;
+                    },
+                    get dateFilter() {
+                        return scope.dateFilter || $mdpLocale.date.dateFilter;
+                    }
+                };
+
                 var inputElement = angular.element(element[0].querySelector('input')),
                     inputContainer = angular.element(element[0].querySelector('md-input-container')),
                     inputContainerCtrl = inputContainer.controller("mdInputContainer");
@@ -392,12 +404,12 @@ module.directive("mdpDatePicker", ["$mdpDatePicker", "$timeout", function($mdpDa
 
                 var messages = angular.element(inputContainer[0].querySelector("[ng-messages]"));
 
-                scope.type = scope.dateFormat ? "text" : "date"
-                scope.dateFormat = scope.dateFormat || "YYYY-MM-DD";
+                scope.type = scope.dateFormat || $mdpLocale.date.dateFormat ? "text" : "date";
+                scope.dateFormat = scope.dateFormat || $mdpLocale.date.dateFormat || "YYYY-MM-DD";
                 scope.model = ngModel;
 
                 scope.isError = function() {
-                    return !!ngModel.$invalid && (!ngModel.$pristine || form.$submitted);
+                    return !!ngModel.$invalid && (!ngModel.$pristine || (form != null && form.$submitted));
                 };
 
                 scope.required = function() {
@@ -423,15 +435,15 @@ module.directive("mdpDatePicker", ["$mdpDatePicker", "$timeout", function($mdpDa
                 };
 
                 ngModel.$validators.minDate = function(modelValue, viewValue) {
-                    return minDateValidator(viewValue, scope.dateFormat, scope.minDate);
+                    return minDateValidator(viewValue, scope.dateFormat, opts.minDate);
                 };
 
                 ngModel.$validators.maxDate = function(modelValue, viewValue) {
-                    return maxDateValidator(viewValue, scope.dateFormat, scope.maxDate);
+                    return maxDateValidator(viewValue, scope.dateFormat, opts.maxDate);
                 };
 
                 ngModel.$validators.filter = function(modelValue, viewValue) {
-                    return filterValidator(viewValue, scope.dateFormat, scope.dateFilter);
+                    return filterValidator(viewValue, scope.dateFormat, opts.dateFilter);
                 };
 
                 ngModel.$validators.required = function(modelValue, viewValue) {
@@ -484,9 +496,9 @@ module.directive("mdpDatePicker", ["$mdpDatePicker", "$timeout", function($mdpDa
 
                 scope.showPicker = function(ev) {
                     $mdpDatePicker(ngModel.$modelValue, {
-                        minDate: scope.minDate,
-                        maxDate: scope.maxDate,
-                        dateFilter: scope.dateFilter,
+                        minDate: opts.minDate,
+                        maxDate: opts.maxDate,
+                        dateFilter: opts.dateFilter,
                         okLabel: scope.okLabel,
                         cancelLabel: scope.cancelLabel,
                         targetEvent: ev
