@@ -10,6 +10,7 @@ Date.prototype.addDays = function(days) {
 
 angular.module('demo', [
     'ngMaterial',
+    "ngMessages",
     'mdPickers'
 ])
 
