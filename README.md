@@ -37,7 +37,7 @@ angular.module( 'YourApp', [ 'mdPickers' ] )
 
 - [x] Fixes for existing functionality
 - [x] Integration of most important [pull requests of the original repository](https://github.com/alenaksu/mdPickers/pulls)
-- [ ] Update documentation and online demo
+- [x] Update documentation and online demo
 - [ ] Linting for code quality
 - [ ] Unit tests
 - [ ] Continuous Integration
