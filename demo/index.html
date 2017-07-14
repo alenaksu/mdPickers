@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="demo">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>md-pickers</title>
@@ -18,9 +18,9 @@
         };
     </script>
 
-
     <script src="../bower_components/angular/angular.min.js"></script>
     <script src="../bower_components/angular-material/angular-material.min.js"></script>
+    <script src="../bower_components/angular-messages/angular-messages.min.js"></script>
     <script src="../bower_components/angular-animate/angular-animate.min.js"></script>
     <script src="../bower_components/angular-aria/angular-aria.min.js"></script>
     <script src="../bower_components/moment/moment.js"></script>
@@ -38,7 +38,16 @@
     <script src="demoController.js"></script>
     <!-- endbuild -->
 </head>
-<body ng-controller="demoController">
+<body>
+<div ng-app="demo" ng-controller="demoController">
+
+<md-toolbar class="md-whiteframe-z2">
+    <div style="text-align: center;">
+        <h1>mdPickers</h1>
+        <h2>Material Design date/time pickers</h2>
+    </div>
+</md-toolbar>
+
 <div layout="column" flex>
     <a href="?">Use app global settings</a>
     <a href="?useDefaults">Use default global settings</a>
@@ -180,6 +189,43 @@
         ></mdp-time-picker>
     </div>
     <span>{{ custom.date3 }}</span>
+</div>
+
+<div layout="column" flex>
+    <h3>A disabled picker:</h3>
+    <div layout="row" flex>
+        <mdp-date-picker mdp-disabled="true" ng-model="date1" mdp-placeholder="Date 1"></mdp-date-picker>
+        <mdp-time-picker mdp-disabled="true" ng-model="date1" mdp-placeholder="Time 1"></mdp-time-picker>
+    </div>
+</div>
+
+<div layout="column" flex>
+    <h3>Custom format + error messages</h3>
+    <div ng-form="demoForm" layout="row" flex>
+        <mdp-date-picker required name="dateFormat" mdp-placeholder="My date(dd/mm/yyyy)" mdp-format="DD/MM/YYYY" ng-model="date1">
+            <div ng-messages="demoForm.dateFormat.$error">
+                <div ng-message="required">This is required</div>
+                <div ng-message="format">Invalid format</div>
+            </div>
+        </mdp-date-picker>
+        <mdp-time-picker required name="timeFormat" ng-model="time1" mdp-format="HH.mm" mdp-placeholder="My time(hh.mm)">
+            <div ng-messages="demoForm.timeFormat.$error">
+                <div ng-message="required">This is required</div>
+                <div ng-message="format">Invalid format</div>
+            </div>
+        </mdp-time-picker>
+    </div>
+</div>
+
+<div layout="column" flex>
+    <h3>Using $mdpDatePicker and $mdpTimePicker services</h3>
+    <div layout="row" flex>
+        <md-button class="md-raised md-warn" ng-click="showDatePicker($event)" aria-label="show date picker">show date picker</md-button>
+        <md-button class="md-raised md-warn" ng-click="showTimePicker($event)" aria-label="show time picker">show time picker</md-button>
+    </div>
+    <p>{{ currentDate }}</p>
+</div>
+
 </div>
 </body>
 </html>

@@ -2,7 +2,7 @@
  * Created by Robin Thoni on 6/21/17.
  */
 
-angular.module('demo').controller('demoController', ['$scope', function($scope) {
+angular.module('demo').controller('demoController', ['$scope', "$mdpDatePicker", "$mdpTimePicker", function($scope, $mdpDatePicker, $mdpTimePicker) {
     $scope.date1 = null;
 
     $scope.date2 = null;
@@ -36,6 +36,24 @@ angular.module('demo').controller('demoController', ['$scope', function($scope) 
     $scope.custom.timeFormat3 = "HH:mm:ss";
     $scope.custom.autoSwitch3 = true;
     $scope.custom.ampm3 = true;
+
+    $scope.currentDate = new Date();
+
+    $scope.showDatePicker = function(ev) {
+        $mdpDatePicker($scope.currentDate, {
+            targetEvent: ev
+        }).then(function(selectedDate) {
+            $scope.currentDate = selectedDate;
+        });
+    };
+
+    $scope.showTimePicker = function(ev) {
+        $mdpTimePicker($scope.currentDate, {
+            targetEvent: ev
+        }).then(function(selectedDate) {
+            $scope.currentDate = selectedDate;
+        });
+    };
 
     $scope.$watch('custom.minDateStr3', function(newValue, oldValue) {
         $scope.custom.minDate3 = moment(newValue, $scope.custom.dateFormat3, true);
