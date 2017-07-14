@@ -5,7 +5,7 @@ Note: This repository was forked from [alenaksu/mdPickers](https://github.com/al
 
 ## Online demos
 
-* [CodePen](http://codepen.io/alenaksu/full/eNzbrZ)
+* [CodePen](https://codepen.io/dpoetzsch/full/NgJXjR/)
 
 ## Requirements
 
