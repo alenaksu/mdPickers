@@ -143,20 +143,22 @@ module.directive("mdpClock", ["$animate", "$timeout", function($animate, $timeou
             'ampm': '=?'
         },
         replace: true,
-        template: '<div class="mdp-clock">' +
+        template: '<md-card class="mdp-clock">' +
                         '<div class="mdp-clock-container">' +
                             '<md-toolbar class="mdp-clock-center md-primary"></md-toolbar>' +
                             '<md-toolbar ng-style="clock.getPointerStyle()" class="mdp-pointer md-primary">' +
                                 '<span class="mdp-clock-selected md-button md-raised md-primary"></span>' +
                             '</md-toolbar>' +
-                            '<md-button ng-class="{ \'md-primary\': clock.selected == step }" class="md-icon-button md-raised mdp-clock-deg{{ ::(clock.STEP_DEG * ($index + 1)) }}" ng-repeat="step in clock.steps" ng-click="clock.setTime(step)">{{ step }}</md-button>' +
+                            '<md-button ng-class="{ \'md-primary\': clock.selected == step, \'md-raised\': raised || clock.selected == step  }" ng-mouseenter="raised = true" ng-mouseleave="raised = false" class="md-icon-button mdp-clock-deg{{ ::(clock.STEP_DEG * ($index + 1)) }}" ng-repeat="step in clock.steps" ng-click="clock.setTime(step)">{{ step }}</md-button>' +
                         '</div>' +
-                    '</div>',
+                    '</md-card>',
         controller: ["$scope", ClockCtrl],
         controllerAs: "clock",
         link: function(scope, element, attrs, ctrl) {
             var pointer = angular.element(element[0].querySelector(".mdp-pointer")),
-                timepickerCtrl = scope.$parent.timepicker;
+				timepickerCtrl = scope.$parent.timepicker;
+				
+            scope.raised = false;
 
             var onEvent = function(event) {
                 var containerCoords = event.currentTarget.getClientRects()[0];
@@ -232,7 +234,7 @@ module.provider("$mdpTimePicker", function() {
                                     '</div>' +
 
                                 '</md-toolbar>' +
-                                '<div>' +
+                                '<md-content>' +
                                     '<div class="mdp-clock-switch-container" ng-switch="timepicker.currentView" layout layout-align="center center">' +
                                         '<mdp-clock class="mdp-animation-zoom" ampm="timepicker.ampm" auto-switch="timepicker.autoSwitch" time="timepicker.time" type="hours" ng-switch-when="1"></mdp-clock>' +
                                         '<mdp-clock class="mdp-animation-zoom" ampm="timepicker.ampm" auto-switch="timepicker.autoSwitch" time="timepicker.time" type="minutes" ng-switch-when="2"></mdp-clock>' +
@@ -243,7 +245,7 @@ module.provider("$mdpTimePicker", function() {
                                         '<md-button ng-click="timepicker.cancel()" aria-label="' + labelCancel + '">' + labelCancel + '</md-button>' +
                                         '<md-button ng-click="timepicker.confirm()" class="md-primary" aria-label="' + labelOk + '">' + labelOk + '</md-button>' +
                                     '</md-dialog-actions>' +
-                                '</div>' +
+                                '</md-content>' +
                             '</md-dialog-content>' +
                         '</md-dialog>',
                 targetEvent: options.targetEvent,

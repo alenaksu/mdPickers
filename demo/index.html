@@ -61,6 +61,16 @@
     </div>
     <span>{{ date1 }}</span>
 </div>
+
+<md-content layout="column" flex md-theme="dark">
+    <h3>Dark theme:</h3>
+    <div layout="row" flex>
+        <mdp-date-picker ng-model="date4" mdp-placeholder="Date 1"></mdp-date-picker>
+        <mdp-time-picker ng-model="date4" mdp-placeholder="Time 1"></mdp-time-picker>
+    </div>
+    <span>{{ date4 }}</span>
+</md-content>
+
 <div layout="column" flex>
     <h3>HTML options:</h3>
     <div layout="row" flex>

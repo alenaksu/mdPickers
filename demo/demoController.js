@@ -37,6 +37,8 @@ angular.module('demo').controller('demoController', ['$scope', "$mdpDatePicker",
     $scope.custom.autoSwitch3 = true;
     $scope.custom.ampm3 = true;
 
+    $scope.date4 = null;
+
     $scope.currentDate = new Date();
 
     $scope.showDatePicker = function(ev) {
