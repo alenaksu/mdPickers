@@ -264,10 +264,11 @@ mdp-calendar {
 .mdp-clock {
   width: 200px;
   height: 200px;
-  border-radius: 50%;
+  border-radius: 50% !important;
   cursor: pointer;
   padding: 24px;
   background: #ededed;
+  box-shadow: none !important;
 }
 .mdp-clock .md-button {
   box-shadow: none !important;
