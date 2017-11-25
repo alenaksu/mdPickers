@@ -93,6 +93,8 @@ Then browse `/demo` (or `/demo-dist` if you built it) on the printed address.
 - Update version in `bower.json` and `packages.json`
 - Add changes to `CHANGELOG.md`
 - Build `dist` and `demo-dist` folders
+- Create new tag for the version
+- Submit to npm: `npm publish`
 
 ## License
 
