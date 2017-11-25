@@ -1,6 +1,6 @@
 {
   "name": "md-pickers",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Material Design date/time pickers built with Angular Material and Moment.js",
   "main": "index",
   "scripts": {

@@ -2,6 +2,17 @@
 
 #### Bugfixes
 
+* Fixed design issues with dark theme (pull request #30, thanks to [Guillermo Omar Lopez Lopez](https://github.com/omar10594))
+
+#### Housekeeping
+
+* Merged the demos into one big demo
+
+
+### 1.1.0
+
+#### Bugfixes
+
 * Fixed error when input are not in a form (cf2b00f)
 * Fixed date object error (7417a93)
 * Fixed bug that caused date to reset if date picker dialog was cancelled (pull request #18)
