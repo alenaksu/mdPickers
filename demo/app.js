@@ -14,8 +14,8 @@ angular.module('demo', [
     'mdPickers'
 ])
 
-.config([function () {
-
+.config(['$mdThemingProvider', function ($mdThemingProvider) {
+	$mdThemingProvider.theme('dark').dark();
 }])
 
 .run(['$location', '$mdpLocale', function($location, $mdpLocale) {
