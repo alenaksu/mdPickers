@@ -1,76 +1,46 @@
 .mdp-animate-next {
   opacity: 0;
-  -webkit-transform: translate3d(50%, 0, 1px);
-          transform: translate3d(50%, 0, 1px);
+  transform: translate3d(50%, 0, 1px);
 }
 .mdp-animate-next-remove {
-  -webkit-transition: all 0.5s cubic-bezier(0.35, 0, 0.25, 1);
   transition: all 0.5s cubic-bezier(0.35, 0, 0.25, 1);
   opacity: 0;
-  -webkit-transform: translate3d(50%, 0, 1px);
-          transform: translate3d(50%, 0, 1px);
+  transform: translate3d(50%, 0, 1px);
 }
 .mdp-animate-next-remove-active {
   opacity: 1;
-  -webkit-transform: translate3d(0, 0, 1px);
-          transform: translate3d(0, 0, 1px);
+  transform: translate3d(0, 0, 1px);
 }
 .mdp-animate-prev {
   opacity: 0;
-  -webkit-transform: translate3d(-50%, 0, 1px);
-          transform: translate3d(-50%, 0, 1px);
+  transform: translate3d(-50%, 0, 1px);
 }
 .mdp-animate-prev-remove {
-  -webkit-transition: all 0.3s cubic-bezier(0.35, 0, 0.25, 1);
   transition: all 0.3s cubic-bezier(0.35, 0, 0.25, 1);
   opacity: 0;
-  -webkit-transform: translate3d(-50%, 0, 1px);
-          transform: translate3d(-50%, 0, 1px);
+  transform: translate3d(-50%, 0, 1px);
 }
 .mdp-animate-prev-remove-active {
   opacity: 1;
-  -webkit-transform: translate3d(0, 0, 1px);
-          transform: translate3d(0, 0, 1px);
-}
-@-webkit-keyframes mdp-animation-bounce {
-  from {
-    opacity: 0;
-    -webkit-transform: scale(0.95);
-            transform: scale(0.95);
-  }
-  70% {
-    opacity: 1;
-    -webkit-transform: scale(1.05);
-            transform: scale(1.05);
-  }
-  to {
-    -webkit-transform: scale(1);
-            transform: scale(1);
-  }
+  transform: translate3d(0, 0, 1px);
 }
 @keyframes mdp-animation-bounce {
   from {
     opacity: 0;
-    -webkit-transform: scale(0.95);
-            transform: scale(0.95);
+    transform: scale(0.95);
   }
   70% {
     opacity: 1;
-    -webkit-transform: scale(1.05);
-            transform: scale(1.05);
+    transform: scale(1.05);
   }
   to {
-    -webkit-transform: scale(1);
-            transform: scale(1);
+    transform: scale(1);
   }
 }
 .mdp-animation-zoom.ng-enter {
-  -webkit-transition: all 0.3s cubic-bezier(0.35, 0, 0.25, 1);
   transition: all 0.3s cubic-bezier(0.35, 0, 0.25, 1);
-  -webkit-animation-duration: 0.3s;
-          animation-duration: 0.3s;
-  -webkit-animation-name: mdp-animation-bounce;
-          animation-name: mdp-animation-bounce;
+  animation-duration: 0.3s;
+  animation-name: mdp-animation-bounce;
 }
 .mdp-datepicker {
   max-height: initial;
@@ -286,8 +256,7 @@ mdp-calendar {
   line-height: 32px;
   margin: 0;
   padding: 0;
-  -webkit-transform: translate(-50%, -50%);
-          transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
 }
 .mdp-clock .mdp-clock-container {
   width: 100%;
@@ -304,8 +273,7 @@ mdp-calendar {
   right: 0;
   bottom: 0;
   margin: 0 auto;
-  -webkit-transform-origin: top center;
-          transform-origin: top center;
+  transform-origin: top center;
   z-index: 0;
   pointer-events: none;
 }

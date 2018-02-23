@@ -175,8 +175,11 @@ function CalendarCtrl($scope) {
     );
     
     this.daysInMonth = [];
-    
+
     this.getDaysInMonth = function() {
+        if ( !self.date ) {
+            return 0;
+        }
         var days = self.date.daysInMonth(),
             firstDay = moment(self.date).date(1).day() - this.dow;
             
@@ -220,7 +223,9 @@ function CalendarCtrl($scope) {
         self.daysInMonth = self.getDaysInMonth();
     };
     
-    $scope.$watch(function() { return  self.date.unix() }, function(newValue, oldValue) {
+    $scope.$watch(function() {
+        if ( !self.date ) {return self.date;}
+        return  self.date.unix() }, function(newValue, oldValue) {
         if(newValue && newValue !== oldValue)
             self.updateDaysInMonth();
     })
