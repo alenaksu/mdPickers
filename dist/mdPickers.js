@@ -236,8 +236,11 @@ function CalendarCtrl($scope) {
     );
     
     this.daysInMonth = [];
-    
+
     this.getDaysInMonth = function() {
+        if ( !self.date ) {
+            return 0;
+        }
         var days = self.date.daysInMonth(),
             firstDay = moment(self.date).date(1).day() - this.dow;
             
@@ -281,7 +284,9 @@ function CalendarCtrl($scope) {
         self.daysInMonth = self.getDaysInMonth();
     };
     
-    $scope.$watch(function() { return  self.date.unix() }, function(newValue, oldValue) {
+    $scope.$watch(function() {
+        if ( !self.date ) {return self.date;}
+        return  self.date.unix() }, function(newValue, oldValue) {
         if(newValue && newValue !== oldValue)
             self.updateDaysInMonth();
     })
@@ -389,14 +394,16 @@ module.directive("mdpDatePicker", ["$mdpDatePicker", "$timeout", function($mdpDa
         template: function(element, attrs) {
             var noFloat = angular.isDefined(attrs.mdpNoFloat),
                 placeholder = angular.isDefined(attrs.mdpPlaceholder) ? attrs.mdpPlaceholder : "",
-                openOnClick = angular.isDefined(attrs.mdpOpenOnClick) ? true : false;
-            
+                openOnClick = angular.isDefined(attrs.mdpOpenOnClick) ? true : false,
+                label = angular.isDefined(attrs.mdpLabel) ? attrs.mdpLabel : "";
+
             return '<div layout layout-align="start start">' +
-                    '<md-button' + (angular.isDefined(attrs.mdpDisabled) ? ' ng-disabled="disabled"' : '') + ' class="md-icon-button" ng-click="showPicker($event)">' +
+                    '<md-button' + (angular.isDefined(attrs.mdpDisabled) ? ' ng-disabled="disabled"' : '') + ' class="md-icon-button" ng-click="showPicker($event)" aria-label="calendar">' +
                         '<md-icon md-svg-icon="mdp-event"></md-icon>' +
                     '</md-button>' +
                     '<md-input-container' + (noFloat ? ' md-no-float' : '') + ' md-is-error="isError()">' +
-                        '<input type="{{ ::type }}"' + (angular.isDefined(attrs.mdpDisabled) ? ' ng-disabled="disabled"' : '') + ' aria-label="' + placeholder + '" placeholder="' + placeholder + '"' + (openOnClick ? ' ng-click="showPicker($event)" ' : '') + ' />' +
+                    (label ? '<label>'+label+'</label>' : '')+
+                    '<input type="{{ ::type }}"' + (angular.isDefined(attrs.mdpDisabled) ? ' ng-disabled="disabled"' : '') + ' aria-label="' + (!label && placeholder ?placeholder : label) + '"' + (!label && placeholder ? ' placeholder="' + placeholder+'"' : '') + (openOnClick ? ' ng-click="showPicker($event)" ' : '') + ' />' +
                     '</md-input-container>' +
                 '</div>';
         },
@@ -522,6 +529,56 @@ module.directive("mdpDatePicker", ["$mdpDatePicker", "$timeout", function($mdpDa
                 scope.$on("$destroy", function() {
                     inputElement.off("reset input blur", onInputElementEvents);
                 });
+
+                if(scope.dateFormat == "MM/DD/YYYY") {
+                    inputElement.on("keypress", formatDateAsTyped);
+                }
+
+
+                function formatDateAsTyped(event) {
+                    var localInputElement = this;
+                    var inputDate = localInputElement.value;
+                    var unicode = event.keyCode ? event.keyCode : event.charCode;
+
+                    //Allow BackSpace, Tab, F5, Del, left arrow, right arrow in firefox. IE, chrome, safari supports these keys
+                    if (event.keyCode == 8 || event.keyCode == 9 || event.keyCode == 116 || event.keyCode == 46 || (event.keyCode == 37 && !event.charCode) || event.keyCode == 39) {
+                        return true;
+                    }
+
+                    if (isNumber(unicode) && inputDate.length < 10) {
+                        //replaces 2 to 02, 3 to 03.. for month field
+                        inputDate = inputDate.replace(/^([2-9])/, "0$1");
+                        //restrict typing 13, 14, 15, 16, 17, 18, 19 for month field
+                        if(inputDate == "1" && (unicode >= 51 && unicode <= 57)) {
+                            return false;
+                        }
+                        //replaces 4 to 04, 5 to 05.. for date field
+                        inputDate = inputDate.replace(/^([0-9])([0-9])(\/)([4-9])/, "$1$2$30$4");
+                        //restrict typing 2,3,4,5,6,7,8,9 in date field second position
+                        if(inputDate.length == 4 && inputDate.charAt(3) == '3' && (unicode >= 50 && unicode <= 57)){
+                            return false;
+                        }
+                        if (inputDate.length == 2 || inputDate.length == 5) {
+                            inputDate = inputDate + "/";
+                        }
+                        localInputElement.value = inputDate;
+                        return true;
+                        }
+                    else {
+                        return false;
+                    }
+                }
+
+                function isNumber(unicode) {
+                    var char = String.fromCharCode(unicode);
+
+                    if ((("0123456789").indexOf(char) > -1)) {
+                        return true;
+                    }
+                    else {
+                        return false;
+                    }
+                }
             }
         }
     };
@@ -827,14 +884,16 @@ module.directive("mdpTimePicker", ["$mdpTimePicker", "$timeout", function($mdpTi
         template: function(element, attrs) {
             var noFloat = angular.isDefined(attrs.mdpNoFloat),
                 placeholder = angular.isDefined(attrs.mdpPlaceholder) ? attrs.mdpPlaceholder : "",
-                openOnClick = angular.isDefined(attrs.mdpOpenOnClick) ? true : false;
-            
+                openOnClick = angular.isDefined(attrs.mdpOpenOnClick) ? true : false,
+                label = angular.isDefined(attrs.mdpLabel) ? attrs.mdpLabel : "";
+
             return '<div layout layout-align="start start">' +
-                    '<md-button class="md-icon-button" ng-click="showPicker($event)"' + (angular.isDefined(attrs.mdpDisabled) ? ' ng-disabled="disabled"' : '') + '>' +
+                    '<md-button class="md-icon-button" ng-click="showPicker($event)"' + (angular.isDefined(attrs.mdpDisabled) ? ' ng-disabled="disabled"' : '') + ' aria-label="clock">' +
                         '<md-icon md-svg-icon="mdp-access-time"></md-icon>' +
                     '</md-button>' +
                     '<md-input-container' + (noFloat ? ' md-no-float' : '') + ' md-is-error="isError()">' +
-                        '<input type="{{ ::type }}"' + (angular.isDefined(attrs.mdpDisabled) ? ' ng-disabled="disabled"' : '') + ' aria-label="' + placeholder + '" placeholder="' + placeholder + '"' + (openOnClick ? ' ng-click="showPicker($event)" ' : '') + ' />' +
+                    (label ? '<label>'+label+'</label>' : '')+
+                    '<input type="{{ ::type }}"' + (angular.isDefined(attrs.mdpDisabled) ? ' ng-disabled="disabled"' : '') + ' aria-label="' + (!label && placeholder ?placeholder : label) + '"' + (!label && placeholder ? ' placeholder="' + placeholder+'"' : '') + (openOnClick ? ' ng-click="showPicker($event)" ' : '') + ' />' +
                     '</md-input-container>' +
                 '</div>';
         },
@@ -940,8 +999,55 @@ module.directive("mdpTimePicker", ["$mdpTimePicker", "$timeout", function($mdpTi
             scope.$on("$destroy", function() {
                 inputElement.off("reset input blur", onInputElementEvents);
             })
+
+            if(scope.timeFormat == "HH:mm") {
+                inputElement.on("keypress", format24HourTimeAsTyped);
+            }
+
+
+            function format24HourTimeAsTyped(event) {
+                var localInputElement = this;
+                var p = localInputElement.value;
+                var unicode = event.keyCode ? event.keyCode : event.charCode;
+
+                //Allow BackSpace, Tab, F5, Del, left arrow, right arrow in firefox. IE, chrome, safari supports these keys
+                if (event.keyCode == 8 || event.keyCode == 9 || event.keyCode == 116 || event.keyCode == 46 || (event.keyCode == 37 && !event.charCode) || event.keyCode == 39) {
+                  return true;
+                }
+
+                if (isNumber(unicode) && p.length < 5 ){
+                    //replaces 3 to 03, 4 to 04..
+                    p = p.replace(/^([3-9])/, "0$1");
+                    //restrict typing 24, 25, 26, 27, 28, 29 in hours
+                    if(p == "2" && (unicode >= 52 && unicode <= 57)) {
+                        return false;
+                    }
+                    if (p.length == 2) {
+                        p = p + ":";
+                    }
+                    //restrict typing 6, 7, 8, 9 in minutes first position
+                    if(p.length == 3 && (unicode >= 54 && unicode <= 57)){
+                    return false;
+                    }
+                    localInputElement.value=p;
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+
+            function isNumber(unicode) {
+                var char = String.fromCharCode(unicode);
+
+                if ((("0123456789").indexOf(char) > -1)) {
+                    return true;
+                }  else {
+                    return false;
+                }
+            }
         }
     };
+
 }]);
 
 module.directive("mdpTimePicker", ["$mdpTimePicker", "$timeout", function($mdpTimePicker, $timeout) {
@@ -971,6 +1077,7 @@ module.directive("mdpTimePicker", ["$mdpTimePicker", "$timeout", function($mdpTi
             });
         }
     }
+
 }]);
 
 })();
