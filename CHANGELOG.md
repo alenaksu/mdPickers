@@ -1,4 +1,11 @@
-### 1.1.0
+### 1.1.2
+
+#### Housekeeping
+
+* Allowing angular 1.5 as well (pull request #34, thanks to [Kyle](https://github.com/kylekatarnls))
+
+
+### 1.1.1
 
 #### Bugfixes
 
