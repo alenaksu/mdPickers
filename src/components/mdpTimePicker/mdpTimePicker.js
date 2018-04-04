@@ -149,7 +149,7 @@ module.directive("mdpClock", ["$animate", "$timeout", function($animate, $timeou
                             '<md-toolbar ng-style="clock.getPointerStyle()" class="mdp-pointer md-primary">' +
                                 '<span class="mdp-clock-selected md-button md-raised md-primary"></span>' +
                             '</md-toolbar>' +
-                            '<md-button ng-class="{ \'md-primary\': clock.selected == step, \'md-raised\': raised || clock.selected == step  }" ng-mouseenter="raised = true" ng-mouseleave="raised = false" class="md-icon-button mdp-clock-deg{{ ::(clock.STEP_DEG * ($index + 1)) }}" ng-repeat="step in clock.steps" ng-click="clock.setTime(step)">{{ step }}</md-button>' +
+                            '<md-button ng-class="{ \'md-primary\': clock.selected == step || (step == clock.steps[clock.steps.length - 1] && clock.selected == 0), \'md-raised\': raised || clock.selected == step  }" ng-mouseenter="raised = true" ng-mouseleave="raised = false" class="md-icon-button mdp-clock-deg{{ ::(clock.STEP_DEG * ($index + 1)) }}" ng-repeat="step in clock.steps" ng-click="clock.setTime(step)">{{ step }}</md-button>' +
                         '</div>' +
                     '</md-card>',
         controller: ["$scope", ClockCtrl],
