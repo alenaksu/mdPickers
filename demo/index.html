@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>md-pickers</title>
+
+    <link rel="stylesheet" href="../bower_components/angular-material/angular-material.min.css"/>
+
+    <!-- build:css -->
+    <link rel="stylesheet/less" href="../src/core/style/animation.less"/>
+    <link rel="stylesheet/less" href="../src/components/mdpDatePicker/mdpDatePicker.less"/>
+    <link rel="stylesheet/less" href="../src/components/mdpTimePicker/mdpTimePicker.less"/>
+    <!-- endbuild -->
+
+    <script>
+        less = {
+            async: true
+        };
+    </script>
+
+    <script src="../bower_components/angular/angular.min.js"></script>
+    <script src="../bower_components/angular-material/angular-material.min.js"></script>
+    <script src="../bower_components/angular-messages/angular-messages.min.js"></script>
+    <script src="../bower_components/angular-animate/angular-animate.min.js"></script>
+    <script src="../bower_components/angular-aria/angular-aria.min.js"></script>
+    <script src="../bower_components/moment/moment.js"></script>
+    <script src="../bower_components/less/dist/less.min.js"></script>
+
+    <!-- build:js -->
+    <script src="../src/mdPickers.js"></script>
+    <script src="../src/core/icons.js"></script>
+    <script src="../src/core/mdpLocale.js"></script>
+    <script src="../src/components/mdpDatePicker/mdpDatePicker.js"></script>
+    <script src="../src/components/mdpTimePicker/mdpTimePicker.js"></script>
+    <!-- endbuild -->
+    <!-- build:demojs -->
+    <script src="app.js"></script>
+    <script src="demoController.js"></script>
+    <!-- endbuild -->
+</head>
+<body>
+<div ng-app="demo" ng-controller="demoController">
+
+<md-toolbar class="md-whiteframe-z2">
+    <div style="text-align: center;">
+        <h1>mdPickers</h1>
+        <h2>Material Design date/time pickers</h2>
+    </div>
+</md-toolbar>
+
+<div layout="column" flex>
+    <a href="?">Use app global settings</a>
+    <a href="?useDefaults">Use default global settings</a>
+</div>
+
+<div layout="column" flex>
+    <h3>Default options:</h3>
+    <div layout="row" flex>
+        <mdp-date-picker ng-model="date1" mdp-placeholder="Date 1"></mdp-date-picker>
+        <mdp-time-picker ng-model="date1" mdp-placeholder="Time 1"></mdp-time-picker>
+    </div>
+    <span>{{ date1 }}</span>
+</div>
+
+<md-content layout="column" flex md-theme="dark">
+    <h3>Dark theme:</h3>
+    <div layout="row" flex>
+        <mdp-date-picker ng-model="date4" mdp-placeholder="Date 1"></mdp-date-picker>
+        <mdp-time-picker ng-model="date4" mdp-placeholder="Time 1"></mdp-time-picker>
+    </div>
+    <span>{{ date4 }}</span>
+</md-content>
+
+<div layout="column" flex>
+    <h3>HTML options:</h3>
+    <div layout="row" flex>
+        <mdp-date-picker
+                ng-model="date2"
+                mdp-placeholder="Date 2"
+                mdp-min-date="minDate2"
+                mdp-max-date="maxDate2"
+                mdp-ok-label="go"
+                mdp-cancel-label="back"
+                mdp-date-filter="dateFilter2"
+                mdp-format="MM-DD-YYYY"
+                mdp-clear-on-cancel="false"
+        ></mdp-date-picker>
+        <mdp-time-picker
+                ng-model="date2"
+                mdp-placeholder="Time 2"
+                mdp-min-time="minTime2"
+                mdp-max-time="maxTime2"
+                mdp-ok-label="go"
+                mdp-cancel-label="back"
+                mdp-format="HH:mm"
+                mdp-auto-switch="false"
+                mdp-ampm="false"
+                mdp-clear-on-cancel="false"
+        ></mdp-time-picker>
+    </div>
+    <span>{{ date2 }}</span>
+</div>
+<div layout="column" flex>
+    <h3>Custom options:</h3>
+    <div layout="row" flex>
+        <md-input-container>
+            <label>Ok Label</label>
+            <input ng-model="custom.okLabel3">
+        </md-input-container>
+        <md-input-container>
+            <label>Cancel Label</label>
+            <input ng-model="custom.cancelLabel3">
+        </md-input-container>
+        <md-input-container>
+            <md-checkbox ng-model="custom.clearOnCancel3">
+                Clear on cancel
+            </md-checkbox>
+        </md-input-container>
+    </div>
+    <div layout="row" flex>
+        <md-input-container>
+            <label>Date Placeholer</label>
+            <input ng-model="custom.datePlaceholder3">
+        </md-input-container>
+        <md-input-container>
+            <label>Date Format</label>
+            <input ng-model="custom.dateFormat3">
+        </md-input-container>
+        <md-input-container>
+            <label>Min Date</label>
+            <input ng-model="custom.minDateStr3">
+        </md-input-container>
+        <md-input-container>
+            <label>Max Date</label>
+            <input ng-model="custom.maxDateStr3">
+        </md-input-container>
+        <md-input-container>
+            <md-checkbox ng-model="custom.dateFilterEnabled3">
+                Date Filter
+            </md-checkbox>
+        </md-input-container>
+        <md-input-container>
+            <md-checkbox ng-model="custom.dateFilterNo3" ng-disabled="!custom.dateFilterEnabled3">
+                Every {{ custom.dateFilterNo3 ? 'other' : 'third' }} day
+            </md-checkbox>
+        </md-input-container>
+    </div>
+    <div layout="row" flex>
+        <md-input-container>
+            <label>Time Placeholer</label>
+            <input ng-model="custom.timePlaceholder3">
+        </md-input-container>
+        <md-input-container>
+            <label>Time Format</label>
+            <input ng-model="custom.timeFormat3">
+        </md-input-container>
+        <md-input-container>
+            <label>Min Time</label>
+            <input ng-model="custom.minTime3">
+        </md-input-container>
+        <md-input-container>
+            <label>Max Time</label>
+            <input ng-model="custom.maxTime3">
+        </md-input-container>
+        <md-input-container>
+            <md-checkbox ng-model="custom.autoSwitch3">
+                Auto Switch
+            </md-checkbox>
+        </md-input-container>
+        <md-input-container>
+            <md-checkbox ng-model="custom.ampm3">
+                AM/PM
+            </md-checkbox>
+        </md-input-container>
+    </div>
+    <div layout="row" flex>
+        <mdp-date-picker
+                ng-model="custom.date3"
+                mdp-placeholder="{{ custom.datePlaceholder3 }}"
+                mdp-min-date="custom.minDate3"
+                mdp-max-date="custom.maxDate3"
+                mdp-ok-label="{{ custom.okLabel3 }}"
+                mdp-cancel-label="{{ custom.cancelLabel3 }}"
+                mdp-date-filter="custom.dateFilter3"
+                mdp-format="{{ custom.dateFormat3 }}"
+                mdp-clear-on-cancel="custom.clearOnCancel3"
+        ></mdp-date-picker>
+        <mdp-time-picker
+                ng-model="custom.date3"
+                mdp-placeholder="{{ custom.timePlaceholder3 }}"
+                mdp-min-time="custom.minTime3"
+                mdp-max-time="custom.maxTime3"
+                mdp-ok-label="{{ custom.okLabel3 }}"
+                mdp-cancel-label="{{ custom.cancelLabel3 }}"
+                mdp-format="{{ custom.timeFormat3 }}"
+                mdp-auto-switch="custom.autoSwitch3"
+                mdp-ampm="custom.ampm3"
+                mdp-clear-on-cancel="custom.clearOnCancel3"
+        ></mdp-time-picker>
+    </div>
+    <span>{{ custom.date3 }}</span>
+</div>
+
+<div layout="column" flex>
+    <h3>A disabled picker:</h3>
+    <div layout="row" flex>
+        <mdp-date-picker mdp-disabled="true" ng-model="date1" mdp-placeholder="Date 1"></mdp-date-picker>
+        <mdp-time-picker mdp-disabled="true" ng-model="date1" mdp-placeholder="Time 1"></mdp-time-picker>
+    </div>
+</div>
+
+<div layout="column" flex>
+    <h3>Custom format + error messages</h3>
+    <div ng-form="demoForm" layout="row" flex>
+        <mdp-date-picker required name="dateFormat" mdp-placeholder="My date(dd/mm/yyyy)" mdp-format="DD/MM/YYYY" ng-model="date1">
+            <div ng-messages="demoForm.dateFormat.$error">
+                <div ng-message="required">This is required</div>
+                <div ng-message="format">Invalid format</div>
+            </div>
+        </mdp-date-picker>
+        <mdp-time-picker required name="timeFormat" ng-model="time1" mdp-format="HH.mm" mdp-placeholder="My time(hh.mm)">
+            <div ng-messages="demoForm.timeFormat.$error">
+                <div ng-message="required">This is required</div>
+                <div ng-message="format">Invalid format</div>
+            </div>
+        </mdp-time-picker>
+    </div>
+</div>
+
+<div layout="column" flex>
+    <h3>Using $mdpDatePicker and $mdpTimePicker services</h3>
+    <div layout="row" flex>
+        <md-button class="md-raised md-warn" ng-click="showDatePicker($event)" aria-label="show date picker">show date picker</md-button>
+        <md-button class="md-raised md-warn" ng-click="showTimePicker($event)" aria-label="show time picker">show time picker</md-button>
+    </div>
+    <p>{{ currentDate }}</p>
+</div>
+
+</div>
+</body>
+</html>
